@@ -1,384 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Agile Method Bootcamp</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agile Method Bootcamp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    /* ====== BASIC PAGE STYLE (just to see it nicely) ====== */
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f7fb;
-      color: #1f2933;
-      line-height: 1.6;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-    section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    h1, h2, h3 {
-      margin: 0 0 0.75rem 0;
-    }
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-    .btn-primary {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #00c7c0, #00a5d9);
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 167, 201, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
+        .logo-container {
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(0, 167, 201, 0.45);
-    }
+        .logo-container img {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(52, 211, 153, 0.3));
+        }
 
-    /* ====== LAYOUT SECTIONS ====== */
+        .hero-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #34d399, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
 
-    /* Hero */
-    .hero {
-      padding: 5rem 1.5rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+        .hero-subtitle {
+            font-size: 1.5em;
+            color: #a0aec0;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
 
-    .hero-inner {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+        .hero-description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #cbd5e0;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
 
-    .hero-title {
-      font-size: clamp(2.2rem, 4vw, 3rem);
-      font-weight: 700;
-    }
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #34d399, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 1.2s both;
+            box-shadow: 0 10px 30px rgba(52, 211, 153, 0.3);
+        }
 
-    .hero-subtitle {
-      font-size: 1.05rem;
-      max-width: 32rem;
-      color: #4b5563;
-    }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(52, 211, 153, 0.5);
+        }
 
-    .hero-meta {
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
+        /* Overview Section */
+        .overview {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out 1.5s both;
+        }
 
-    /* Overview columns */
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
-      gap: 2rem;
-      align-items: center;
-    }
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #34d399, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .two-col img,
-    .logo-placeholder {
-      width: 100%;
-      max-width: 260px;
-      justify-self: center;
-    }
+        .overview-content {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #cbd5e0;
+            margin-bottom: 30px;
+        }
 
-    .logo-placeholder {
-      border-radius: 24px;
-      background: radial-gradient(circle at 0 0, #42e6c9, #00a5d9 60%, #027b9a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.4rem;
-    }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
 
-    /* Cards grid */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out both;
+        }
 
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-    }
+        .feature-card:nth-child(1) { animation-delay: 1.7s; }
+        .feature-card:nth-child(2) { animation-delay: 1.9s; }
+        .feature-card:nth-child(3) { animation-delay: 2.1s; }
+        .feature-card:nth-child(4) { animation-delay: 2.3s; }
+        .feature-card:nth-child(5) { animation-delay: 2.5s; }
+        .feature-card:nth-child(6) { animation-delay: 2.7s; }
 
-    .card h3 {
-      margin-bottom: 0.5rem;
-    }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #34d399;
+            box-shadow: 0 15px 40px rgba(52, 211, 153, 0.3);
+        }
 
-    .card a {
-      display: inline-block;
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #008dba;
-      text-decoration: none;
-    }
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
 
-    .card a::after {
-      content: " →";
-    }
+        .feature-title {
+            font-size: 1.3em;
+            color: #34d399;
+            margin-bottom: 10px;
+        }
 
-    /* CTA bottom */
-    .cta {
-      text-align: center;
-      background: white;
-      border-radius: 18px;
-      padding: 2rem 1.5rem;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-      border: 1px solid rgba(148, 163, 184, 0.23);
-      max-width: 900px;
-    }
+        .feature-description {
+            color: #a0aec0;
+            line-height: 1.6;
+        }
 
-    .cta p {
-      margin-bottom: 1.5rem;
-      color: #4b5563;
-    }
+        /* Benefits Section */
+        .benefits {
+            padding: 60px 40px;
+            margin: 40px 0;
+        }
 
-    footer {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #6b7280;
-      padding: 1.5rem;
-    }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
 
-    /* ====== ANIMATION BASE CLASSES ====== */
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(59, 130, 246, 0.1));
+            border: 2px solid rgba(52, 211, 153, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out both;
+        }
 
-    .animate-item {
-      opacity: 0;
-      transform: translateY(12px);
-      transition:
-        opacity 0.5s ease-out,
-        transform 0.5s ease-out;
-    }
+        .benefit-card:nth-child(1) { animation-delay: 2.9s; }
+        .benefit-card:nth-child(2) { animation-delay: 3.1s; }
+        .benefit-card:nth-child(3) { animation-delay: 3.3s; }
 
-    .animate-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        .benefit-card:hover {
+            transform: scale(1.05);
+            border-color: #3b82f6;
+        }
 
-    /* Specific variants */
-    .fade-in {
-      transform: none;
-    }
+        .benefit-emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
 
-    .slide-up {
-      transform: translateY(20px);
-    }
+        .benefit-title {
+            font-size: 1.5em;
+            color: #34d399;
+            margin-bottom: 15px;
+        }
 
-    .slide-left {
-      transform: translateX(-24px);
-    }
+        .benefit-description {
+            color: #cbd5e0;
+            line-height: 1.6;
+        }
 
-    .slide-right {
-      transform: translateX(24px);
-    }
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(59, 130, 246, 0.1));
+            border-radius: 20px;
+            margin: 40px 0;
+            animation: fadeIn 1s ease-out 3.5s both;
+        }
 
-    /* When they animate in, override transforms */
-    .animate-in.fade-in,
-    .animate-in.slide-up,
-    .animate-in.slide-left,
-    .animate-in.slide-right {
-      transform: translate(0, 0);
-    }
+        .contact-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #34d399;
+        }
 
-    /* Small responsive tweaks */
-    @media (max-width: 768px) {
-      .two-col {
-        grid-template-columns: minmax(0, 1fr);
-      }
+        .contact-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #3b82f6, #34d399);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
 
-      .hero {
-        padding-top: 3.5rem;
-      }
-    }
-  </style>
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Fade Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2em;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .logo-container img {
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="logo-container float">
+                <img src="https://i.imgur.com/YourLogoHere.png" alt="Agile Method Bootcamp Logo" id="logo">
+            </div>
+            
+            <p class="hero-subtitle">Transform Your Team with Modern Project Management</p>
+            
+            <p class="hero-description">
+                Agile project management is a modern approach to planning and delivering work that focuses on collaboration, adaptability, and continuous improvement. Unlike traditional methods, Agile breaks work into smaller cycles, called sprints, allowing teams to adjust quickly, deliver value faster, and maintain better communication.
+            </p>
 
-  <!-- ===== HERO ===== -->
-  <header class="hero">
-    <div class="hero-inner">
-      <h1 class="hero-title animate-item fade-in" data-delay="0">
-        Agile Method Bootcamp
-      </h1>
-      <p class="hero-subtitle animate-item fade-in" data-delay="0.15">
-        A modern, self-paced training platform designed to teach teams Agile project management using real-world
-        practices, simple explanations, and practical tools.
-      </p>
-      <div class="animate-item slide-up" data-delay="0.3">
-        <a href="#modules" class="btn-primary">
-          Start Learning
-        </a>
-      </div>
-      <div class="hero-meta animate-item fade-in" data-delay="0.45">
-        Built with Scrum. Designed for teams. Ready for your organization.
-      </div>
+            <p class="hero-description">
+                We are a modern, self-paced training platform designed to teach teams Agile project management using real-world practices, simple explanations, and practical tools.
+            </p>
+
+            <a href="#overview" class="cta-button">Start Learning Today</a>
+        </section>
+
+        <!-- Overview Section -->
+        <section class="overview" id="overview">
+            <h2 class="section-title">Bootcamp Overview</h2>
+            
+            <p class="overview-content">
+                The Agile Method Bootcamp is designed to guide employees, teams, and beginners through the essential concepts of Agile project management. This website delivers a structured learning journey that includes:
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">Clear Fundamentals</h3>
+                    <p class="feature-description">Clear explanations of Agile fundamentals that anyone can understand</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Framework Breakdowns</h3>
+                    <p class="feature-description">Step-by-step breakdowns of Scrum, Kanban, and Lean methodologies</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">Real Examples</h3>
+                    <p class="feature-description">Real examples and best practices from industry leaders</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Visual Learning</h3>
+                    <p class="feature-description">Visual diagrams and interactive learning modules</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3 class="feature-title">Practical Tools</h3>
+                    <p class="feature-description">Tools and techniques used by Agile teams worldwide</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Apply Immediately</h3>
+                    <p class="feature-description">Practical lessons you can apply immediately in the workplace</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <h2 class="section-title">Why This Bootcamp Works</h2>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-emoji">✅</span>
+                    <h3 class="benefit-title">Easy to Follow</h3>
+                    <p class="benefit-description">Simple, practical lessons designed for beginners with no prior Agile experience required</p>
+                </div>
+
+                <div class="benefit-card">
+                    <span class="benefit-emoji">📝</span>
+                    <h3 class="benefit-title">Self-Paced Learning</h3>
+                    <p class="benefit-description">Go through the modules anytime, anywhere, at your own pace</p>
+                </div>
+
+                <div class="benefit-card">
+                    <span class="benefit-emoji">🤝</span>
+                    <h3 class="benefit-title">Built for Teams</h3>
+                    <p class="benefit-description">Perfect for companies training large groups without breaking the budget</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact">
+            <h2 class="contact-title">Interested in Bringing Agile Training to Your Organization?</h2>
+            <a href="#contact" class="contact-button">Contact Us Today</a>
+        </section>
     </div>
-  </header>
 
-  <!-- ===== INTRO TO AGILE ===== -->
-  <section id="intro" class="animate-item fade-in" data-delay="0">
-    <h2>Introduction to Agile Project Management</h2>
-    <p>
-      Agile project management is a modern approach to planning and delivering work that focuses on
-      <strong>collaboration</strong>, <strong>adaptability</strong>, and <strong>continuous improvement</strong>.
-      Unlike traditional methods, Agile breaks work into smaller cycles—called <em>sprints</em>—allowing teams to
-      adjust quickly, deliver value faster, and maintain better communication.
-    </p>
-    <p>
-      This Bootcamp introduces the foundations of Agile, including what Agile is, why organizations use it, and how it
-      helps teams move faster while improving quality and transparency.
-    </p>
-  </section>
+    <script>
+        // Replace logo source with your actual logo URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const logo = document.getElementById('logo');
+            // Replace this URL with your actual logo from the image you provided
+            // For now, using a placeholder - you'll need to upload your logo to a hosting service
+            logo.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><rect fill="%23f0f0f0" width="800" height="400"/><text x="400" y="200" font-size="48" fill="%2334d399" text-anchor="middle" font-family="Arial">Agile Method Bootcamp</text><text x="400" y="250" font-size="24" fill="%233b82f6" text-anchor="middle" font-family="Arial">Upload Your Logo Here</text></svg>';
+        });
 
-  <!-- ===== BOOTCAMP OVERVIEW (TWO COLUMNS) ===== -->
-  <section id="overview" class="two-col">
-    <div class="animate-item slide-left" data-delay="0">
-      <h2>Bootcamp Overview</h2>
-      <p>
-        The Agile Method Bootcamp is designed to guide employees, teams, and beginners through the essential concepts of
-        Agile project management. The content on this platform is structured so learners can move at their own pace
-        while still following a clear path from fundamentals to more advanced practices.
-      </p>
-      <p>
-        Inside, you'll find explanations of Agile fundamentals, Scrum, Kanban, and Lean; practical tools and templates;
-        and examples that show how Agile works in real organizations. Whether you're training a single team or an entire
-        workforce, this Bootcamp provides a complete foundation for modern Agile delivery.
-      </p>
-    </div>
-
-    <div class="animate-item slide-right" data-delay="0.15">
-      <!-- You would replace this with your actual square logo image -->
-      <div class="logo-placeholder">
-        AMB
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== MODULES / NAVIGATION ===== -->
-  <section id="modules">
-    <h2 class="animate-item fade-in" data-delay="0">Explore the Training Modules</h2>
-    <p class="animate-item fade-in" data-delay="0.1">
-      Use the modules below to navigate through the Agile Method Bootcamp content.
-    </p>
-
-    <div class="card-grid">
-      <article class="card animate-item slide-up" data-delay="0.15">
-        <h3>Agile Fundamentals</h3>
-        <p>
-          Learn the core ideas behind Agile, including values, principles, and why teams around the world use Agile to
-          manage complex work.
-        </p>
-        <a href="#agile-fundamentals">Go to Page</a>
-      </article>
-
-      <article class="card animate-item slide-up" data-delay="0.25">
-        <h3>Scrum Framework</h3>
-        <p>
-          Dive into the Scrum roles, events, and artifacts. Understand how sprints, backlogs, and reviews help teams
-          deliver in short cycles.
-        </p>
-        <a href="#scrum-framework">Go to Page</a>
-      </article>
-
-      <article class="card animate-item slide-up" data-delay="0.35">
-        <h3>Kanban Method</h3>
-        <p>
-          Explore Kanban as a way to visualize work, limit work in progress, and improve flow through simple, powerful
-          practices.
-        </p>
-        <a href="#kanban-method">Go to Page</a>
-      </article>
-
-      <article class="card animate-item slide-up" data-delay="0.45">
-        <h3>Lean Principles</h3>
-        <p>
-          Learn how Lean thinking focuses on reducing waste, increasing value, and continuously improving processes
-          across teams.
-        </p>
-        <a href="#lean-principles">Go to Page</a>
-      </article>
-
-      <article class="card animate-item slide-up" data-delay="0.55">
-        <h3>Agile Tools &amp; Techniques</h3>
-        <p>
-          See common tools, boards, and techniques that Agile teams use to plan, track, and collaborate on their work.
-        </p>
-        <a href="#tools-techniques">Go to Page</a>
-      </article>
-
-      <article class="card animate-item slide-up" data-delay="0.65">
-        <h3>Case Studies &amp; Success Stories</h3>
-        <p>
-          Review real-world examples of organizations that adopted Agile and the impact it had on their teams and
-          outcomes.
-        </p>
-        <a href="#case-studies">Go to Page</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT CTA ===== -->
-  <section id="contact" class="cta animate-item fade-in" data-delay="0">
-    <h2>Interested in Bringing Agile Training to Your Organization?</h2>
-    <p>
-      This Bootcamp is designed to help companies train employees in Agile quickly and affordably. If you're interested
-      in using this content as part of your onboarding or professional development, reach out to our team for more
-      information.
-    </p>
-    <a href="contact.html" class="btn-primary">
-      Contact Us
-    </a>
-  </section>
-
-  <footer>
-    Agile Method Bootcamp © 2025 — Training Platform · Developed using Scrum practices
-  </footer>
-
-  <!-- ===== SCROLL ANIMATION SCRIPT ===== -->
-  <script>
-    // Use IntersectionObserver to add .animate-in when elements scroll into view
-    const animatedItems = document.querySelectorAll('.animate-item');
-
-    const observerOptions = {
-      threshold: 0.15
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const delay = parseFloat(el.getAttribute('data-delay') || '0');
-
-          setTimeout(() => {
-            el.classList.add('animate-in');
-          }, delay * 1000);
-
-          // Stop observing once animated
-          observer.unobserve(el);
-        }
-      });
-    }, observerOptions);
-
-    animatedItems.forEach(el => observer.observe(el));
-  </script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
