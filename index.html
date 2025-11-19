@@ -419,12 +419,11 @@
     </div>
 
     <script>
-        // Logo - Using your uploaded image file
+        // Logo - Using your uploaded image file with proper encoding
         document.addEventListener('DOMContentLoaded', function() {
             const logo = document.getElementById('logo');
-            // Replace with your actual GitHub Pages URL structure
-            // The filename with spaces will be automatically encoded by the browser
-            logo.src = 'ChatGPT Image Nov 18, 2025, 07_45_07 PM.png';
+            // URL encoded filename for spaces and special characters
+            logo.src = 'ChatGPT%20Image%20Nov%2018,%202025,%2007_45_07%20PM.png';
         });
 
         // Smooth scrolling for anchor links
