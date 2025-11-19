@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agile Method Bootcamp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* ====== BASIC PAGE STYLE (just to see it nicely) ====== */
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #1f2933;
+      line-height: 1.6;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.75rem 0;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #00c7c0, #00a5d9);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 167, 201, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 167, 201, 0.45);
+    }
+
+    /* ====== LAYOUT SECTIONS ====== */
+
+    /* Hero */
+    .hero {
+      padding: 5rem 1.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 700;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      max-width: 32rem;
+      color: #4b5563;
+    }
+
+    .hero-meta {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    /* Overview columns */
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .two-col img,
+    .logo-placeholder {
+      width: 100%;
+      max-width: 260px;
+      justify-self: center;
+    }
+
+    .logo-placeholder {
+      border-radius: 24px;
+      background: radial-gradient(circle at 0 0, #42e6c9, #00a5d9 60%, #027b9a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+
+    /* Cards grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #008dba;
+      text-decoration: none;
+    }
+
+    .card a::after {
+      content: " →";
+    }
+
+    /* CTA bottom */
+    .cta {
+      text-align: center;
+      background: white;
+      border-radius: 18px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.23);
+      max-width: 900px;
+    }
+
+    .cta p {
+      margin-bottom: 1.5rem;
+      color: #4b5563;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+      padding: 1.5rem;
+    }
+
+    /* ====== ANIMATION BASE CLASSES ====== */
+
+    .animate-item {
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 0.5s ease-out,
+        transform 0.5s ease-out;
+    }
+
+    .animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Specific variants */
+    .fade-in {
+      transform: none;
+    }
+
+    .slide-up {
+      transform: translateY(20px);
+    }
+
+    .slide-left {
+      transform: translateX(-24px);
+    }
+
+    .slide-right {
+      transform: translateX(24px);
+    }
+
+    /* When they animate in, override transforms */
+    .animate-in.fade-in,
+    .animate-in.slide-up,
+    .animate-in.slide-left,
+    .animate-in.slide-right {
+      transform: translate(0, 0);
+    }
+
+    /* Small responsive tweaks */
+    @media (max-width: 768px) {
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title animate-item fade-in" data-delay="0">
+        Agile Method Bootcamp
+      </h1>
+      <p class="hero-subtitle animate-item fade-in" data-delay="0.15">
+        A modern, self-paced training platform designed to teach teams Agile project management using real-world
+        practices, simple explanations, and practical tools.
+      </p>
+      <div class="animate-item slide-up" data-delay="0.3">
+        <a href="#modules" class="btn-primary">
+          Start Learning
+        </a>
+      </div>
+      <div class="hero-meta animate-item fade-in" data-delay="0.45">
+        Built with Scrum. Designed for teams. Ready for your organization.
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== INTRO TO AGILE ===== -->
+  <section id="intro" class="animate-item fade-in" data-delay="0">
+    <h2>Introduction to Agile Project Management</h2>
+    <p>
+      Agile project management is a modern approach to planning and delivering work that focuses on
+      <strong>collaboration</strong>, <strong>adaptability</strong>, and <strong>continuous improvement</strong>.
+      Unlike traditional methods, Agile breaks work into smaller cycles—called <em>sprints</em>—allowing teams to
+      adjust quickly, deliver value faster, and maintain better communication.
+    </p>
+    <p>
+      This Bootcamp introduces the foundations of Agile, including what Agile is, why organizations use it, and how it
+      helps teams move faster while improving quality and transparency.
+    </p>
+  </section>
+
+  <!-- ===== BOOTCAMP OVERVIEW (TWO COLUMNS) ===== -->
+  <section id="overview" class="two-col">
+    <div class="animate-item slide-left" data-delay="0">
+      <h2>Bootcamp Overview</h2>
+      <p>
+        The Agile Method Bootcamp is designed to guide employees, teams, and beginners through the essential concepts of
+        Agile project management. The content on this platform is structured so learners can move at their own pace
+        while still following a clear path from fundamentals to more advanced practices.
+      </p>
+      <p>
+        Inside, you'll find explanations of Agile fundamentals, Scrum, Kanban, and Lean; practical tools and templates;
+        and examples that show how Agile works in real organizations. Whether you're training a single team or an entire
+        workforce, this Bootcamp provides a complete foundation for modern Agile delivery.
+      </p>
+    </div>
+
+    <div class="animate-item slide-right" data-delay="0.15">
+      <!-- You would replace this with your actual square logo image -->
+      <div class="logo-placeholder">
+        AMB
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MODULES / NAVIGATION ===== -->
+  <section id="modules">
+    <h2 class="animate-item fade-in" data-delay="0">Explore the Training Modules</h2>
+    <p class="animate-item fade-in" data-delay="0.1">
+      Use the modules below to navigate through the Agile Method Bootcamp content.
+    </p>
+
+    <div class="card-grid">
+      <article class="card animate-item slide-up" data-delay="0.15">
+        <h3>Agile Fundamentals</h3>
+        <p>
+          Learn the core ideas behind Agile, including values, principles, and why teams around the world use Agile to
+          manage complex work.
+        </p>
+        <a href="#agile-fundamentals">Go to Page</a>
+      </article>
+
+      <article class="card animate-item slide-up" data-delay="0.25">
+        <h3>Scrum Framework</h3>
+        <p>
+          Dive into the Scrum roles, events, and artifacts. Understand how sprints, backlogs, and reviews help teams
+          deliver in short cycles.
+        </p>
+        <a href="#scrum-framework">Go to Page</a>
+      </article>
+
+      <article class="card animate-item slide-up" data-delay="0.35">
+        <h3>Kanban Method</h3>
+        <p>
+          Explore Kanban as a way to visualize work, limit work in progress, and improve flow through simple, powerful
+          practices.
+        </p>
+        <a href="#kanban-method">Go to Page</a>
+      </article>
+
+      <article class="card animate-item slide-up" data-delay="0.45">
+        <h3>Lean Principles</h3>
+        <p>
+          Learn how Lean thinking focuses on reducing waste, increasing value, and continuously improving processes
+          across teams.
+        </p>
+        <a href="#lean-principles">Go to Page</a>
+      </article>
+
+      <article class="card animate-item slide-up" data-delay="0.55">
+        <h3>Agile Tools &amp; Techniques</h3>
+        <p>
+          See common tools, boards, and techniques that Agile teams use to plan, track, and collaborate on their work.
+        </p>
+        <a href="#tools-techniques">Go to Page</a>
+      </article>
+
+      <article class="card animate-item slide-up" data-delay="0.65">
+        <h3>Case Studies &amp; Success Stories</h3>
+        <p>
+          Review real-world examples of organizations that adopted Agile and the impact it had on their teams and
+          outcomes.
+        </p>
+        <a href="#case-studies">Go to Page</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT CTA ===== -->
+  <section id="contact" class="cta animate-item fade-in" data-delay="0">
+    <h2>Interested in Bringing Agile Training to Your Organization?</h2>
+    <p>
+      This Bootcamp is designed to help companies train employees in Agile quickly and affordably. If you're interested
+      in using this content as part of your onboarding or professional development, reach out to our team for more
+      information.
+    </p>
+    <a href="contact.html" class="btn-primary">
+      Contact Us
+    </a>
+  </section>
+
+  <footer>
+    Agile Method Bootcamp © 2025 — Training Platform · Developed using Scrum practices
+  </footer>
+
+  <!-- ===== SCROLL ANIMATION SCRIPT ===== -->
+  <script>
+    // Use IntersectionObserver to add .animate-in when elements scroll into view
+    const animatedItems = document.querySelectorAll('.animate-item');
+
+    const observerOptions = {
+      threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseFloat(el.getAttribute('data-delay') || '0');
+
+          setTimeout(() => {
+            el.classList.add('animate-in');
+          }, delay * 1000);
+
+          // Stop observing once animated
+          observer.unobserve(el);
+        }
+      });
+    }, observerOptions);
+
+    animatedItems.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
