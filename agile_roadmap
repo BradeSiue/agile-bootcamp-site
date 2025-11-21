@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agile Learning Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a8a8a;
+      --primary-dark: #147373;
+      --primary-light: #22a7a7;
+      --accent: #0d5c5c;
+      --accent-hover: #094a4a;
+      --bg: #f5f9f9;
+      --bg-card: #ffffff;
+      --text: #2d3d3d;
+      --text-light: #5a7070;
+      --connector: #b8d4d4;
+      --shadow: 0 4px 20px rgba(26, 138, 138, 0.1);
+      --shadow-hover: 0 8px 30px rgba(26, 138, 138, 0.2);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .stop {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 32px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      width: 100%;
+      border: 2px solid transparent;
+    }
+
+    .stop:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
+    }
+
+    .stop:hover .stop-icon {
+      background: var(--primary-light);
+      transform: scale(1.1);
+    }
+
+    .stop:hover .stop-number {
+      background: var(--primary);
+      color: white;
+    }
+
+    .stop-icon {
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stop-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: white;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .stop-content {
+      flex: 1;
+    }
+
+    .stop-number {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: #d4ecec;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .stop-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+
+    .stop-description {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .stop.final {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border: none;
+    }
+
+    .stop.final .stop-icon {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .stop.final .stop-number {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .stop.final .stop-title {
+      color: white;
+    }
+
+    .stop.final .stop-description {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .stop.final:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26, 138, 138, 0.35);
+    }
+
+    .stop.final:hover .stop-icon {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Flowing S-curve layout for desktop */
+    @media (min-width: 900px) {
+      .roadmap-flow {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 40px 30px;
+        position: relative;
+      }
+
+      .roadmap-flow .stop:nth-child(1) { grid-column: 1; grid-row: 1; }
+      .roadmap-flow .stop:nth-child(2) { grid-column: 2; grid-row: 1; }
+      .roadmap-flow .stop:nth-child(3) { grid-column: 3; grid-row: 1; }
+      .roadmap-flow .stop:nth-child(4) { grid-column: 3; grid-row: 2; }
+      .roadmap-flow .stop:nth-child(5) { grid-column: 2; grid-row: 2; }
+      .roadmap-flow .stop:nth-child(6) { grid-column: 1; grid-row: 2; }
+
+      .roadmap-flow .stop {
+        max-width: none;
+      }
+    }
+
+    /* Tablet */
+    @media (max-width: 899px) and (min-width: 600px) {
+      .roadmap-flow {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+
+      .roadmap-flow .stop {
+        max-width: none;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 599px) {
+      body {
+        padding: 24px 16px;
+      }
+
+      .header {
+        margin-bottom: 40px;
+      }
+
+      .roadmap-flow {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .stop {
+        padding: 20px;
+        gap: 16px;
+      }
+
+      .stop-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+      }
+
+      .stop-icon svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .stop-title {
+        font-size: 1.1rem;
+      }
+
+      .stop-description {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Subtle background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(26, 138, 138, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(26, 138, 138, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Entry animations */
+    .stop {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .stop:nth-child(1) { animation-delay: 0.1s; }
+    .stop:nth-child(2) { animation-delay: 0.2s; }
+    .stop:nth-child(3) { animation-delay: 0.3s; }
+    .stop:nth-child(4) { animation-delay: 0.4s; }
+    .stop:nth-child(5) { animation-delay: 0.5s; }
+    .stop:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cycle arrow decoration between cards */
+    .roadmap-flow::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border: 3px dashed var(--connector);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Your Agile Journey</h1>
+      <p>Navigate through the fundamentals of Agile and transform your team's approach to project management</p>
+    </header>
+
+    <div class="roadmap-flow">
+      <!-- Stop 1: What is Agile? -->
+      <a href="#agile-fundamentals" class="stop" data-link="agile-fundamentals">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Step 1</span>
+          <h3 class="stop-title">What is Agile?</h3>
+          <p class="stop-description">Discover the principles behind modern project management</p>
+        </div>
+      </a>
+
+      <!-- Stop 2: Scrum Framework -->
+      <a href="#scrum-framework" class="stop" data-link="scrum-framework">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 12a9 9 0 1 1-9-9"/>
+            <path d="M21 3v6h-6"/>
+            <path d="M21 9l-9 9"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Step 2</span>
+          <h3 class="stop-title">The Scrum Framework</h3>
+          <p class="stop-description">Learn the roles, events, and artifacts that drive Agile teams</p>
+        </div>
+      </a>
+
+      <!-- Stop 3: Other Methods -->
+      <a href="#other-methods" class="stop" data-link="kanban-lean">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="5" height="18" rx="1"/>
+            <rect x="10" y="8" width="5" height="13" rx="1"/>
+            <rect x="17" y="5" width="5" height="16" rx="1"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Step 3</span>
+          <h3 class="stop-title">Explore Other Methods</h3>
+          <p class="stop-description">Kanban, Lean, and hybrid approaches for every workflow</p>
+        </div>
+      </a>
+
+      <!-- Stop 4: Tools & Techniques -->
+      <a href="#tools-techniques" class="stop" data-link="tools-techniques">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Step 4</span>
+          <h3 class="stop-title">Tools & Techniques</h3>
+          <p class="stop-description">User stories, estimation, and metrics that work</p>
+        </div>
+      </a>
+
+      <!-- Stop 5: Real Results -->
+      <a href="#case-studies" class="stop" data-link="case-studies">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Step 5</span>
+          <h3 class="stop-title">Real Results</h3>
+          <p class="stop-description">See how organizations transformed with Agile</p>
+        </div>
+      </a>
+
+      <!-- Stop 6: Train Your Team (CTA) -->
+      <a href="#contact-us" class="stop final" data-link="contact-us">
+        <div class="stop-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="stop-content">
+          <span class="stop-number">Get Started</span>
+          <h3 class="stop-title">Train Your Team</h3>
+          <p class="stop-description">Ready to bring Agile to your organization? Let's talk.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Click handling - replace href values with your actual Google Sites page URLs
+    document.querySelectorAll('.stop').forEach(stop => {
+      stop.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          // For Google Sites embedding, replace the href values above
+          // with your actual page URLs like:
+          // href="https://sites.google.com/view/yoursite/agile-fundamentals"
+        }
+      });
+    });
+  </script>
+</body>
+</html>
