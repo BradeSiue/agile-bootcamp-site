@@ -374,15 +374,6 @@
   </style>
 </head>
 <body>
-<script>
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('a');
-  if (link && link.href) {
-    e.preventDefault();
-    window.top.location.href = link.href;
-  }
-});
-</script>
 
   <div class="chat-container">
     <!-- Chat Window (appears above button) -->
@@ -658,6 +649,21 @@ Try "How do I sign up?" or "What is Scrum?"`
     function handleKeyPress(event) {
       if (event.key === 'Enter') sendMessage();
     }
+
+    // Handle link clicks to work in Google Sites iframe
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a');
+      if (link && link.href) {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          window.top.location.href = link.href;
+        } catch(err) {
+          window.open(link.href, '_blank');
+        }
+        return false;
+      }
+    });
   </script>
 </body>
 </html>
