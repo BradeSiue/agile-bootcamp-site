@@ -374,6 +374,15 @@
   </style>
 </head>
 <body>
+<script>
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a');
+  if (link && link.href) {
+    e.preventDefault();
+    window.open(link.href, '_blank');
+  }
+});
+</script>
 
   <div class="chat-container">
     <!-- Chat Window (appears above button) -->
