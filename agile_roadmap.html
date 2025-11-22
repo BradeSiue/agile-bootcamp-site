@@ -307,15 +307,6 @@
   </style>
 </head>
 <body>
-<script>
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('a');
-  if (link && link.href) {
-    e.preventDefault();
-    window.top.location.href = link.href;
-  }
-});
-</script>
   <div class="container">
     <header class="header">
       <h1>Your Agile Journey</h1>
@@ -419,14 +410,12 @@ document.addEventListener('click', function(e) {
   </div>
 
   <script>
-    // Click handling - replace href values with your actual Google Sites page URLs
-    document.querySelectorAll('.stop').forEach(stop => {
+    document.querySelectorAll('.stop').forEach(function(stop) {
       stop.addEventListener('click', function(e) {
+        e.preventDefault();
         const href = this.getAttribute('href');
-        if (href.startsWith('#')) {
-          // For Google Sites embedding, replace the href values above
-          // with your actual page URLs like:
-          // href="https://sites.google.com/view/yoursite/agile-fundamentals"
+        if (href && !href.startsWith('#')) {
+          window.top.location.href = href;
         }
       });
     });
