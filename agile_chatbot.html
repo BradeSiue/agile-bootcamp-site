@@ -379,7 +379,7 @@ document.addEventListener('click', function(e) {
   const link = e.target.closest('a');
   if (link && link.href) {
     e.preventDefault();
-    window.open(link.href, '_blank');
+    window.top.location.href = link.href;
   }
 });
 </script>
