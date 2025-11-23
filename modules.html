@@ -31,11 +31,18 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   border-left: 5px solid #1a8a8a;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .module-card:hover {
   transform: translateX(8px);
   box-shadow: 0 8px 25px rgba(26, 138, 138, 0.2);
+}
+
+.module-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .module-header {
@@ -124,136 +131,148 @@ body {
   <div class="modules-grid">
     
     <!-- Module 1: Agile Fundamentals -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 1</div>
-        <h3 class="module-title">Agile Fundamentals</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Discover the foundations of Agile methodology, understand the Agile Manifesto, and learn why organizations worldwide are adopting this transformative approach.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">Agile Manifesto & Values</div>
-            <div class="topic-item">Traditional vs Agile</div>
-            <div class="topic-item">Core Principles</div>
-            <div class="topic-item">Agile Mindset</div>
-            <div class="topic-item">Team Dynamics</div>
-            <div class="topic-item">Real-World Benefits</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/agile-fundamentals" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 1</div>
+          <h3 class="module-title">Agile Fundamentals</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">A flexible, iterative approach to delivering value that emphasizes collaboration, customer feedback, and continuous improvement.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">History & Principles of Agile</div>
+              <div class="topic-item">The Agile Manifesto</div>
+              <div class="topic-item">12 Agile Principles</div>
+              <div class="topic-item">Deliver and Adapt</div>
+              <div class="topic-item">Empowerment & Collaboration</div>
+              <div class="topic-item">Key Agile Methodologies</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Module 2: Scrum Framework -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 2</div>
-        <h3 class="module-title">Scrum Framework</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Master the most popular Agile framework. Learn Scrum roles, ceremonies, and artifacts through interactive lessons and real-world examples.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">Scrum Roles</div>
-            <div class="topic-item">Sprint Planning</div>
-            <div class="topic-item">Daily Standups</div>
-            <div class="topic-item">Sprint Review</div>
-            <div class="topic-item">Retrospectives</div>
-            <div class="topic-item">Product Backlog</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/scrum-framework" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 2</div>
+          <h3 class="module-title">Scrum Framework</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">Helps teams deliver value quickly and adapt to change through clear roles, time-boxed events, and simple artifacts that make work visible.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">Scrum Roles</div>
+              <div class="topic-item">Scrum Events</div>
+              <div class="topic-item">Sprint Planning</div>
+              <div class="topic-item">Daily Scrum</div>
+              <div class="topic-item">Sprint Review & Retrospective</div>
+              <div class="topic-item">Scrum Pillars</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Module 3: Kanban Method -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 3</div>
-        <h3 class="module-title">Kanban Method</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Learn to visualize workflow, limit work in progress, and continuously improve using Kanban boards and metrics.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">Kanban Principles</div>
-            <div class="topic-item">Board Setup</div>
-            <div class="topic-item">WIP Limits</div>
-            <div class="topic-item">Flow Metrics</div>
-            <div class="topic-item">Lead Time</div>
-            <div class="topic-item">Continuous Flow</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/kanban-method" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 3</div>
+          <h3 class="module-title">Kanban Method</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">Learn to visualize workflow, limit work in progress, and continuously improve using Kanban boards and metrics.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">Kanban Principles</div>
+              <div class="topic-item">Board Setup</div>
+              <div class="topic-item">WIP Limits</div>
+              <div class="topic-item">Flow Metrics</div>
+              <div class="topic-item">Lead Time</div>
+              <div class="topic-item">Continuous Flow</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Module 4: Lean Principles -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 4</div>
-        <h3 class="module-title">Lean Principles</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Eliminate waste, optimize flow, and maximize customer value using Lean methodology integrated with Agile practices.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">Lean Thinking</div>
-            <div class="topic-item">Value Stream Mapping</div>
-            <div class="topic-item">Waste Elimination</div>
-            <div class="topic-item">Just-in-Time</div>
-            <div class="topic-item">Continuous Improvement</div>
-            <div class="topic-item">Pull Systems</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/lean-principles" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 4</div>
+          <h3 class="module-title">Lean Principles</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">Eliminate waste, optimize flow, and maximize customer value using Lean methodology integrated with Agile practices.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">Lean Thinking</div>
+              <div class="topic-item">Value Stream Mapping</div>
+              <div class="topic-item">Waste Elimination</div>
+              <div class="topic-item">Just-in-Time</div>
+              <div class="topic-item">Continuous Improvement</div>
+              <div class="topic-item">Pull Systems</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Module 5: Agile Tools and Techniques -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 5</div>
-        <h3 class="module-title">Agile Tools and Techniques</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Master the practical tools and techniques used by Agile teams, from user stories to estimation and tracking.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">User Story Writing</div>
-            <div class="topic-item">Story Mapping</div>
-            <div class="topic-item">Estimation Techniques</div>
-            <div class="topic-item">Burndown Charts</div>
-            <div class="topic-item">Velocity Tracking</div>
-            <div class="topic-item">Agile Tools</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/agile-tools-and-techniques" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 5</div>
+          <h3 class="module-title">Agile Tools and Techniques</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">Master the practical tools and techniques used by Agile teams, from user stories to estimation and tracking.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">User Story Writing</div>
+              <div class="topic-item">Story Mapping</div>
+              <div class="topic-item">Estimation Techniques</div>
+              <div class="topic-item">Burndown Charts</div>
+              <div class="topic-item">Velocity Tracking</div>
+              <div class="topic-item">Agile Tools</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- Module 6: Agile Project Management -->
-    <div class="module-card">
-      <div class="module-header">
-        <div class="module-number">MODULE 6</div>
-        <h3 class="module-title">Agile Project Management</h3>
-      </div>
-      <div class="module-content">
-        <p class="module-description">Learn to manage Agile projects effectively, coordinate multiple teams, and implement best practices at scale.</p>
-        <div class="module-topics">
-          <h4>What You'll Learn:</h4>
-          <div class="topics-list">
-            <div class="topic-item">Release Planning</div>
-            <div class="topic-item">Multi-team Coordination</div>
-            <div class="topic-item">Stakeholder Management</div>
-            <div class="topic-item">Risk Management</div>
-            <div class="topic-item">Scaling Agile</div>
-            <div class="topic-item">Success Metrics</div>
+    <a href="https://sites.google.com/view/agilemethodbootcamp/agile-project-management" class="module-link">
+      <div class="module-card">
+        <div class="module-header">
+          <div class="module-number">MODULE 6</div>
+          <h3 class="module-title">Agile Project Management</h3>
+        </div>
+        <div class="module-content">
+          <p class="module-description">Learn to manage Agile projects effectively, coordinate multiple teams, and implement best practices at scale.</p>
+          <div class="module-topics">
+            <h4>What You'll Learn:</h4>
+            <div class="topics-list">
+              <div class="topic-item">Release Planning</div>
+              <div class="topic-item">Multi-team Coordination</div>
+              <div class="topic-item">Stakeholder Management</div>
+              <div class="topic-item">Risk Management</div>
+              <div class="topic-item">Scaling Agile</div>
+              <div class="topic-item">Success Metrics</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
 
   </div>
 </div>
