@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.outcomes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 40px;
+}
+
+.outcomes-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.outcomes-header h2 {
+  font-size: 2.2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.outcomes-header p {
+  font-size: 1.1rem;
+  color: #5a7070;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.outcome-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.outcome-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.15);
+}
+
+.outcome-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26, 138, 138, 0.2);
+}
+
+.outcome-content {
+  flex: 1;
+}
+
+.outcome-content h3 {
+  font-size: 1.2rem;
+  color: #0f6868;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.outcome-content p {
+  font-size: 1rem;
+  color: #5a7070;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .outcomes-container {
+    padding: 40px 20px;
+  }
+  
+  .outcomes-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .outcomes-header p {
+    font-size: 1rem;
+  }
+  
+  .outcomes-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .outcome-card {
+    padding: 25px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .outcome-icon {
+    width: 70px;
+    height: 70px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="outcomes-container">
+  <div class="outcomes-header">
+    <h2>What You'll Achieve</h2>
+    <p>By completing this bootcamp, you and your team will gain practical skills that deliver immediate results in your workplace.</p>
+  </div>
+  
+  <div class="outcomes-grid">
+    <div class="outcome-card">
+      <div class="outcome-icon">🎓</div>
+      <div class="outcome-content">
+        <h3>Agile Mastery</h3>
+        <p>Gain comprehensive understanding of Agile principles and frameworks used by industry leaders.</p>
+      </div>
+    </div>
+    
+    <div class="outcome-card">
+      <div class="outcome-icon">⚡</div>
+      <div class="outcome-content">
+        <h3>Faster Delivery</h3>
+        <p>Learn to deliver value to customers quickly through iterative development and continuous improvement.</p>
+      </div>
+    </div>
+    
+    <div class="outcome-card">
+      <div class="outcome-icon">🤝</div>
+      <div class="outcome-content">
+        <h3>Better Collaboration</h3>
+        <p>Build high-performing teams with improved communication and cross-functional collaboration.</p>
+      </div>
+    </div>
+    
+    <div class="outcome-card">
+      <div class="outcome-icon">📊</div>
+      <div class="outcome-content">
+        <h3>Data-Driven Decisions</h3>
+        <p>Use Agile metrics and reporting to make informed decisions and track team performance.</p>
+      </div>
+    </div>
+    
+    <div class="outcome-card">
+      <div class="outcome-icon">🔄</div>
+      <div class="outcome-content">
+        <h3>Adaptability</h3>
+        <p>Respond quickly to changing requirements and market conditions with flexible planning.</p>
+      </div>
+    </div>
+    
+    <div class="outcome-card">
+      <div class="outcome-icon">🏆</div>
+      <div class="outcome-content">
+        <h3>Career Growth</h3>
+        <p>Enhance your professional skills and advance your career with in-demand Agile expertise.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
