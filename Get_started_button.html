@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTA Button</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100px;
+      padding: 20px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 18px 48px;
+      background: linear-gradient(135deg, #22a7a7 0%, #1a8a8a 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(26, 138, 138, 0.4);
+      background: linear-gradient(135deg, #27bdbd 0%, #1f9d9d 100%);
+    }
+
+    .cta-button:active {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 15px rgba(26, 138, 138, 0.3);
+    }
+
+    @media (max-width: 600px) {
+      .cta-button {
+        padding: 16px 36px;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="https://sites.google.com/view/agilemethodbootcamp/contact-us" class="cta-button">
+    Get Started Today →
+  </a>
+</body>
+</html>
