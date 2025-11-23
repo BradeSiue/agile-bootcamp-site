@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: rgb(241, 243, 244);
+  margin: 0;
+  padding: 0;
+}
+
+.footer {
+  width: 100%;
+  background: #1a8a8a;
+  color: white;
+  padding: 50px 40px 30px;
+  position: relative;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-section h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2dd4bf;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section li {
+  margin-bottom: 12px;
+}
+
+.footer-section a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  display: inline-block;
+}
+
+.footer-section a:hover {
+  color: #2dd4bf;
+  padding-left: 5px;
+}
+
+.footer-about {
+  max-width: 300px;
+}
+
+.footer-about p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.footer-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2dd4bf;
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 25px;
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background: #1DA1F2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  opacity: 0.85;
+}
+
+.social-linkedin {
+  background: #0077B5;
+}
+
+.social-twitter {
+  background: #000000;
+}
+
+.social-facebook {
+  background: #1877F2;
+}
+
+.social-instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 20px 20px;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-about {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section footer-about">
+      <div class="footer-logo">Agile Method Bootcamp</div>
+      <p>Empowering teams with practical Agile skills through comprehensive, self-paced training designed for modern organizations.</p>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/school/siue/" target="_blank" class="social-icon social-linkedin" aria-label="LinkedIn">in</a>
+        <a href="https://twitter.com/siue" target="_blank" class="social-icon social-twitter" aria-label="Twitter">𝕏</a>
+        <a href="https://www.facebook.com/siuedwardsville" target="_blank" class="social-icon social-facebook" aria-label="Facebook">f</a>
+        <a href="https://www.instagram.com/siuedwardsville/" target="_blank" class="social-icon social-instagram" aria-label="Instagram">📷</a>
+      </div>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/home">Home</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/about-us">About Us</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/course-overview">Course Overview</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/interactive-learning-modules">Interactive Modules</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/contact-us">Contact Us</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/interactive-learning-modules">Learning Roadmap</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/contact-us">FAQ</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/home">Blog</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/home">Community Forum</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/contact-us">Help Center</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="https://www.siue.edu/employment/index.shtml">Careers</a></li>
+        <li><a href="https://www.siue.edu/web-privacy-notice/">Privacy Policy</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/home">Terms of Service</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/home">Accessibility</a></li>
+        <li><a href="https://sites.google.com/view/agilemethodbootcamp/contact-us">Partnerships</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>&copy; 2024 Agile Method Bootcamp. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
