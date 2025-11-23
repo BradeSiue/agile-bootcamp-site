@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.course-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.stat-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.15);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  color: #1a8a8a;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #5a7070;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .course-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-number {
+    font-size: 1.6rem;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="stats-container">
+  <div class="course-stats">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-number">6</div>
+      <div class="stat-label">Core Modules</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Self-Paced</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">💼</div>
+      <div class="stat-number">Unlimited</div>
+      <div class="stat-label">Lifetime Access</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-number">Beginner</div>
+      <div class="stat-label">Friendly</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
