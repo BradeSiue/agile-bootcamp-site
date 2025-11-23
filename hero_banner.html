@@ -27,143 +27,92 @@
       width: 100vw;
       margin-left: calc(-50vw + 50%);
       margin-right: calc(-50vw + 50%);
-      height: 420px;
-      background: linear-gradient(135deg, #0d5252 0%, #147373 30%, #1a8a8a 60%, #22a7a7 100%);
+      min-height: 450px;
+      background: linear-gradient(135deg, #0f6565 0%, #1a8a8a 50%, #24b0b0 100%);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 60px 40px;
     }
 
-    /* Geometric Background Pattern */
-    .geometric-bg {
+    /* Subtle animated circles */
+    .bg-circle {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      animation: floatCircle 20s ease-in-out infinite;
+    }
+
+    .circle-1 {
+      width: 400px;
+      height: 400px;
+      top: -150px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .circle-2 {
+      width: 300px;
+      height: 300px;
+      bottom: -100px;
+      left: -80px;
+      animation-delay: 2s;
+    }
+
+    .circle-3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 10%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatCircle {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-20px, -20px) scale(1.05); }
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      opacity: 0.08;
-    }
-
-    .geo-shape {
-      position: absolute;
-      border: 2px solid white;
-    }
-
-    .geo-circle-1 {
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      top: -120px;
-      right: 8%;
-      animation: floatSlow 28s ease-in-out infinite;
-    }
-
-    .geo-circle-2 {
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      bottom: -80px;
-      left: 3%;
-      animation: floatSlow 35s ease-in-out infinite reverse;
-    }
-
-    .geo-square {
-      width: 180px;
-      height: 180px;
-      top: 18%;
-      left: 12%;
-      transform: rotate(45deg);
-      animation: rotate 45s linear infinite;
-    }
-
-    /* Subtle Grid Pattern */
-    .grid-pattern {
-      position: absolute;
-      width: 100%;
-      height: 100%;
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      opacity: 0.4;
+        repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px),
+        repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px);
     }
 
-    /* Content Container */
+    /* Content */
     .hero-content {
       position: relative;
       z-index: 10;
       text-align: center;
-      max-width: 1200px;
-      padding: 40px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      max-width: 900px;
+      animation: fadeIn 1s ease;
     }
 
-    /* Logo Image */
-    .logo-wrapper {
-      margin-bottom: 28px;
-      animation: fadeInDown 0.9s ease both;
+    .logo-container {
+      margin-bottom: 32px;
     }
 
     .logo-image {
-      height: 140px;
-      width: auto;
-      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
+      max-width: 800px;
+      width: 90%;
+      height: auto;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+      animation: slideUp 1s ease;
     }
 
-    /* Tagline */
-    .hero-tagline {
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: rgba(255, 255, 255, 0.95);
-      font-weight: 500;
+    .tagline {
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: white;
+      font-weight: 600;
       letter-spacing: 0.5px;
-      animation: fadeInUp 0.9s ease 0.2s both;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Accent Line */
-    .accent-line {
-      width: 80px;
-      height: 4px;
-      background: rgba(45, 212, 191, 0.8);
-      margin: 20px auto 0;
-      border-radius: 2px;
-      animation: fadeIn 0.9s ease 0.4s both;
-    }
-
-    /* Animations */
-    @keyframes floatSlow {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-25px, -35px); }
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(45deg); }
-      to { transform: rotate(405deg); }
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-50px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: slideUp 1s ease 0.2s both;
     }
 
     @keyframes fadeIn {
@@ -171,58 +120,65 @@
       to { opacity: 1; }
     }
 
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .hero-container {
-        height: 350px;
-      }
-
-      .hero-content {
-        padding: 30px 20px;
+        min-height: 350px;
+        padding: 50px 30px;
       }
 
       .logo-image {
-        height: 110px;
+        width: 95%;
+        max-width: 600px;
       }
 
-      .geo-circle-1, .geo-square {
+      .circle-1, .circle-3 {
         display: none;
       }
     }
 
     @media (max-width: 480px) {
       .hero-container {
-        height: 300px;
+        min-height: 300px;
+        padding: 40px 20px;
       }
 
       .logo-image {
-        height: 90px;
+        width: 95%;
+        max-width: 350px;
       }
     }
   </style>
 </head>
 <body>
   <div class="hero-container">
-    <!-- Geometric Background -->
-    <div class="geometric-bg">
-      <div class="geo-shape geo-circle-1"></div>
-      <div class="geo-shape geo-circle-2"></div>
-      <div class="geo-shape geo-square"></div>
-    </div>
-
-    <!-- Grid Pattern -->
-    <div class="grid-pattern"></div>
+    <!-- Animated background circles -->
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+    <div class="bg-circle circle-3"></div>
+    
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
 
     <!-- Hero Content -->
     <div class="hero-content">
-      <div class="logo-wrapper">
-        <!-- Replace this URL with your uploaded logo.png on GitHub -->
+      <div class="logo-container">
+        <!-- Replace with your GitHub logo URL -->
         <img src="https://bradesiue.github.io/agile-bootcamp-site/logo.png" alt="Agile Method Bootcamp" class="logo-image">
       </div>
 
-      <p class="hero-tagline">Learn, Apply, Transform Your Team</p>
-      
-      <div class="accent-line"></div>
+      <p class="tagline">Learn, Apply, Transform Your Team</p>
     </div>
   </div>
 </body>
