@@ -6,7 +6,7 @@
   <title>Agile Method Bootcamp Hero</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -18,244 +18,136 @@
       font-family: 'DM Sans', sans-serif;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
+      background: #f5f5f5;
     }
 
     .hero-container {
       position: relative;
       width: 100vw;
-      min-height: 500px;
-      height: auto;
-      background: linear-gradient(135deg, #f0fafa 0%, #ffffff 50%, #f5f9f9 100%);
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+      height: 420px;
+      background: linear-gradient(135deg, #0d5252 0%, #147373 30%, #1a8a8a 60%, #22a7a7 100%);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px;
     }
 
-    /* Animated Background Shapes */
-    .bg-shapes {
+    /* Geometric Background Pattern */
+    .geometric-bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      opacity: 0.08;
     }
 
-    .shape {
+    .geo-shape {
       position: absolute;
-      opacity: 0.15;
+      border: 2px solid white;
     }
 
-    .circle {
+    .geo-circle-1 {
+      width: 350px;
+      height: 350px;
       border-radius: 50%;
-      border: 4px solid #1a8a8a;
+      top: -120px;
+      right: 8%;
+      animation: floatSlow 28s ease-in-out infinite;
     }
 
-    .circle-1 {
-      width: 500px;
-      height: 500px;
-      top: -150px;
-      right: -150px;
-      animation: float 20s ease-in-out infinite;
-    }
-
-    .circle-2 {
-      width: 400px;
-      height: 400px;
-      bottom: -100px;
-      left: -100px;
-      animation: float 25s ease-in-out infinite reverse;
-    }
-
-    .circle-3 {
+    .geo-circle-2 {
       width: 250px;
       height: 250px;
-      top: 40%;
-      left: 5%;
-      animation: pulse 15s ease-in-out infinite;
+      border-radius: 50%;
+      bottom: -80px;
+      left: 3%;
+      animation: floatSlow 35s ease-in-out infinite reverse;
     }
 
-    /* Agile Cycle Icons */
-    .agile-cycles {
+    .geo-square {
+      width: 180px;
+      height: 180px;
+      top: 18%;
+      left: 12%;
+      transform: rotate(45deg);
+      animation: rotate 45s linear infinite;
+    }
+
+    /* Subtle Grid Pattern */
+    .grid-pattern {
       position: absolute;
       width: 100%;
       height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.4;
     }
 
-    .cycle-icon {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      opacity: 0.12;
-    }
-
-    .cycle-1 {
-      top: 10%;
-      left: 12%;
-      animation: rotate 30s linear infinite;
-    }
-
-    .cycle-2 {
-      top: 65%;
-      right: 15%;
-      animation: rotate 25s linear infinite reverse;
-    }
-
-    .cycle-3 {
-      top: 25%;
-      right: 8%;
-      animation: rotate 35s linear infinite;
-    }
-
-    /* Content */
+    /* Content Container */
     .hero-content {
       position: relative;
       z-index: 10;
       text-align: center;
-      max-width: 1000px;
-      padding: 40px 20px;
+      max-width: 1200px;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .logo-container {
-      margin-bottom: 30px;
-      animation: fadeInDown 1s ease;
+    /* Logo Image */
+    .logo-wrapper {
+      margin-bottom: 28px;
+      animation: fadeInDown 0.9s ease both;
     }
 
     .logo-image {
-      animation: fadeInScale 1.2s ease both;
+      height: 140px;
+      width: auto;
+      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3));
     }
 
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .hero-title {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
-      color: white;
-      margin-bottom: 16px;
-      line-height: 1.1;
-      animation: fadeInUp 1s ease 0.2s both;
-      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    .hero-subtitle {
+    /* Tagline */
+    .hero-tagline {
       font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: #5a7070;
-      font-weight: 600;
-      animation: fadeInUp 1s ease 0.4s both;
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      animation: fadeInUp 0.9s ease 0.2s both;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Geometric Pattern Overlay */
-    .pattern-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(26, 138, 138, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(26, 138, 138, 0.05) 0%, transparent 50%),
-        repeating-linear-gradient(45deg, transparent, transparent 50px, rgba(26, 138, 138, 0.03) 50px, rgba(26, 138, 138, 0.03) 100px);
-      pointer-events: none;
-    }
-
-    /* Add some accent shapes */
-    .accent-shape {
-      position: absolute;
-      background: linear-gradient(135deg, #22a7a7, #1a8a8a);
-      opacity: 0.08;
-      border-radius: 20px;
-    }
-
-    .accent-1 {
-      width: 200px;
-      height: 200px;
-      top: 5%;
-      right: 25%;
-      transform: rotate(25deg);
-      animation: float 18s ease-in-out infinite;
-    }
-
-    .accent-2 {
-      width: 150px;
-      height: 150px;
-      bottom: 10%;
-      left: 30%;
-      transform: rotate(-15deg);
-      animation: float 22s ease-in-out infinite reverse;
-    }
-
-    /* Particles */
-    .particle {
-      position: absolute;
-      background: #1a8a8a;
-      border-radius: 50%;
-      opacity: 0.25;
-      animation: particleFloat linear infinite;
-    }
-
-    .particle-1 {
-      width: 6px;
-      height: 6px;
-      top: 20%;
-      left: 30%;
-      animation-duration: 15s;
-    }
-
-    .particle-2 {
-      width: 8px;
-      height: 8px;
-      top: 60%;
-      left: 70%;
-      animation-duration: 20s;
-    }
-
-    .particle-3 {
-      width: 5px;
-      height: 5px;
-      top: 40%;
-      left: 50%;
-      animation-duration: 18s;
-    }
-
-    .particle-4 {
-      width: 7px;
-      height: 7px;
-      top: 80%;
-      left: 20%;
-      animation-duration: 22s;
+    /* Accent Line */
+    .accent-line {
+      width: 80px;
+      height: 4px;
+      background: rgba(45, 212, 191, 0.8);
+      margin: 20px auto 0;
+      border-radius: 2px;
+      animation: fadeIn 0.9s ease 0.4s both;
     }
 
     /* Animations */
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      50% { transform: translateY(-30px) translateX(20px); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.1; }
-      50% { transform: scale(1.1); opacity: 0.15; }
+    @keyframes floatSlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-25px, -35px); }
     }
 
     @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from { transform: rotate(45deg); }
+      to { transform: rotate(405deg); }
     }
 
     @keyframes fadeInDown {
       from {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateY(-50px);
       }
       to {
         opacity: 1;
@@ -266,7 +158,7 @@
     @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(40px);
       }
       to {
         opacity: 1;
@@ -274,86 +166,63 @@
       }
     }
 
-    @keyframes particleFloat {
-      0% { transform: translateY(0) translateX(0); opacity: 0; }
-      10% { opacity: 0.3; }
-      90% { opacity: 0.3; }
-      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
       .hero-container {
-        min-height: 400px;
-        padding: 50px 20px;
+        height: 350px;
       }
 
-      .circle-1, .circle-2, .circle-3 {
-        opacity: 0.1;
+      .hero-content {
+        padding: 30px 20px;
       }
 
       .logo-image {
-        max-width: 90% !important;
+        height: 110px;
       }
 
-      .accent-1, .accent-2 {
+      .geo-circle-1, .geo-square {
         display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-container {
+        height: 300px;
+      }
+
+      .logo-image {
+        height: 90px;
       }
     }
   </style>
 </head>
 <body>
   <div class="hero-container">
-    <!-- Background Shapes -->
-    <div class="bg-shapes">
-      <div class="shape circle circle-1"></div>
-      <div class="shape circle circle-2"></div>
-      <div class="shape circle circle-3"></div>
-      
-      <div class="accent-shape accent-1"></div>
-      <div class="accent-shape accent-2"></div>
-      
-      <div class="particle particle-1"></div>
-      <div class="particle particle-2"></div>
-      <div class="particle particle-3"></div>
-      <div class="particle particle-4"></div>
+    <!-- Geometric Background -->
+    <div class="geometric-bg">
+      <div class="geo-shape geo-circle-1"></div>
+      <div class="geo-shape geo-circle-2"></div>
+      <div class="geo-shape geo-square"></div>
     </div>
 
-    <!-- Agile Cycle Icons -->
-    <div class="agile-cycles">
-      <svg class="cycle-icon cycle-1" viewBox="0 0 100 100" fill="none" stroke="#1a8a8a" stroke-width="3">
-        <circle cx="50" cy="50" r="30"/>
-        <path d="M 50 20 L 50 35 M 50 65 L 50 80" stroke-linecap="round"/>
-        <path d="M 35 35 L 45 45 M 55 55 L 65 65" stroke-linecap="round"/>
-      </svg>
-      
-      <svg class="cycle-icon cycle-2" viewBox="0 0 100 100" fill="none" stroke="#1a8a8a" stroke-width="3">
-        <circle cx="50" cy="50" r="30"/>
-        <path d="M 20 50 L 35 50 M 65 50 L 80 50" stroke-linecap="round"/>
-        <path d="M 35 65 L 45 55 M 55 45 L 65 35" stroke-linecap="round"/>
-      </svg>
-      
-      <svg class="cycle-icon cycle-3" viewBox="0 0 100 100" fill="none" stroke="#1a8a8a" stroke-width="3">
-        <circle cx="50" cy="50" r="30"/>
-        <path d="M 50 80 L 50 65 M 50 35 L 50 20" stroke-linecap="round"/>
-        <path d="M 65 65 L 55 55 M 45 45 L 35 35" stroke-linecap="round"/>
-      </svg>
-    </div>
-
-    <!-- Pattern Overlay -->
-    <div class="pattern-overlay"></div>
+    <!-- Grid Pattern -->
+    <div class="grid-pattern"></div>
 
     <!-- Hero Content -->
     <div class="hero-content">
-      <div class="logo-container">
-        <!-- Use your actual logo image here -->
-        <!-- Upload your logo to GitHub and replace the src below -->
-        <img src="https://bradesiue.github.io/agile-bootcamp-site/logo.png" 
-             alt="Agile Method Bootcamp" 
-             class="logo-image"
-             style="max-width: 600px; width: 90%; height: auto; filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));">
+      <div class="logo-wrapper">
+        <!-- Replace this URL with your uploaded logo.png on GitHub -->
+        <img src="https://bradesiue.github.io/agile-bootcamp-site/logo.png" alt="Agile Method Bootcamp" class="logo-image">
       </div>
+
+      <p class="hero-tagline">Learn, Apply, Transform Your Team</p>
       
-      <p class="hero-subtitle">Learn, Apply, Transform Your Team</p>
+      <div class="accent-line"></div>
     </div>
   </div>
 </body>
