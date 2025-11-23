@@ -61,8 +61,15 @@
   </style>
 </head>
 <body>
-  <a href="https://sites.google.com/view/agilemethodbootcamp/contact-us" class="cta-button">
+  <a href="https://sites.google.com/view/agilemethodbootcamp/contact-us" class="cta-button" target="_top">
     Get Started Today
   </a>
+
+  <script>
+    document.querySelector('.cta-button').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.top.location.href = 'https://sites.google.com/view/agilemethodbootcamp/contact-us';
+    });
+  </script>
 </body>
 </html>
