@@ -1,185 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agile Method Bootcamp Hero</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      background: #f5f5f5;
-    }
-
-    .hero-container {
-      position: relative;
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      margin-right: calc(-50vw + 50%);
-      min-height: 450px;
-      background: linear-gradient(135deg, #0f6565 0%, #1a8a8a 50%, #24b0b0 100%);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 40px;
-    }
-
-    /* Subtle animated circles */
-    .bg-circle {
-      position: absolute;
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      border-radius: 50%;
-      animation: floatCircle 20s ease-in-out infinite;
-    }
-
-    .circle-1 {
-      width: 400px;
-      height: 400px;
-      top: -150px;
-      right: -100px;
-      animation-delay: 0s;
-    }
-
-    .circle-2 {
-      width: 300px;
-      height: 300px;
-      bottom: -100px;
-      left: -80px;
-      animation-delay: 2s;
-    }
-
-    .circle-3 {
-      width: 200px;
-      height: 200px;
-      top: 50%;
-      left: 10%;
-      animation-delay: 4s;
-    }
-
-    @keyframes floatCircle {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-20px, -20px) scale(1.05); }
-    }
-
-    /* Grid overlay */
-    .grid-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px),
-        repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px);
-    }
-
-    /* Content */
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      max-width: 900px;
-      animation: fadeIn 1s ease;
-    }
-
-    .logo-container {
-      margin-bottom: 32px;
-    }
-
-    .logo-image {
-      max-width: 800px;
-      width: 90%;
-      height: auto;
-      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
-      animation: slideUp 1s ease;
-    }
-
-    .tagline {
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-      color: white;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      animation: slideUp 1s ease 0.2s both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero-container {
-        min-height: 350px;
-        padding: 50px 30px;
-      }
-
-      .logo-image {
-        width: 95%;
-        max-width: 600px;
-      }
-
-      .circle-1, .circle-3 {
-        display: none;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-container {
-        min-height: 300px;
-        padding: 40px 20px;
-      }
-
-      .logo-image {
-        width: 95%;
-        max-width: 350px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="hero-container">
-    <!-- Animated background circles -->
-    <div class="bg-circle circle-1"></div>
-    <div class="bg-circle circle-2"></div>
-    <div class="bg-circle circle-3"></div>
-    
-    <!-- Grid overlay -->
-    <div class="grid-overlay"></div>
-
-    <!-- Hero Content -->
-    <div class="hero-content">
-      <div class="logo-container">
-        <!-- Replace with your GitHub logo URL -->
-        <img src="https://bradesiue.github.io/agile-bootcamp-site/logo.png" alt="Agile Method Bootcamp" class="logo-image">
-      </div>
-
-      <p class="tagline">Learn, Apply, Transform Your Team</p>
-    </div>
-  </div>
-</body>
-</html>
+element.style {
+}
+.rzLfc {
+    --gm3-dialog-container-color: var(--gm3-sys-color-surface-bright, #fff);
+    --gm3-dialog-z-index: 1003;
+    --gm3-select-shared-menu-container-color: var(--gm3-sys-color-surface-bright, #fff);
+    --gm3-list-list-item-label-text-font: "Google Sans";
+    --gm3-menu-list-item-label-text-font: "Google Sans Flex", "Google Sans", Roboto, Arial, sans-serif;
+    --gm3-slider-value-indicator-label-label-text-font: "Google Sans";
+    --gm3-autocomplete-outlined-text-field-input-text-font: "Google Sans";
+    --gm3-autocomplete-outlined-text-field-label-text-font: "Google Sans";
+    --gm3-autocomplete-outlined-text-field-supporting-text-font: "Google Sans";
+    --gm3-autocomplete-outlined-menu-list-item-label-text-font: "Google Sans";
+    --gm3-navigation-drawer-content-label-text-font: "Google Sans";
+    --ae-side-sheet-container-color: var(--gm3-sys-color-surface-container, #f0f4f9);
+    --ae-side-sheet-outline-width: 0px;
+    --gm3-dropdown-button-outlined-hover-outline-color: var(--gm3-sys-color-on-surface, #1f1f1f);
+    --gm3-dropdown-button-outlined-hover-state-layer-opacity: 0;
+    --gm3-dropdown-button-outlined-pressed-outline-color: var(--gm3-sys-color-primary, #0b57d0);
+    --gm3-dropdown-button-outlined-pressed-state-layer-opacity: 0;
+}
+.haDzEe {
+    --gm3-dialog-z-index: 5000 !important;
+}
+body {
+    background: rgb(241, 243, 244);
+    font-family: Roboto, sans-serif;
+    height: 100%;
+    -webkit-transition: background-color 
+ease-in .2s;
+    transition: background-color 
+ease-in .2s;
+}
+body {
+    padding: 0;
+}
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+}
+user agent stylesheet
+body {
+    display: block;
+    margin: 8px;
+}
+:root {
+    --font-family-style: "Roboto";
+}
+html {
+    font-size: 16px;
+}
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+::-webkit-scrollbar {
+    -webkit-border-radius: 100px;
+    background-color: rgba(0, 0, 0, 0);
+    width: 9px;
+}
+::-webkit-scrollbar {
+    height: 16px;
+    overflow: visible;
+    width: 16px;
+}
+::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+}
+body::-webkit-scrollbar-corner {
+    background-clip: padding-box;
+    background-color: #f5f5f5;
+    border: solid #fff;
+    border-width: 3px 0 0 3px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .14);
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb:hover {
+    -webkit-border-radius: 100px;
+    background: rgba(0, 0, 0, .35);
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, .25);
+}
+body::-webkit-scrollbar-thumb {
+    border-width: 1px 1px 1px 5px;
+}
+::-webkit-scrollbar-thumb {
+    border: 1px solid #f0f0f0;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 100px;
+    background: rgba(0, 0, 0, .2);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 1px 1px 1px 6px;
+    min-height: 28px;
+    padding: 100px 0 0;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
+}
+::-webkit-scrollbar-track:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: inset 1px 0 0 rgba(0, 0, 0, .1);
+}
+::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: 0 0 0 4px;
+}
+body::-webkit-scrollbar-track-piece {
+    background-clip: padding-box;
+    background-color: #f5f5f5;
+    border: solid #fff;
+    border-width: 0 0 0 3px;
+    box-shadow: inset 1px 0 0 rgba(0, 0, 0, .14), inset -1px 0 0 rgba(0, 0, 0, .07);
+}
