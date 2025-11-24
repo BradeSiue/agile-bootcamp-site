@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.events-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.events-timeline {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+  position: relative;
+}
+
+.timeline-icon::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 55px;
+  background: rgba(26, 138, 138, 0.3);
+}
+
+.timeline-item:last-child .timeline-icon::after {
+  display: none;
+}
+
+.timeline-content {
+  flex: 1;
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #1a8a8a;
+}
+
+.timeline-content:hover {
+  transform: translateX(10px);
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.15);
+}
+
+.event-title {
+  font-size: 1.3rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.event-description {
+  font-size: 1rem;
+  color: #5a7070;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .events-container {
+    padding: 50px 20px;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .timeline-item {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 50px;
+  }
+  
+  .timeline-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    margin: 0 auto;
+  }
+  
+  .timeline-icon::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .timeline-content {
+    padding: 20px;
+  }
+  
+  .event-title {
+    font-size: 1.2rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="events-container">
+  <div class="events-timeline">
+    <div class="timeline-item">
+      <div class="timeline-icon">📋</div>
+      <div class="timeline-content">
+        <h3 class="event-title">Sprint Planning</h3>
+        <p class="event-description">Define the sprint goal and select backlog items to work on</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item">
+      <div class="timeline-icon">⚡</div>
+      <div class="timeline-content">
+        <h3 class="event-title">Sprint</h3>
+        <p class="event-description">A short, fixed iteration where the team builds and delivers value</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item">
+      <div class="timeline-icon">☀️</div>
+      <div class="timeline-content">
+        <h3 class="event-title">Daily Scrum</h3>
+        <p class="event-description">Short daily meeting to synchronize and plan the next 24 hours</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item">
+      <div class="timeline-icon">👁️</div>
+      <div class="timeline-content">
+        <h3 class="event-title">Sprint Review</h3>
+        <p class="event-description">Present the increment, get feedback, and adapt the backlog</p>
+      </div>
+    </div>
+    
+    <div class="timeline-item">
+      <div class="timeline-icon">🔄</div>
+      <div class="timeline-content">
+        <h3 class="event-title">Sprint Retrospective</h3>
+        <p class="event-description">Inspect how the sprint went and agree on improvements</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
