@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.principles-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-header p {
+  font-size: 1.15rem;
+  color: #5a7070;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  perspective: 1000px;
+}
+
+.card-wrapper {
+  height: 280px;
+  cursor: pointer;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-wrapper:hover .card {
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-wrapper:hover .card.flipped {
+  transform: rotateY(180deg) scale(1.05);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-wrapper:hover .card-face {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.card-front {
+  background: white;
+}
+
+.card-back {
+  background: linear-gradient(135deg, #1a8a8a 0%, #2dd4bf 100%);
+  transform: rotateY(180deg);
+  color: white;
+}
+
+.icon-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.principle-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.card-front .principle-title {
+  color: #0f6868;
+}
+
+.card-back .principle-title {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.principle-detail {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+  color: white;
+}
+
+.flip-hint {
+  position: absolute;
+  bottom: 15px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.card-front .flip-hint {
+  color: #1a8a8a;
+}
+
+.card-back .flip-hint {
+  color: white;
+}
+
+/* Icon styles */
+.icon-green { background: #10b981; }
+.icon-blue { background: #3b82f6; }
+.icon-yellow { background: #fbbf24; }
+.icon-cyan { background: #22d3ee; }
+.icon-orange { background: #f97316; }
+.icon-lime { background: #84cc16; }
+.icon-darkgreen { background: #166534; }
+.icon-gray { background: #9ca3af; }
+.icon-gold { background: #ca8a04; }
+.icon-navy { background: #1e3a8a; }
+.icon-red { background: #dc2626; }
+.icon-teal { background: #0d9488; }
+
+@media (max-width: 768px) {
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .card-wrapper {
+    height: 250px;
+  }
+  
+  .icon-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .principle-title {
+    font-size: 1.05rem;
+  }
+  
+  .principle-detail {
+    font-size: 0.9rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="principles-container">
+  <div class="section-header">
+    <h2>12 Agile Principles</h2>
+    <p>Click each card to discover the details</p>
+  </div>
+
+  <div class="cards-grid">
+    <!-- Card 1: Customer Satisfaction -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-green">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Customer Satisfaction</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Customer Satisfaction</h3>
+          <p class="principle-detail">Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Embrace Change -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-blue">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Embrace Change</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Embrace Change</h3>
+          <p class="principle-detail">Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Frequent Delivery -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-yellow">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M18 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm1.5-9H17V12h4.46L19.5 9.5zM6 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM20 8l3 4v5h-2c0 1.66-1.34 3-3 3s-3-1.34-3-3H9c0 1.66-1.34 3-3 3s-3-1.34-3-3H1V6c0-1.11.89-2 2-2h14v4h3z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Frequent Delivery</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Frequent Delivery</h3>
+          <p class="principle-detail">Deliver working software frequently, from a couple of weeks to a couple of months, with preference to the shorter timescale.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Collaborative Teams -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-cyan">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Collaborative Teams</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Collaborative Teams</h3>
+          <p class="principle-detail">Business people and developers must work together daily throughout the project.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Motivated Individuals -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-orange">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Motivated Individuals</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Motivated Individuals</h3>
+          <p class="principle-detail">Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Face-to-Face Communication -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-lime">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M9 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm6 0c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.29.02-.58.05-.86 2.36-1.05 4.23-2.98 5.21-5.37C11.07 8.33 14.05 10 17.42 10c.78 0 1.53-.09 2.25-.26.21.71.33 1.47.33 2.26 0 4.41-3.59 8-8 8z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Face-to-Face Communication</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Face-to-Face Communication</h3>
+          <p class="principle-detail">The most efficient and effective method of conveying information is face-to-face conversation.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7: Working Software -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-darkgreen">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Working Software</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Working Software</h3>
+          <p class="principle-detail">Working software is the primary measure of progress.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8: Technical Excellence -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-gray">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Technical Excellence</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Technical Excellence</h3>
+          <p class="principle-detail">Continuous attention to technical excellence and good design enhances agility.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 9: Simplicity Matters -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-gold">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Simplicity Matters</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Simplicity Matters</h3>
+          <p class="principle-detail">Simplicity—the art of maximizing the amount of work not done—is essential.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 10: Self-Organization -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-navy">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Self-Organization</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Self-Organization</h3>
+          <p class="principle-detail">The best architectures, requirements, and designs emerge from self-organizing teams.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 11: Regular Reflection -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-red">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Regular Reflection</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Regular Reflection</h3>
+          <p class="principle-detail">At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 12: Sustainable Pace -->
+    <div class="card-wrapper" onclick="this.querySelector('.card').classList.toggle('flipped')">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="icon-circle icon-teal">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <h3 class="principle-title">Sustainable Pace</h3>
+          <span class="flip-hint">Click to learn more →</span>
+        </div>
+        <div class="card-face card-back">
+          <h3 class="principle-title">Sustainable Pace</h3>
+          <p class="principle-detail">Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.</p>
+          <span class="flip-hint">← Click to flip back</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
+</html>
