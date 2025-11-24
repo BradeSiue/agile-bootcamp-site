@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.values-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.values-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.values-header h2 {
+  font-size: 2.2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.values-header p {
+  font-size: 1.15rem;
+  color: #5a7070;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.value-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.value-card:hover::before {
+  transform: scaleX(1);
+}
+
+.value-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.15);
+}
+
+.value-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 25px;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.2);
+}
+
+.value-name {
+  font-size: 1.4rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.value-description {
+  font-size: 1rem;
+  color: #5a7070;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .values-container {
+    padding: 50px 20px;
+  }
+  
+  .values-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .value-card {
+    padding: 35px 25px;
+  }
+  
+  .value-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+  
+  .value-name {
+    font-size: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="values-container">
+  <div class="values-header">
+    <h2>Our Core Values</h2>
+    <p>The principles that guide everything we do</p>
+  </div>
+  
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon">🎯</div>
+      <h3 class="value-name">Accessibility</h3>
+      <p class="value-description">Making quality Agile training available to every organization, regardless of size or budget.</p>
+    </div>
+    
+    <div class="value-card">
+      <div class="value-icon">⚡</div>
+      <h3 class="value-name">Practicality</h3>
+      <p class="value-description">Delivering real-world, actionable skills that teams can apply immediately in their workplace.</p>
+    </div>
+    
+    <div class="value-card">
+      <div class="value-icon">💡</div>
+      <h3 class="value-name">Excellence</h3>
+      <p class="value-description">Maintaining the highest standards in our content, delivery, and support for every learner.</p>
+    </div>
+    
+    <div class="value-card">
+      <div class="value-icon">🤝</div>
+      <h3 class="value-name">Collaboration</h3>
+      <p class="value-description">Fostering teamwork and communication as the foundation of successful Agile transformation.</p>
+    </div>
+    
+    <div class="value-card">
+      <div class="value-icon">🔄</div>
+      <h3 class="value-name">Continuous Improvement</h3>
+      <p class="value-description">Constantly evolving our platform and content based on feedback and industry best practices.</p>
+    </div>
+    
+    <div class="value-card">
+      <div class="value-icon">🌟</div>
+      <h3 class="value-name">Empowerment</h3>
+      <p class="value-description">Giving teams the knowledge and confidence to take ownership of their Agile journey.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
