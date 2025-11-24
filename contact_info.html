@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-info-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-header p {
+  font-size: 1.15rem;
+  color: #5a7070;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.contact-section {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.15);
+}
+
+.section-title {
+  font-size: 1.6rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #1a8a8a;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(26, 138, 138, 0.2);
+}
+
+.contact-item-content {
+  flex: 1;
+}
+
+.contact-item-label {
+  font-size: 0.85rem;
+  color: #5a7070;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.contact-item-value {
+  font-size: 1.15rem;
+  color: #0f6868;
+  font-weight: 600;
+}
+
+.contact-item-value a {
+  color: #1a8a8a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-item-value a:hover {
+  color: #2dd4bf;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .contact-info-container {
+    padding: 40px 20px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .contact-section {
+    padding: 30px;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+  
+  .contact-item {
+    gap: 15px;
+  }
+  
+  .contact-item-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  
+  .contact-item-value {
+    font-size: 1.05rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="contact-info-container">
+  <div class="section-header">
+    <h2>Contact Information</h2>
+    <p>Reach out to us directly via email or phone</p>
+  </div>
+  
+  <div class="contact-grid">
+    <div class="contact-section">
+      <h3 class="section-title">Company Contact</h3>
+      
+      <div class="contact-item">
+        <div class="contact-item-icon">📧</div>
+        <div class="contact-item-content">
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">
+            <a href="mailto:agilebootcamp@gmail.com">agilebootcamp@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-content">
+          <div class="contact-item-label">Phone</div>
+          <div class="contact-item-value">
+            <a href="tel:+11234567891">(123) 456-7891</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="contact-section">
+      <h3 class="section-title">IT Support</h3>
+      
+      <div class="contact-item">
+        <div class="contact-item-icon">📧</div>
+        <div class="contact-item-content">
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">
+            <a href="mailto:agilebootcampit@gmail.com">agilebootcampit@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-content">
+          <div class="contact-item-label">Phone</div>
+          <div class="contact-item-value">
+            <a href="tel:+11235678910">(123) 567-8910</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
