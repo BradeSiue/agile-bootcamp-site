@@ -14,7 +14,7 @@ body {
 }
 
 .mission-container {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 60px 40px;
 }
@@ -22,69 +22,160 @@ body {
 .mission-grid {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .mission-card {
+  position: relative;
+  opacity: 0;
+  animation: slideUp 0.8s ease forwards;
+}
+
+.mission-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.mission-card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-inner {
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
-.mission-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 30px rgba(26, 138, 138, 0.2);
+.card-inner:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(26, 138, 138, 0.3);
 }
 
-.mission-header {
+.card-icon-section {
   background: linear-gradient(135deg, #1a8a8a 0%, #147373 100%);
-  padding: 30px 40px;
+  padding: 40px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.mission-title {
-  font-size: 1.8rem;
+.card-icon-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.card-icon {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.card-title {
+  font-size: 2rem;
   color: white;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.mission-body {
+.card-content {
   padding: 40px;
   background: white;
 }
 
-.mission-text {
-  font-size: 1.2rem;
-  color: #5a7070;
+.card-text {
+  font-size: 1.15rem;
+  color: #2d3d3d;
   line-height: 1.8;
   text-align: center;
 }
 
+.accent-line {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  margin: 0 auto 25px;
+  border-radius: 2px;
+  animation: expandLine 1s ease forwards;
+  animation-delay: 0.8s;
+  transform: scaleX(0);
+}
+
+@keyframes expandLine {
+  to { transform: scaleX(1); }
+}
+
 @media (max-width: 768px) {
   .mission-container {
-    padding: 40px 20px;
+    padding: 50px 20px;
   }
   
   .mission-grid {
-    gap: 30px;
+    gap: 40px;
   }
   
-  .mission-header {
-    padding: 25px 30px;
+  .card-icon-section {
+    padding: 35px;
   }
   
-  .mission-title {
-    font-size: 1.5rem;
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
   }
   
-  .mission-body {
+  .card-title {
+    font-size: 1.7rem;
+  }
+  
+  .card-content {
     padding: 30px;
   }
   
-  .mission-text {
+  .card-text {
     font-size: 1.05rem;
   }
 }
@@ -94,20 +185,28 @@ body {
 <div class="mission-container">
   <div class="mission-grid">
     <div class="mission-card">
-      <div class="mission-header">
-        <h2 class="mission-title">Our Mission</h2>
-      </div>
-      <div class="mission-body">
-        <p class="mission-text">To empower organizations with practical, affordable Agile training that transforms how teams work and deliver value.</p>
+      <div class="card-inner">
+        <div class="card-icon-section">
+          <div class="card-icon">🎯</div>
+          <h2 class="card-title">Our Mission</h2>
+        </div>
+        <div class="card-content">
+          <div class="accent-line"></div>
+          <p class="card-text">To empower organizations with practical, affordable Agile training that transforms how teams work and deliver value.</p>
+        </div>
       </div>
     </div>
     
     <div class="mission-card">
-      <div class="mission-header">
-        <h2 class="mission-title">Our Vision</h2>
-      </div>
-      <div class="mission-body">
-        <p class="mission-text">To be the go-to resource for organizations seeking practical, affordable Agile transformation.</p>
+      <div class="card-inner">
+        <div class="card-icon-section">
+          <div class="card-icon">🔭</div>
+          <h2 class="card-title">Our Vision</h2>
+        </div>
+        <div class="card-content">
+          <div class="accent-line"></div>
+          <p class="card-text">To be the go-to resource for organizations seeking practical, affordable Agile transformation.</p>
+        </div>
       </div>
     </div>
   </div>
