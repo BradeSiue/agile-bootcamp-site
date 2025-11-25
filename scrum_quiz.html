@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrum Framework Challenge</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.game-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.game-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.game-subtitle {
+  font-size: 1.1rem;
+  color: #5a7070;
+}
+
+.score-board {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.score-item {
+  text-align: center;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: #5a7070;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.score-value {
+  font-size: 2rem;
+  color: #1a8a8a;
+  font-weight: 700;
+}
+
+.game-board {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  min-height: 400px;
+}
+
+.question-container {
+  margin-bottom: 30px;
+}
+
+.question-number {
+  font-size: 0.9rem;
+  color: #1a8a8a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.question-text {
+  font-size: 1.3rem;
+  color: #2d3d3d;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.answers-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.answer-btn {
+  background: white;
+  border: 3px solid #e0e0e0;
+  padding: 20px 25px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+}
+
+.answer-btn:hover {
+  border-color: #1a8a8a;
+  background: rgba(26, 138, 138, 0.05);
+  transform: translateX(5px);
+}
+
+.answer-btn.selected {
+  border-color: #1a8a8a;
+  background: rgba(26, 138, 138, 0.1);
+}
+
+.answer-btn.correct {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  animation: correctPulse 0.5s ease;
+}
+
+.answer-btn.incorrect {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.answer-btn::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.answer-btn.correct::before {
+  content: '✓';
+  border-color: #22c55e;
+  background: #22c55e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.answer-btn.incorrect::before {
+  content: '✕';
+  border-color: #ef4444;
+  background: #ef4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.answer-text {
+  margin-left: 35px;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback.correct {
+  background: rgba(34, 197, 94, 0.1);
+  border: 2px solid #22c55e;
+  color: #166534;
+}
+
+.feedback.incorrect {
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid #ef4444;
+  color: #991b1b;
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+  display: none;
+}
+
+.next-btn.show {
+  display: inline-block;
+}
+
+.next-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(26, 138, 138, 0.4);
+}
+
+.game-complete {
+  text-align: center;
+  display: none;
+}
+
+.game-complete.show {
+  display: block;
+  animation: fadeIn 0.8s ease;
+}
+
+.complete-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+}
+
+.complete-title {
+  font-size: 2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.complete-score {
+  font-size: 1.5rem;
+  color: #5a7070;
+  margin-bottom: 30px;
+}
+
+.restart-btn {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+}
+
+.restart-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(26, 138, 138, 0.4);
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 30px 15px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+  }
+  
+  .game-board {
+    padding: 25px 20px;
+  }
+  
+  .question-text {
+    font-size: 1.1rem;
+  }
+  
+  .answer-btn {
+    padding: 15px 20px;
+  }
+  
+  .score-board {
+    gap: 20px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="game-container">
+  <div class="game-header">
+    <h1 class="game-title">✓ Scrum Challenge</h1>
+    <p class="game-subtitle">Test your knowledge of the Scrum Framework!</p>
+  </div>
+
+  <div class="score-board">
+    <div class="score-item">
+      <div class="score-label">Score</div>
+      <div class="score-value" id="score">0</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Question</div>
+      <div class="score-value"><span id="currentQ">1</span>/<span id="totalQ">10</span></div>
+    </div>
+  </div>
+
+  <div class="game-board">
+    <div id="questionContainer"></div>
+    <div id="gameComplete" class="game-complete"></div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "Who represents the customer and prioritizes the product backlog?",
+    answers: [
+      "Scrum Master",
+      "Product Owner",
+      "Development Team",
+      "Stakeholders"
+    ],
+    correct: 1,
+    explanation: "The Product Owner represents the customer, prioritizes the product backlog, and maximizes value."
+  },
+  {
+    question: "What is the Scrum Master's primary responsibility?",
+    answers: [
+      "Writing code for the team",
+      "Managing the budget",
+      "Coaching the team in Scrum practices and removing impediments",
+      "Prioritizing the backlog"
+    ],
+    correct: 2,
+    explanation: "The Scrum Master coaches the team in Scrum practices, facilitates events, removes impediments, and supports a productive environment."
+  },
+  {
+    question: "What is a Sprint?",
+    answers: [
+      "A yearly planning meeting",
+      "A short, fixed iteration where the team builds and delivers value",
+      "A type of daily meeting",
+      "The final product release"
+    ],
+    correct: 1,
+    explanation: "A Sprint is a short, fixed iteration (typically 2 weeks) where the team builds and delivers value."
+  },
+  {
+    question: "How long does a Daily Scrum typically last?",
+    answers: [
+      "15 minutes",
+      "30 minutes",
+      "1 hour",
+      "2 hours"
+    ],
+    correct: 0,
+    explanation: "The Daily Scrum is a short daily meeting lasting about 15 minutes to synchronize and plan the next 24 hours."
+  },
+  {
+    question: "What happens during a Sprint Review?",
+    answers: [
+      "The team plans the next sprint",
+      "The team reflects on improvements",
+      "The team presents the increment, gets feedback, and adapts the backlog",
+      "The team estimates story points"
+    ],
+    correct: 2,
+    explanation: "During Sprint Review, the team presents the increment, gets feedback from stakeholders, and adapts the backlog accordingly."
+  },
+  {
+    question: "What is the Product Backlog?",
+    answers: [
+      "A list of completed features",
+      "A prioritized list of work items for the product, ordered by value",
+      "The team's vacation schedule",
+      "A list of bugs only"
+    ],
+    correct: 1,
+    explanation: "The Product Backlog is a prioritized list of work items for the product, ordered by value."
+  },
+  {
+    question: "What is the Sprint Backlog?",
+    answers: [
+      "All work ever done on the product",
+      "A prioritized list of work the team plans to complete during the sprint",
+      "The team's personal goals",
+      "Documentation requirements"
+    ],
+    correct: 1,
+    explanation: "The Sprint Backlog is a prioritized list of work the team plans to complete during the sprint."
+  },
+  {
+    question: "Which Scrum pillar emphasizes that work should be visible and clear?",
+    answers: [
+      "Inspection",
+      "Adaptation",
+      "Transparency",
+      "Collaboration"
+    ],
+    correct: 2,
+    explanation: "Transparency is the Scrum pillar that emphasizes work being visible and clear to everyone."
+  },
+  {
+    question: "What is an Increment in Scrum?",
+    answers: [
+      "A salary increase",
+      "The usable, completed work from the sprint that adds to the product",
+      "A planning document",
+      "A type of meeting"
+    ],
+    correct: 1,
+    explanation: "The Increment is the usable, completed work from the sprint that adds to the product."
+  },
+  {
+    question: "What is the purpose of the Sprint Retrospective?",
+    answers: [
+      "To demonstrate the product to customers",
+      "To plan the next sprint's work",
+      "To inspect how the sprint went and agree on improvements",
+      "To assign tasks to team members"
+    ],
+    correct: 2,
+    explanation: "The Sprint Retrospective is where the team inspects how the sprint went and agrees on improvements for the next sprint."
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[currentQuestion];
+  const container = document.getElementById('questionContainer');
+  
+  container.innerHTML = `
+    <div class="question-container">
+      <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+      <div class="question-text">${q.question}</div>
+    </div>
+    <div class="answers-grid">
+      ${q.answers.map((answer, index) => `
+        <button class="answer-btn" onclick="checkAnswer(${index})">
+          <span class="answer-text">${answer}</span>
+        </button>
+      `).join('')}
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+      ${currentQuestion < questions.length - 1 ? 'Next Question →' : 'See Results →'}
+    </button>
+  `;
+  
+  document.getElementById('currentQ').textContent = currentQuestion + 1;
+}
+
+function checkAnswer(selectedIndex) {
+  if (answered) return;
+  answered = true;
+  
+  const q = questions[currentQuestion];
+  const buttons = document.querySelectorAll('.answer-btn');
+  const feedback = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  buttons[selectedIndex].classList.add('selected');
+  
+  if (selectedIndex === q.correct) {
+    buttons[selectedIndex].classList.add('correct');
+    score++;
+    document.getElementById('score').textContent = score;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<strong>✓ Correct!</strong><br>${q.explanation}`;
+  } else {
+    buttons[selectedIndex].classList.add('incorrect');
+    buttons[q.correct].classList.add('correct');
+    feedback.className = 'feedback incorrect show';
+    feedback.innerHTML = `<strong>✕ Not quite!</strong><br>${q.explanation}`;
+  }
+  
+  buttons.forEach(btn => btn.style.pointerEvents = 'none');
+  nextBtn.classList.add('show');
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const percentage = Math.round((score / questions.length) * 100);
+  let message = '';
+  let icon = '';
+  
+  if (percentage >= 90) {
+    message = "Outstanding! You're a Scrum expert! 🌟";
+    icon = "🏆";
+  } else if (percentage >= 70) {
+    message = "Great job! You have a solid understanding of Scrum! 👏";
+    icon = "🎉";
+  } else if (percentage >= 50) {
+    message = "Good effort! Keep learning about Scrum! 📚";
+    icon = "👍";
+  } else {
+    message = "Nice try! Review the Scrum Framework and try again! 💪";
+    icon = "📖";
+  }
+  
+  document.getElementById('questionContainer').style.display = 'none';
+  const completeDiv = document.getElementById('gameComplete');
+  completeDiv.innerHTML = `
+    <div class="complete-icon">${icon}</div>
+    <h2 class="complete-title">${message}</h2>
+    <div class="complete-score">Your Score: ${score} out of ${questions.length} (${percentage}%)</div>
+    <button class="restart-btn" onclick="restartGame()">Play Again</button>
+  `;
+  completeDiv.classList.add('show');
+}
+
+function restartGame() {
+  currentQuestion = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('questionContainer').style.display = 'block';
+  document.getElementById('gameComplete').classList.remove('show');
+  loadQuestion();
+}
+
+// Start the game
+loadQuestion();
+</script>
+</body>
+</html>
