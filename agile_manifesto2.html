@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.methodologies-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: white;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.methodologies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.methodology-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.6s ease;
+  cursor: pointer;
+}
+
+.methodology-card:nth-child(1) { animation-delay: 0.1s; }
+.methodology-card:nth-child(2) { animation-delay: 0.2s; }
+.methodology-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.methodology-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(26, 138, 138, 0.25);
+}
+
+.methodology-header {
+  background: linear-gradient(135deg, #1a8a8a 0%, #2dd4bf 100%);
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.methodology-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10%, 10%); }
+}
+
+.methodology-icon {
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.methodology-title {
+  font-size: 1.8rem;
+  color: white;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.methodology-content {
+  padding: 35px 30px;
+}
+
+.methodology-description {
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.methodology-highlight {
+  color: #1a8a8a;
+  font-weight: 600;
+}
+
+.learn-more-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+  font-size: 0.95rem;
+}
+
+.learn-more-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(26, 138, 138, 0.4);
+}
+
+@media (max-width: 900px) {
+  .methodologies-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .methodologies-container {
+    padding: 50px 20px;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .methodology-header {
+    padding: 30px 25px;
+    min-height: 160px;
+  }
+  
+  .methodology-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+  }
+  
+  .methodology-title {
+    font-size: 1.5rem;
+  }
+  
+  .methodology-content {
+    padding: 30px 25px;
+  }
+  
+  .methodology-description {
+    font-size: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="methodologies-container">
+  <div class="section-header">
+    <h2>Key Agile Methodologies</h2>
+    <div class="section-divider"></div>
+  </div>
+  
+  <div class="methodologies-grid">
+    <!-- Scrum -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">📋</div>
+        <h3 class="methodology-title">SCRUM</h3>
+      </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Scrum is an Agile framework that organizes team work into <span class="methodology-highlight">fixed-length sprints</span>, with defined roles to ensure <span class="methodology-highlight">collaboration, focus, and incremental delivery</span> of value.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/scrum-framework" target="_blank" class="learn-more-btn">Learn More →</a></center>
+      </div>
+    </div>
+    
+    <!-- Kanban -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">📊</div>
+        <h3 class="methodology-title">KANBAN</h3>
+      </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Kanban helps teams <span class="methodology-highlight">visualize their workflow</span> by using boards and cards, enabling <span class="methodology-highlight">ongoing delivery</span> and easy identification of process bottlenecks.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/kanban-method" target="_blank" class="learn-more-btn">Learn More →</a></center>
+      </div>
+    </div>
+    
+    <!-- Lean -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">⚡</div>
+        <h3 class="methodology-title">LEAN</h3>
+      </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Lean is a process improvement philosophy centered on delivering <span class="methodology-highlight">maximum customer value</span> by <span class="methodology-highlight">eliminating waste</span> and fostering continuous improvement.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/lean-principles" target="_blank" class="learn-more-btn">Learn More →</a></center>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
