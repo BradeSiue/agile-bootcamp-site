@@ -13,427 +13,240 @@ body {
   padding: 0;
 }
 
-.manifesto-container {
-  max-width: 1000px;
+.methodologies-container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 60px 40px;
 }
 
-.slideshow-wrapper {
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: white;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.methodologies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.methodology-card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.6s ease;
+  cursor: pointer;
 }
 
-.slide-container {
+.methodology-card:nth-child(1) { animation-delay: 0.1s; }
+.methodology-card:nth-child(2) { animation-delay: 0.2s; }
+.methodology-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.methodology-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(26, 138, 138, 0.25);
+}
+
+.methodology-header {
+  background: linear-gradient(135deg, #1a8a8a 0%, #2dd4bf 100%);
+  padding: 40px 30px;
+  text-align: center;
   position: relative;
-  min-height: 500px;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.methodology-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10%, 10%); }
+}
+
+.methodology-icon {
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 40px;
-  background: transparent;
-}
-
-.slide {
-  display: none;
-  width: 100%;
-  text-align: center;
-  animation: fadeIn 0.8s ease;
-}
-
-.slide.active {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.slide-title {
-  font-size: 3rem;
-  color: #0f6868;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  animation: slideDown 0.8s ease 0.2s both;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.slide-subtitle {
-  font-size: 1.5rem;
-  color: #5a7070;
-  font-weight: 500;
-  animation: slideDown 0.8s ease 0.4s both;
-}
-
-.slide-year {
-  font-size: 6rem;
-  color: #1a8a8a;
-  font-weight: 700;
-  text-shadow: 0 4px 15px rgba(26, 138, 138, 0.2);
-  animation: scaleIn 1s ease 0.3s both;
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.values-grid {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 20px;
-  align-items: center;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.value-item {
-  opacity: 0;
-  animation: fadeInLeft 0.6s ease forwards;
-}
-
-.value-item:nth-child(1) { animation-delay: 0.2s; }
-.value-item:nth-child(2) { animation-delay: 0.4s; }
-.value-item:nth-child(3) { animation-delay: 0.6s; }
-.value-item:nth-child(4) { animation-delay: 0.8s; }
-.value-item:nth-child(5) { animation-delay: 1s; }
-.value-item:nth-child(6) { animation-delay: 1.2s; }
-.value-item:nth-child(7) { animation-delay: 1.4s; }
-.value-item:nth-child(8) { animation-delay: 1.6s; }
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.value-left {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  color: #0f6868;
-  font-weight: 600;
+  font-size: 2.5rem;
+  margin: 0 auto 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  text-align: right;
+  position: relative;
+  z-index: 1;
 }
 
-.value-over {
-  font-size: 1.5rem;
-  color: #1a8a8a;
-  font-weight: 700;
-}
-
-.value-right {
-  background: rgba(0, 0, 0, 0.05);
-  padding: 20px 25px;
-  border-radius: 12px;
-  font-size: 1rem;
-  color: #5a7070;
-  font-weight: 500;
-  text-align: left;
-}
-
-.principles-intro {
-  font-size: 1.3rem;
-  color: #5a7070;
-  margin-bottom: 30px;
-  animation: fadeIn 0.8s ease 0.3s both;
-}
-
-.principle-box {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  animation: slideInRight 0.8s ease forwards;
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.principle-number {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+.methodology-title {
+  font-size: 1.8rem;
   color: white;
-  border-radius: 50%;
   font-weight: 700;
-  font-size: 1rem;
-  line-height: 35px;
-  text-align: center;
-  margin-right: 15px;
+  position: relative;
+  z-index: 1;
 }
 
-.principle-text {
-  display: inline;
+.methodology-content {
+  padding: 35px 30px;
+}
+
+.methodology-description {
   font-size: 1.05rem;
   color: #2d3d3d;
-  line-height: 1.7;
+  line-height: 1.8;
+  text-align: center;
 }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 30px;
-  background: #f5f5f5;
+.methodology-highlight {
+  color: #1a8a8a;
+  font-weight: 600;
 }
 
-.control-btn {
+.learn-more-btn {
+  display: inline-block;
   background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
   color: white;
-  border: none;
-  padding: 12px 30px;
+  padding: 10px 25px;
   border-radius: 8px;
-  font-size: 1rem;
+  text-decoration: none;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  margin-top: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+  font-size: 0.95rem;
 }
 
-.control-btn:hover {
+.learn-more-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(26, 138, 138, 0.4);
 }
 
-.control-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.slide-indicator {
-  font-size: 0.9rem;
-  color: #5a7070;
-  font-weight: 600;
-}
-
-.progress-bar {
-  height: 4px;
-  background: #e0e0e0;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
-  transition: width 0.3s ease;
+@media (max-width: 900px) {
+  .methodologies-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-  .slide-container {
-    min-height: 400px;
-    padding: 40px 20px;
+  .methodologies-container {
+    padding: 50px 20px;
   }
   
-  .slide-title {
+  .section-header h2 {
     font-size: 2rem;
   }
   
-  .slide-subtitle {
-    font-size: 1.1rem;
+  .methodology-header {
+    padding: 30px 25px;
+    min-height: 160px;
   }
   
-  .slide-year {
-    font-size: 4rem;
+  .methodology-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
   }
   
-  .values-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+  .methodology-title {
+    font-size: 1.5rem;
   }
   
-  .value-left,
-  .value-right {
-    text-align: center;
+  .methodology-content {
+    padding: 30px 25px;
   }
   
-  .value-over {
-    display: none;
-  }
-  
-  .principles-intro {
-    font-size: 1.1rem;
-  }
-  
-  .principle-box {
-    padding: 20px;
-  }
-  
-  .controls {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .control-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+  .methodology-description {
+    font-size: 1rem;
   }
 }
 </style>
 </head>
 <body>
-<div class="manifesto-container">
-  <div class="slideshow-wrapper">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    
-    <div class="slide-container">
-      <!-- Slide 1: Title -->
-      <div class="slide active" data-slide="1">
-        <h1 class="slide-title">The Agile Manifesto</h1>
-        <p class="slide-subtitle">A foundational document that changed software development forever</p>
+<div class="methodologies-container">
+  <div class="methodologies-grid">
+    <!-- Scrum -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">📋</div>
+        <h3 class="methodology-title">SCRUM</h3>
       </div>
-      
-      <!-- Slide 2: 2001 -->
-      <div class="slide" data-slide="2">
-        <div class="slide-year">2001</div>
-        <p class="slide-subtitle">Formalized by a group of software developers</p>
-      </div>
-      
-      <!-- Slide 3: Values Intro -->
-      <div class="slide" data-slide="3">
-        <h2 class="slide-title">Core Values</h2>
-        <p class="slide-subtitle">What Agile values most</p>
-      </div>
-      
-      <!-- Slide 4: The 4 Values -->
-      <div class="slide" data-slide="4">
-        <div class="values-grid">
-          <div class="value-item value-left">Individuals and interactions</div>
-          <div class="value-item value-over">OVER</div>
-          <div class="value-item value-right">processes and tools</div>
-          
-          <div class="value-item value-left">Working software</div>
-          <div class="value-item value-over">OVER</div>
-          <div class="value-item value-right">comprehensive documentation</div>
-          
-          <div class="value-item value-left">Customer collaboration</div>
-          <div class="value-item value-over">OVER</div>
-          <div class="value-item value-right">contract negotiation</div>
-          
-          <div class="value-item value-left">Responding to change</div>
-          <div class="value-item value-over">OVER</div>
-          <div class="value-item value-right">following a plan</div>
-        </div>
-      </div>
-      
-      <!-- Slide 5: Principles Intro -->
-      <div class="slide" data-slide="5">
-        <h2 class="slide-title">12 Principles</h2>
-        <p class="slide-subtitle">Beyond the values, the Manifesto outlines 12 supporting principles</p>
-      </div>
-      
-      <!-- Slide 6: Link to Interactive Principles -->
-      <div class="slide" data-slide="6">
-        <h2 class="slide-title">Explore the 12 Principles</h2>
-        <p class="slide-subtitle" style="margin-bottom: 30px;">Click the interactive cards below to learn about each principle in detail</p>
-        <div style="opacity: 0; animation: fadeIn 1s ease 0.5s both;">
-          <p style="color: #1a8a8a; font-size: 3rem; margin-bottom: 15px;">⬇️</p>
-          <p style="color: #5a7070; font-size: 1.2rem;">Scroll down to see the interactive principle cards</p>
-        </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Scrum is an Agile framework that organizes team work into <span class="methodology-highlight">fixed-length sprints</span>, with defined roles to ensure <span class="methodology-highlight">collaboration, focus, and incremental delivery</span> of value.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/scrum-framework" target="_blank" class="learn-more-btn">Learn More →</a></center>
       </div>
     </div>
     
-    <div class="controls">
-      <button class="control-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
-      <span class="slide-indicator"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></span>
-      <button class="control-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    <!-- Kanban -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">📊</div>
+        <h3 class="methodology-title">KANBAN</h3>
+      </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Kanban helps teams <span class="methodology-highlight">visualize their workflow</span> by using boards and cards, enabling <span class="methodology-highlight">ongoing delivery</span> and easy identification of process bottlenecks.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/kanban-method" target="_blank" class="learn-more-btn">Learn More →</a></center>
+      </div>
+    </div>
+    
+    <!-- Lean -->
+    <div class="methodology-card">
+      <div class="methodology-header">
+        <div class="methodology-icon">⚡</div>
+        <h3 class="methodology-title">LEAN</h3>
+      </div>
+      <div class="methodology-content">
+        <p class="methodology-description">
+          Lean is a process improvement philosophy centered on delivering <span class="methodology-highlight">maximum customer value</span> by <span class="methodology-highlight">eliminating waste</span> and fostering continuous improvement.
+        </p>
+        <center><a href="https://sites.google.com/view/agilemethodbootcamp/lean-principles" target="_blank" class="learn-more-btn">Learn More →</a></center>
+      </div>
     </div>
   </div>
 </div>
-
-<script>
-let currentSlide = 1;
-const totalSlides = 6;
-
-function showSlide(n) {
-  const slides = document.querySelectorAll('.slide');
-  
-  if (n > totalSlides) {
-    currentSlide = totalSlides;
-  } else if (n < 1) {
-    currentSlide = 1;
-  } else {
-    currentSlide = n;
-  }
-  
-  slides.forEach(slide => {
-    slide.classList.remove('active');
-  });
-  
-  slides[currentSlide - 1].classList.add('active');
-  
-  // Update controls
-  document.getElementById('currentSlide').textContent = currentSlide;
-  document.getElementById('prevBtn').disabled = currentSlide === 1;
-  document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
-  
-  // Update progress bar
-  const progress = (currentSlide / totalSlides) * 100;
-  document.getElementById('progressFill').style.width = progress + '%';
-}
-
-function changeSlide(direction) {
-  showSlide(currentSlide + direction);
-}
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') {
-    changeSlide(-1);
-  } else if (e.key === 'ArrowRight') {
-    changeSlide(1);
-  }
-});
-
-// Initialize
-showSlide(1);
-</script>
 </body>
 </html>
