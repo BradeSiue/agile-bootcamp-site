@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.origins-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.origins-content {
+  background: white;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 30px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: linear-gradient(180deg, #1a8a8a, #2dd4bf);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 25px;
+  padding-left: 10px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -34px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  background: #1a8a8a;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #1a8a8a;
+}
+
+.timeline-year {
+  font-size: 1.2rem;
+  color: #1a8a8a;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.timeline-text {
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  line-height: 1.7;
+}
+
+.origins-text {
+  font-size: 1.1rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.highlight {
+  color: #1a8a8a;
+  font-weight: 600;
+}
+
+.citation-box {
+  background: rgba(26, 138, 138, 0.05);
+  border-left: 4px solid #1a8a8a;
+  padding: 20px 25px;
+  margin-top: 30px;
+  border-radius: 0 8px 8px 0;
+}
+
+.citation-label {
+  font-size: 0.85rem;
+  color: #1a8a8a;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.citation-text {
+  font-size: 0.95rem;
+  color: #5a7070;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .origins-container {
+    padding: 50px 20px;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .origins-content {
+    padding: 30px 25px;
+  }
+  
+  .timeline {
+    padding-left: 30px;
+  }
+  
+  .timeline-item::before {
+    left: -28px;
+  }
+  
+  .origins-text,
+  .timeline-text {
+    font-size: 1rem;
+  }
+  
+  .citation-box {
+    padding: 15px 20px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="origins-container">
+  <div class="origins-content">
+    <p class="origins-text">
+      Lean principles have roots around 1918 when Sakichi Toyoda established his business with a patent for an automatic loom. After selling the patents in 1929, the company reinvented itself in the automotive industry. By 1950, Japanese auto production was minimal compared to the US. Eiji Toyoda was sent to study American manufacturing methods, joined by Taiichi Ohno, who reasoned that Western production systems had major flaws: producing components in large batches resulted in large inventories, and methods preferred large production over customer preferences. Through iteration, the Toyota Production System evolved, using innovation and common knowledge in an environment with different cultural values. The system was largely unnoticed until the 1973 oil crisis, and the term "lean" was coined in 1990 in the book "The Machine That Changed the World."
+    </p>
+    
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1918-1935</div>
+        <div class="timeline-text">Sakichi Toyoda establishes business with automatic loom patent; company transitions to automotive industry; truck and car production begins</div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-year">1950</div>
+        <div class="timeline-text">Eiji Toyoda and Taiichi Ohno study US manufacturing methods and identify flaws in Western production systems</div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-year">1965</div>
+        <div class="timeline-text">Toyota Production System rolled out to suppliers and begins to be documented</div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-year">1973</div>
+        <div class="timeline-text">Oil crisis brings global attention to Toyota's superior production methods</div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-year">1990</div>
+        <div class="timeline-text">"The Machine That Changed the World" published; term "lean" coined; performance gaps between Toyota and other automakers highlighted</div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-year">2000s-Present</div>
+        <div class="timeline-text">Lean principles expand beyond manufacturing into software development, healthcare, services, and virtually every industry sector</div>
+      </div>
+    </div>
+    
+    <p class="origins-text">
+      One particularly influential application of Lean thinking emerged in software development through <span class="highlight">Kanban</span>. Originally a scheduling system using visual cards in Toyota's factories, Kanban was adapted for software teams in 2004 by David J. Anderson. This approach helps teams visualize workflow, limit work in progress, and continuously improve—bringing Lean principles directly into modern software development practices.
+    </p>
+    
+    <div class="citation-box">
+      <div class="citation-label">Sources</div>
+      <div class="citation-text">
+        Teich, S. T., & Faddoul, F. F. (2013). Lean Management—The Journey from Toyota to Healthcare. Rambam Maimonides Medical Journal, 4(2), e0007.
+        <br><br>
+        Ahmad, M. O., Markkula, J., & Oivo, M. (2013). Kanban in software development: A systematic literature review. In 2013 39th Euromicro Conference Series on Software Engineering and Advanced Applications (pp. 9-16). IEEE.
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
