@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.resources-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+  animation: fadeInDown 0.8s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-title {
+  font-size: 3rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: #5a7070;
+  margin-bottom: 25px;
+}
+
+.page-divider {
+  width: 120px;
+  height: 5px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  margin: 0 auto;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(26, 138, 138, 0.3);
+}
+
+.resources-content {
+  background: white;
+  padding: 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease 0.3s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #2dd4bf;
+}
+
+.citation-list {
+  list-style: none;
+  margin-bottom: 50px;
+}
+
+.citation-item {
+  margin-bottom: 30px;
+  padding: 25px;
+  background: rgba(26, 138, 138, 0.03);
+  border-left: 4px solid #1a8a8a;
+  border-radius: 0 8px 8px 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.citation-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.15);
+}
+
+.citation-number {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.citation-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.citation-text {
+  font-size: 1rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+  flex: 1;
+}
+
+.citation-location {
+  font-size: 0.9rem;
+  color: #1a8a8a;
+  font-weight: 600;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.note-box {
+  background: rgba(45, 212, 191, 0.1);
+  border: 2px solid #2dd4bf;
+  padding: 25px;
+  border-radius: 12px;
+  margin-top: 40px;
+}
+
+.note-title {
+  font-size: 1.1rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.note-text {
+  font-size: 1rem;
+  color: #2d3d3d;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .resources-container {
+    padding: 40px 20px;
+  }
+  
+  .page-title {
+    font-size: 2.2rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1.05rem;
+  }
+  
+  .resources-content {
+    padding: 30px 25px;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .citation-item {
+    padding: 20px;
+  }
+  
+  .citation-content {
+    flex-direction: column;
+  }
+  
+  .citation-number {
+    margin-bottom: 10px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="resources-container">
+  <div class="page-header">
+    <h1 class="page-title">Resources & References</h1>
+    <div class="page-divider"></div>
+  </div>
+  
+  <div class="resources-content">
+    <ul class="citation-list">
+      <li class="citation-item">
+        <div class="citation-content">
+          <span class="citation-number">1</span>
+          <div>
+            <div class="citation-text">
+              Ahmad, M. O., Markkula, J., & Oivo, M. (2013). Kanban in software development: A systematic literature review. In <em>2013 39th Euromicro Conference Series on Software Engineering and Advanced Applications</em> (pp. 9-16). IEEE.
+            </div>
+            <div class="citation-location">Used in: Lean Principles - Origins of Lean</div>
+          </div>
+        </div>
+      </li>
+      
+      <li class="citation-item">
+        <div class="citation-content">
+          <span class="citation-number">2</span>
+          <div>
+            <div class="citation-text">
+              Teich, S. T., & Faddoul, F. F. (2013). Lean Management—The Journey from Toyota to Healthcare. <em>Rambam Maimonides Medical Journal</em>, 4(2), e0007.
+            </div>
+            <div class="citation-location">Used in: Lean Principles - Origins of Lean</div>
+          </div>
+        </div>
+      </li>
+      
+      <li class="citation-item">
+        <div class="citation-content">
+          <span class="citation-number">3</span>
+          <div>
+            <div class="citation-text">
+              Ahmad, M. O., Markkula, J., & Oivo, M. (2013). Kanban in software development: A systematic literature review. In <em>2013 39th Euromicro Conference Series on Software Engineering and Advanced Applications</em> (pp. 9-16). IEEE.
+            </div>
+            <div class="citation-location">Used in: Kanban Method</div>
+          </div>
+        </div>
+      </li>
+      
+      <li class="citation-item">
+        <div class="citation-content">
+          <span class="citation-number">4</span>
+          <div>
+            <div class="citation-text">
+              Beck, K., et al. (2001). Manifesto for Agile Software Development. <em>Agile Alliance</em>. Available at: https://agilemanifesto.org
+            </div>
+            <div class="citation-location">Used in: Agile Fundamentals - Agile Manifesto</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
