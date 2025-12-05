@@ -20,13 +20,13 @@
       --primary-light: #22a7a7;
       --accent: #0d5c5c;
       --accent-hover: #094a4a;
-      --bg: #f5f5f5;
+      --bg: #f5f9f9;
       --bg-card: #ffffff;
       --text: #2d3d3d;
       --text-light: #5a7070;
-      --connector: #d0d0d0;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --connector: #b8d4d4;
+      --shadow: 0 4px 20px rgba(26, 138, 138, 0.1);
+      --shadow-hover: 0 8px 30px rgba(26, 138, 138, 0.2);
     }
 
     body {
@@ -192,9 +192,9 @@
       .roadmap-flow .stop:nth-child(1) { grid-column: 1; grid-row: 1; }
       .roadmap-flow .stop:nth-child(2) { grid-column: 2; grid-row: 1; }
       .roadmap-flow .stop:nth-child(3) { grid-column: 3; grid-row: 1; }
-      .roadmap-flow .stop:nth-child(4) { grid-column: 1; grid-row: 2; }
+      .roadmap-flow .stop:nth-child(4) { grid-column: 3; grid-row: 2; }
       .roadmap-flow .stop:nth-child(5) { grid-column: 2; grid-row: 2; }
-      .roadmap-flow .stop:nth-child(6) { grid-column: 3; grid-row: 2; }
+      .roadmap-flow .stop:nth-child(6) { grid-column: 1; grid-row: 2; }
 
       .roadmap-flow .stop {
         max-width: none;
@@ -264,8 +264,8 @@
       width: 100%;
       height: 100%;
       background-image: 
-        radial-gradient(circle at 20% 50%, rgba(0, 0, 0, 0.02) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(26, 138, 138, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(26, 138, 138, 0.03) 0%, transparent 50%);
       pointer-events: none;
       z-index: -1;
     }
@@ -315,7 +315,7 @@
 
     <div class="roadmap-flow">
       <!-- Stop 1: What is Agile? -->
-      <a href="https://sites.google.com/view/agilemethodbootcamp/agile-fundamentals" class="stop" target="_top">
+      <a href="#agile-fundamentals" class="stop" data-link="agile-fundamentals">
         <div class="stop-icon">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10"/>
@@ -330,7 +330,7 @@
       </a>
 
       <!-- Stop 2: Scrum Framework -->
-      <a href="https://sites.google.com/view/agilemethodbootcamp/scrum-framework" class="stop" target="_top">
+      <a href="#scrum-framework" class="stop" data-link="scrum-framework">
         <div class="stop-icon">
           <svg viewBox="0 0 24 24">
             <path d="M21 12a9 9 0 1 1-9-9"/>
@@ -357,7 +357,7 @@
         <div class="stop-content">
           <span class="stop-number">Step 3</span>
           <h3 class="stop-title">Explore Other Methods</h3>
-          <p class="stop-description">Kanban and Lean approaches for every workflow</p>
+          <p class="stop-description">Kanban, Lean, and hybrid approaches for every workflow</p>
         </div>
       </a>
 
@@ -376,7 +376,7 @@
       </a>
 
       <!-- Stop 5: Real Results -->
-      <a href="https://sites.google.com/view/agilemethodbootcamp/case-studies-and-success-stories" class="stop" target="_top">
+      <a href="https://sites.google.com/view/agilemethodbootcamp/agile-success-stories" class="stop" target="_top">
         <div class="stop-icon">
           <svg viewBox="0 0 24 24">
             <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>
@@ -410,23 +410,17 @@
   </div>
 
   <script>
-    var stops = document.querySelectorAll('.stop');
-    for (var i = 0; i < stops.length; i++) {
-      stops[i].onclick = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var url = this.getAttribute('href');
-        if (url) {
-          try {
-            window.top.location.href = url;
-          } catch(err) {
-            window.open(url, '_blank');
-          }
+    // Click handling - replace href values with your actual Google Sites page URLs
+    document.querySelectorAll('.stop').forEach(stop => {
+      stop.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          // For Google Sites embedding, replace the href values above
+          // with your actual page URLs like:
+          // href="https://sites.google.com/view/yoursite/agile-fundamentals"
         }
-        return false;
-      };
-    }
+      });
+    });
   </script>
-
 </body>
 </html>
