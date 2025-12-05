@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.quiz-title {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.quiz-subtitle {
+  font-size: 1.1rem;
+  color: white;
+  line-height: 1.6;
+}
+
+.quiz-box {
+  background: white;
+  padding: 50px 45px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.question-counter {
+  font-size: 1rem;
+  color: #1a8a8a;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 35px;
+  line-height: 1.5;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.option {
+  background: #f8f9fa;
+  padding: 20px 25px;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  position: relative;
+}
+
+.option:hover {
+  background: #e0f2fe;
+  border-color: #1a8a8a;
+  transform: translateX(5px);
+}
+
+.option.selected {
+  background: #bae6fd;
+  border-color: #1a8a8a;
+}
+
+.option.correct {
+  background: #d1fae5;
+  border-color: #10b981;
+  animation: correctPulse 0.5s ease;
+}
+
+.option.incorrect {
+  background: #fee2e2;
+  border-color: #ef4444;
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.option-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option.correct .option-icon,
+.option.incorrect .option-icon {
+  opacity: 1;
+}
+
+.feedback {
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback.correct {
+  background: #d1fae5;
+  color: #065f46;
+  border: 2px solid #10b981;
+}
+
+.feedback.incorrect {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 2px solid #ef4444;
+}
+
+.quiz-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.btn.show {
+  display: inline-block;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.results {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.results.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.results-score {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1a8a8a;
+  margin-bottom: 20px;
+}
+
+.results-message {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.results-detail {
+  font-size: 1.1rem;
+  color: #5a7070;
+  margin-bottom: 30px;
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 40px 20px;
+  }
+  
+  .quiz-title {
+    font-size: 2rem;
+  }
+  
+  .quiz-box {
+    padding: 35px 25px;
+  }
+  
+  .question-text {
+    font-size: 1.3rem;
+  }
+  
+  .option {
+    padding: 18px 20px;
+    font-size: 1rem;
+  }
+  
+  .results-score {
+    font-size: 3rem;
+  }
+  
+  .results-message {
+    font-size: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h2 class="quiz-title">Agile Project Management Quiz</h2>
+    <p class="quiz-subtitle">Test your knowledge of Agile planning, risk management, and metrics</p>
+  </div>
+  
+  <div class="quiz-box">
+    <div id="quiz-content">
+      <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">10</span></div>
+      <div class="question-text" id="question-text"></div>
+      
+      <div class="options" id="options"></div>
+      
+      <div class="feedback" id="feedback"></div>
+      
+      <div class="quiz-buttons">
+        <button class="btn btn-submit show" id="submit-btn">Submit Answer</button>
+        <button class="btn btn-next" id="next-btn">Next Question</button>
+      </div>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="results-score" id="score"></div>
+      <div class="results-message" id="results-message"></div>
+      <div class="results-detail" id="results-detail"></div>
+      <button class="btn-restart" onclick="restartQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const quizData = [
+  {
+    question: "What is affinity grouping in Agile planning?",
+    options: [
+      "Grouping team members by skills",
+      "Grouping things that are alike together for planning and estimation",
+      "Grouping tasks by deadline",
+      "Grouping user stories by customer"
+    ],
+    correct: 1,
+    explanation: "Affinity grouping is grouping things that are alike together, which helps with the planning and estimation tasks."
+  },
+  {
+    question: "How does Agile estimation differ from traditional estimation?",
+    options: [
+      "It's done only once at the beginning",
+      "It uses the currently available information and adds more data as the project progresses",
+      "It's more accurate initially",
+      "It doesn't change throughout the project"
+    ],
+    correct: 1,
+    explanation: "Agile estimation uses the information that is currently available and then adds more data to the estimation as the project goes along, making it progressive."
+  },
+  {
+    question: "What is Velocity in Agile metrics?",
+    options: [
+      "How fast team members work",
+      "The speed of software deployment",
+      "A measure of how much work gets done per sprint",
+      "The time to complete one user story"
+    ],
+    correct: 2,
+    explanation: "Velocity measures how much work gets done per sprint and is a key performance indicator for Agile teams."
+  },
+  {
+    question: "How does risk management in Agile differ from traditional risk management?",
+    options: [
+      "Agile doesn't do risk management",
+      "Agile does risk management only at the beginning",
+      "Agile does risk management at the beginning and continuously throughout the project",
+      "Agile waits until problems occur to manage risks"
+    ],
+    correct: 2,
+    explanation: "Risk management in Agile is done at the beginning and throughout the project alongside the work, helping combat risks that come up along the way."
+  },
+  {
+    question: "What does Predictability measure in Agile?",
+    options: [
+      "How many bugs are found",
+      "How consistently the team can deliver results",
+      "The number of meetings held",
+      "Customer satisfaction scores"
+    ],
+    correct: 1,
+    explanation: "Predictability measures how consistently the team can deliver results, showing reliability in sprint delivery."
+  },
+  {
+    question: "What is the difference between a Burn Up chart and a Burn Down chart?",
+    options: [
+      "There is no difference",
+      "Burn Down removes completed stories, Burn Up adds completed stories",
+      "Burn Up is for bugs, Burn Down is for features",
+      "Burn Down is only used in Scrum"
+    ],
+    correct: 1,
+    explanation: "Both track remaining stories in a sprint. Burn Down does it by removing the stories the team has completed, and Burn Up does it by adding them."
+  },
+  {
+    question: "What does Cycle Time measure?",
+    options: [
+      "How long a sprint is",
+      "How long it takes to complete each sprint cycle",
+      "The number of cycles in a project",
+      "Time between retrospectives"
+    ],
+    correct: 1,
+    explanation: "Cycle Time measures how long it takes to complete each sprint cycle, providing insight into team efficiency."
+  },
+  {
+    question: "What type of planning does Agile use?",
+    options: [
+      "Fixed planning done once at the start",
+      "No planning at all",
+      "Continuous planning that evolves throughout the project",
+      "Planning only when problems occur"
+    ],
+    correct: 2,
+    explanation: "Agile uses continuous planning where plans evolve throughout the project lifecycle rather than being fixed at the beginning."
+  },
+  {
+    question: "How are sprints structured in Agile?",
+    options: [
+      "Variable length with no time limits",
+      "Work is broken down into time-boxed iterations delivering incremental value",
+      "Only one sprint per project",
+      "Sprints have no defined structure"
+    ],
+    correct: 1,
+    explanation: "In Agile, work is broken down into manageable time-boxed iterations (sprints) where the team delivers incremental value."
+  },
+  {
+    question: "What are KPIs in Agile Project Management?",
+    options: [
+      "Key Planning Items",
+      "Kanban Performance Indicators",
+      "Key Performance Indicators used to measure team and sprint performance",
+      "Knowledge Process Improvements"
+    ],
+    correct: 2,
+    explanation: "KPIs (Key Performance Indicators) are used to measure the performance of the team and their sprints, and can be used in the planning process."
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selectedOption = null;
+
+function loadQuestion() {
+  const question = quizData[currentQuestion];
+  document.getElementById('current-question').textContent = currentQuestion + 1;
+  document.getElementById('total-questions').textContent = quizData.length;
+  document.getElementById('question-text').textContent = question.question;
+  
+  const optionsContainer = document.getElementById('options');
+  optionsContainer.innerHTML = '';
+  
+  question.options.forEach((option, index) => {
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    optionDiv.innerHTML = `${option}<span class="option-icon"></span>`;
+    optionDiv.onclick = () => selectOption(index);
+    optionsContainer.appendChild(optionDiv);
+  });
+  
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('submit-btn').classList.add('show');
+  document.getElementById('next-btn').classList.remove('show');
+  document.getElementById('submit-btn').disabled = true;
+  selectedOption = null;
+}
+
+function selectOption(index) {
+  if (document.querySelector('.option.correct') || document.querySelector('.option.incorrect')) {
+    return;
+  }
+  
+  selectedOption = index;
+  document.querySelectorAll('.option').forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === index) {
+      opt.classList.add('selected');
+    }
+  });
+  document.getElementById('submit-btn').disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedOption === null) return;
+  
+  const question = quizData[currentQuestion];
+  const options = document.querySelectorAll('.option');
+  const feedback = document.getElementById('feedback');
+  
+  options.forEach((opt, index) => {
+    opt.style.cursor = 'default';
+    opt.onclick = null;
+    
+    if (index === question.correct) {
+      opt.classList.add('correct');
+      opt.querySelector('.option-icon').textContent = '✓';
+    } else if (index === selectedOption) {
+      opt.classList.add('incorrect');
+      opt.querySelector('.option-icon').textContent = '✗';
+    }
+  });
+  
+  if (selectedOption === question.correct) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+  } else {
+    feedback.className = 'feedback incorrect show';
+    feedback.innerHTML = `<strong>Not quite.</strong> ${question.explanation}`;
+  }
+  
+  document.getElementById('submit-btn').classList.remove('show');
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-content').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  
+  const percentage = Math.round((score / quizData.length) * 100);
+  document.getElementById('score').textContent = `${percentage}%`;
+  document.getElementById('results-detail').textContent = `You got ${score} out of ${quizData.length} questions correct.`;
+  
+  let message = '';
+  if (percentage === 100) {
+    message = '🎉 Perfect! You\'re an Agile PM expert!';
+  } else if (percentage >= 80) {
+    message = '👏 Excellent work! You know your Agile PM!';
+  } else if (percentage >= 60) {
+    message = '👍 Good job! You have a solid understanding.';
+  } else {
+    message = '📚 Keep learning! Review Agile PM and try again.';
+  }
+  
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  selectedOption = null;
+  document.getElementById('quiz-content').style.display = 'block';
+  document.getElementById('results').classList.remove('show');
+  loadQuestion();
+}
+
+document.getElementById('submit-btn').onclick = submitAnswer;
+document.getElementById('next-btn').onclick = nextQuestion;
+
+// Load first question
+loadQuestion();
+</script>
+</body>
+</html>
