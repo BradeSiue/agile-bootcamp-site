@@ -165,9 +165,55 @@ body {
 /* Key Concepts Section */
 .concepts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 25px;
   margin-bottom: 40px;
+}
+
+@media (max-width: 1024px) {
+  .concepts-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .concept-card {
+    padding: 25px;
+  }
+  
+  .concept-icon {
+    font-size: 2rem;
+  }
+  
+  .concept-title {
+    font-size: 1.1rem;
+  }
+  
+  .concept-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .concepts-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+  }
+  
+  .concept-card {
+    padding: 20px;
+  }
+  
+  .concept-icon {
+    font-size: 1.8rem;
+  }
+  
+  .concept-title {
+    font-size: 1rem;
+  }
+  
+  .concept-text {
+    font-size: 0.85rem;
+  }
 }
 
 .concept-card {
