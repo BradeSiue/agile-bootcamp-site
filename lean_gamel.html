@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+.game-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 40px;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.game-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.game-subtitle {
+  font-size: 1.1rem;
+  color: #0f6868;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.game-instructions {
+  background: rgba(26, 138, 138, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: #0f6868;
+  font-weight: 600;
+  margin-bottom: 30px;
+  border: 2px solid rgba(26, 138, 138, 0.3);
+}
+
+.game-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  background: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #5a7070;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 2rem;
+  color: #1a8a8a;
+  font-weight: 700;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.waste-types-section {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #2dd4bf;
+}
+
+.waste-types {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.waste-badge {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: move;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(26, 138, 138, 0.3);
+  text-align: center;
+}
+
+.waste-badge:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(26, 138, 138, 0.4);
+}
+
+.waste-badge.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.waste-badge.placed {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.scenarios-section {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.scenarios {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.scenario-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 3px dashed #d0d0d0;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.scenario-box.drag-over {
+  border-color: #1a8a8a;
+  background: rgba(26, 138, 138, 0.1);
+  transform: scale(1.02);
+}
+
+.scenario-box.correct {
+  border-color: #10b981;
+  background: #d1fae5;
+  border-style: solid;
+  animation: successPulse 0.5s ease;
+}
+
+.scenario-box.incorrect {
+  border-color: #ef4444;
+  background: #fee2e2;
+  border-style: solid;
+  animation: errorShake 0.5s ease;
+}
+
+@keyframes successPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.scenario-number {
+  font-size: 0.75rem;
+  color: #1a8a8a;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scenario-text {
+  font-size: 0.95rem;
+  color: #2d3d3d;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.dropped-badge {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 10px;
+  box-shadow: 0 3px 10px rgba(26, 138, 138, 0.3);
+}
+
+.feedback-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  display: none;
+}
+
+.scenario-box.correct .feedback-icon,
+.scenario-box.incorrect .feedback-icon {
+  display: block;
+}
+
+.check-btn {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.3);
+}
+
+.check-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 138, 138, 0.4);
+}
+
+.check-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.results {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  display: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.results.show {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.results-score {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1a8a8a;
+  margin-bottom: 20px;
+}
+
+.results-message {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.results-detail {
+  font-size: 1.1rem;
+  color: #5a7070;
+  margin-bottom: 30px;
+}
+
+.restart-btn {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+@media (max-width: 968px) {
+  .game-board {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .game-container {
+    padding: 0 20px;
+  }
+  
+  .game-title {
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="game-container">
+  <div class="game-header">
+    <h2 class="game-title">🎯 Drag & Drop Waste Challenge</h2>
+    <p class="game-subtitle">Match each waste type to the correct scenario by dragging and dropping!</p>
+  </div>
+  
+  <div class="game-instructions">
+    👆 Drag waste types from the left and drop them onto matching scenarios on the right
+  </div>
+  
+  <div class="game-stats">
+    <div class="stat-box">
+      <div class="stat-label">Matched</div>
+      <div class="stat-value" id="matched">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Remaining</div>
+      <div class="stat-value" id="remaining">8</div>
+    </div>
+  </div>
+  
+  <div id="game-content">
+    <div class="game-board">
+      <!-- Left side: Waste Types -->
+      <div class="waste-types-section">
+        <h3 class="section-title">🗑️ Waste Types (DOWNTIME)</h3>
+        <div class="waste-types" id="waste-types">
+          <div class="waste-badge" draggable="true" data-waste="Defects">⏱️ Defects</div>
+          <div class="waste-badge" draggable="true" data-waste="Overproduction">📦 Overproduction</div>
+          <div class="waste-badge" draggable="true" data-waste="Waiting">⏳ Waiting</div>
+          <div class="waste-badge" draggable="true" data-waste="Non-Utilized Talent">🧠 Non-Utilized Talent</div>
+          <div class="waste-badge" draggable="true" data-waste="Transportation">🚚 Transportation</div>
+          <div class="waste-badge" draggable="true" data-waste="Inventory">📊 Inventory</div>
+          <div class="waste-badge" draggable="true" data-waste="Motion">🏃 Motion</div>
+          <div class="waste-badge" draggable="true" data-waste="Extra Processing">⚙️ Extra Processing</div>
+        </div>
+      </div>
+      
+      <!-- Right side: Scenarios -->
+      <div class="scenarios-section">
+        <h3 class="section-title">📋 Scenarios</h3>
+        <div class="scenarios" id="scenarios">
+          <div class="scenario-box" data-correct="Defects">
+            <div class="scenario-number">Scenario 1</div>
+            <div class="scenario-text">Production bug requires 3 days of fixing and re-testing</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Overproduction">
+            <div class="scenario-number">Scenario 2</div>
+            <div class="scenario-text">Team built 15 features but customer only asked for 8</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Waiting">
+            <div class="scenario-number">Scenario 3</div>
+            <div class="scenario-text">Developer blocked waiting for manager approval for 2 weeks</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Non-Utilized Talent">
+            <div class="scenario-number">Scenario 4</div>
+            <div class="scenario-text">Junior developer's ideas ignored, never asked for input</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Transportation">
+            <div class="scenario-number">Scenario 5</div>
+            <div class="scenario-text">Files passed through 5 departments taking 2-3 days each</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Inventory">
+            <div class="scenario-number">Scenario 6</div>
+            <div class="scenario-text">47 unfinished user stories in progress simultaneously</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Motion">
+            <div class="scenario-number">Scenario 7</div>
+            <div class="scenario-text">Engineer walks to different building to access test server</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+          
+          <div class="scenario-box" data-correct="Extra Processing">
+            <div class="scenario-number">Scenario 8</div>
+            <div class="scenario-text">Extensive documentation for every line of code</div>
+            <div class="feedback-icon">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="check-btn" id="check-btn" disabled>Check My Answers</button>
+  </div>
+  
+  <div class="results" id="results">
+    <div class="results-score" id="final-score"></div>
+    <div class="results-message" id="results-message"></div>
+    <div class="results-detail" id="results-detail"></div>
+    <button class="restart-btn" onclick="restartGame()">Play Again</button>
+  </div>
+</div>
+
+<script>
+let matched = 0;
+let draggedElement = null;
+let answers = {};
+
+// Drag events for waste badges
+document.querySelectorAll('.waste-badge').forEach(badge => {
+  badge.addEventListener('dragstart', function(e) {
+    draggedElement = this;
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+  });
+  
+  badge.addEventListener('dragend', function(e) {
+    this.classList.remove('dragging');
+  });
+});
+
+// Drop events for scenario boxes
+document.querySelectorAll('.scenario-box').forEach(box => {
+  box.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    this.classList.add('drag-over');
+  });
+  
+  box.addEventListener('dragleave', function(e) {
+    this.classList.remove('drag-over');
+  });
+  
+  box.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.classList.remove('drag-over');
+    
+    if (draggedElement && !this.querySelector('.dropped-badge')) {
+      const wasteType = draggedElement.dataset.waste;
+      
+      // Create dropped badge
+      const droppedBadge = document.createElement('div');
+      droppedBadge.className = 'dropped-badge';
+      droppedBadge.textContent = draggedElement.textContent;
+      droppedBadge.dataset.waste = wasteType;
+      this.appendChild(droppedBadge);
+      
+      // Mark original as placed
+      draggedElement.classList.add('placed');
+      draggedElement.draggable = false;
+      
+      // Store answer
+      answers[this.dataset.correct] = wasteType;
+      
+      matched++;
+      updateStats();
+      
+      // Enable check button when all matched
+      if (matched === 8) {
+        document.getElementById('check-btn').disabled = false;
+      }
+    }
+  });
+  
+  // Allow removing dropped badges by clicking
+  box.addEventListener('click', function(e) {
+    if (e.target.classList.contains('dropped-badge')) {
+      const wasteType = e.target.dataset.waste;
+      
+      // Remove from answers
+      delete answers[this.dataset.correct];
+      
+      // Remove dropped badge
+      e.target.remove();
+      
+      // Re-enable original badge
+      document.querySelectorAll('.waste-badge').forEach(badge => {
+        if (badge.dataset.waste === wasteType) {
+          badge.classList.remove('placed');
+          badge.draggable = true;
+        }
+      });
+      
+      // Remove any feedback styling
+      this.classList.remove('correct', 'incorrect');
+      
+      matched--;
+      updateStats();
+      
+      document.getElementById('check-btn').disabled = true;
+    }
+  });
+});
+
+function updateStats() {
+  document.getElementById('matched').textContent = matched;
+  document.getElementById('remaining').textContent = 8 - matched;
+}
+
+function checkAnswers() {
+  let correct = 0;
+  
+  document.querySelectorAll('.scenario-box').forEach(box => {
+    const correctAnswer = box.dataset.correct;
+    const userAnswer = answers[correctAnswer];
+    
+    if (userAnswer === correctAnswer) {
+      box.classList.add('correct');
+      box.querySelector('.feedback-icon').textContent = '✓';
+      correct++;
+    } else {
+      box.classList.add('incorrect');
+      box.querySelector('.feedback-icon').textContent = '✗';
+    }
+  });
+  
+  setTimeout(() => showResults(correct), 1000);
+}
+
+function showResults(correct) {
+  document.getElementById('game-content').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  
+  const percentage = Math.round((correct / 8) * 100);
+  
+  document.getElementById('final-score').textContent = `${correct}/8`;
+  
+  let message = '';
+  if (correct === 8) {
+    message = '🏆 Perfect Match! You\'re a Lean Expert!';
+  } else if (correct >= 6) {
+    message = '🌟 Great Job! You know your waste types!';
+  } else if (correct >= 4) {
+    message = '👍 Good Effort! Keep practicing!';
+  } else {
+    message = '📚 Keep Learning! Review the 8 wastes and try again.';
+  }
+  
+  document.getElementById('results-message').textContent = message;
+  document.getElementById('results-detail').textContent = `You correctly matched ${correct} out of 8 waste scenarios (${percentage}%)`;
+}
+
+function restartGame() {
+  matched = 0;
+  answers = {};
+  
+  // Reset all badges
+  document.querySelectorAll('.waste-badge').forEach(badge => {
+    badge.classList.remove('placed');
+    badge.draggable = true;
+  });
+  
+  // Reset all scenarios
+  document.querySelectorAll('.scenario-box').forEach(box => {
+    box.classList.remove('correct', 'incorrect');
+    const droppedBadge = box.querySelector('.dropped-badge');
+    if (droppedBadge) {
+      droppedBadge.remove();
+    }
+  });
+  
+  updateStats();
+  document.getElementById('check-btn').disabled = true;
+  document.getElementById('game-content').style.display = 'block';
+  document.getElementById('results').classList.remove('show');
+}
+
+document.getElementById('check-btn').addEventListener('click', checkAnswers);
+
+// Initialize
+updateStats();
+</script>
+</body>
+</html>
