@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.planning-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  animation: fadeInLeft 0.8s ease;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.header-icon {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.3);
+  flex-shrink: 0;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+}
+
+.content-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease 0.3s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-subtitle {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #2dd4bf;
+}
+
+.key-points {
+  display: grid;
+  gap: 20px;
+}
+
+.point-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px;
+  background: rgba(26, 138, 138, 0.03);
+  border-left: 4px solid #1a8a8a;
+  border-radius: 0 12px 12px 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.point-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 4px 15px rgba(26, 138, 138, 0.15);
+}
+
+.point-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26, 138, 138, 0.3);
+}
+
+.point-text {
+  flex: 1;
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  line-height: 1.7;
+}
+
+.highlight {
+  color: #1a8a8a;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .planning-container {
+    padding: 50px 20px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header-icon {
+    width: 150px;
+    height: 150px;
+    font-size: 4rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .section-divider {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .content-card {
+    padding: 30px 25px;
+  }
+  
+  .point-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .point-icon {
+    margin: 0 auto;
+  }
+}
+</style>
+</head>
+<body>
+<div class="planning-container">
+  <div class="section-header">
+    <div class="header-icon">📋</div>
+    <div class="header-content">
+      <h2 class="section-title">Agile Planning and Execution</h2>
+      <div class="section-divider"></div>
+      <p class="intro-text">
+        Agile uses continuous planning and the iterative sprints that the team will complete. Agile estimation uses the information that is currently available and then adds more data to the estimation as the project goes along.
+      </p>
+    </div>
+  </div>
+  
+  <div class="content-card">
+    <h3 class="content-subtitle">Key Aspects of Agile Planning</h3>
+    <div class="key-points">
+      <div class="point-item">
+        <div class="point-icon">📋</div>
+        <div class="point-text">
+          <span class="highlight">Continuous Planning:</span> Plans evolve throughout the project lifecycle rather than being fixed at the beginning
+        </div>
+      </div>
+      
+      <div class="point-item">
+        <div class="point-icon">🔄</div>
+        <div class="point-text">
+          <span class="highlight">Iterative Sprints:</span> Work is broken down into manageable time-boxed iterations where the team delivers incremental value
+        </div>
+      </div>
+      
+      <div class="point-item">
+        <div class="point-icon">📊</div>
+        <div class="point-text">
+          <span class="highlight">Progressive Estimation:</span> Estimates become more accurate as more information becomes available through each iteration
+        </div>
+      </div>
+      
+      <div class="point-item">
+        <div class="point-icon">🎯</div>
+        <div class="point-text">
+          <span class="highlight">Affinity Grouping:</span> One of these maps of evaluation is affinity grouping, which is grouping things that are alike together. These help with the planning and estimation tasks.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
