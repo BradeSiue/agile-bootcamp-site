@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.metrics-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  animation: fadeInLeft 0.8s ease;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.header-icon {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  box-shadow: 0 8px 25px rgba(26, 138, 138, 0.3);
+  flex-shrink: 0;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+}
+
+.instruction-box {
+  background: rgba(26, 138, 138, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #0f6868;
+  font-weight: 600;
+  font-size: 1rem;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.metrics-accordion {
+  display: grid;
+  gap: 20px;
+}
+
+.accordion-item {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: slideIn 0.6s ease forwards;
+}
+
+.accordion-item:nth-child(1) { animation-delay: 0.1s; }
+.accordion-item:nth-child(2) { animation-delay: 0.2s; }
+.accordion-item:nth-child(3) { animation-delay: 0.3s; }
+.accordion-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.accordion-item.active {
+  box-shadow: 0 10px 30px rgba(26, 138, 138, 0.2);
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: linear-gradient(90deg, transparent 0%, rgba(26, 138, 138, 0.05) 100%);
+}
+
+.accordion-header:hover {
+  background: linear-gradient(90deg, transparent 0%, rgba(26, 138, 138, 0.1) 100%);
+}
+
+.accordion-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26, 138, 138, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.accordion-title {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  flex: 1;
+}
+
+.accordion-toggle {
+  width: 40px;
+  height: 40px;
+  background: rgba(26, 138, 138, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #1a8a8a;
+  transition: all 0.3s ease;
+}
+
+.accordion-item.active .accordion-toggle {
+  background: #1a8a8a;
+  color: white;
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 30px;
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 300px;
+  padding: 0 30px 25px 30px;
+}
+
+.accordion-text {
+  font-size: 1.1rem;
+  color: #2d3d3d;
+  line-height: 1.8;
+  padding: 20px;
+  background: rgba(26, 138, 138, 0.03);
+  border-left: 4px solid #1a8a8a;
+  border-radius: 0 8px 8px 0;
+}
+
+.highlight {
+  color: #1a8a8a;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .metrics-container {
+    padding: 50px 20px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header-icon {
+    width: 150px;
+    height: 150px;
+    font-size: 4rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .section-divider {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .accordion-header {
+    padding: 20px;
+  }
+  
+  .accordion-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .accordion-title {
+    font-size: 1.2rem;
+  }
+  
+  .accordion-toggle {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .accordion-content {
+    padding: 0 20px;
+  }
+  
+  .accordion-item.active .accordion-content {
+    padding: 0 20px 20px 20px;
+  }
+  
+  .accordion-text {
+    font-size: 1rem;
+    padding: 15px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="metrics-container">
+  <div class="section-header">
+    <div class="header-icon">📊</div>
+    <div class="header-content">
+      <h2 class="section-title">Agile Metrics and Reporting</h2>
+      <div class="section-divider"></div>
+      <p class="intro-text">
+        KPIs (Key Performance Indicators) are used to measure the performance of the team and their sprints. Each of these can also be brought up to the top and used in the planning process.
+      </p>
+    </div>
+  </div>
+  
+  <div class="instruction-box">
+    👆 Click on any metric below to expand and learn more!
+  </div>
+  
+  <div class="metrics-accordion">
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-icon">⚡</div>
+        <h3 class="accordion-title">Velocity</h3>
+        <div class="accordion-toggle">+</div>
+      </div>
+      <div class="accordion-content">
+        <p class="accordion-text">
+          Measures <span class="highlight">how much work gets done per sprint</span>. Velocity helps teams forecast future sprints and understand their capacity. Consistent velocity indicates stable team performance.
+        </p>
+      </div>
+    </div>
+    
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-icon">📈</div>
+        <h3 class="accordion-title">Predictability</h3>
+        <div class="accordion-toggle">+</div>
+      </div>
+      <div class="accordion-content">
+        <p class="accordion-text">
+          Measures <span class="highlight">how consistently the team can deliver results</span> sprint after sprint. Higher predictability means the team can reliably plan and commit to future work.
+        </p>
+      </div>
+    </div>
+    
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-icon">📊</div>
+        <h3 class="accordion-title">Burn Up/Down Charts</h3>
+        <div class="accordion-toggle">+</div>
+      </div>
+      <div class="accordion-content">
+        <p class="accordion-text">
+          Track <span class="highlight">remaining stories in a sprint</span>. Burn Down charts remove completed stories showing work remaining. Burn Up charts add completed stories showing work done. Both visualize progress toward sprint goals.
+        </p>
+      </div>
+    </div>
+    
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-icon">⏱️</div>
+        <h3 class="accordion-title">Cycle Time</h3>
+        <div class="accordion-toggle">+</div>
+      </div>
+      <div class="accordion-content">
+        <p class="accordion-text">
+          Measures <span class="highlight">how long it takes to complete each sprint cycle</span>. Shorter cycle times indicate efficient processes and faster delivery. Teams use this to identify bottlenecks and improve workflow.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const allItems = document.querySelectorAll('.accordion-item');
+  const toggle = header.querySelector('.accordion-toggle');
+  
+  // Close all other items
+  allItems.forEach(otherItem => {
+    if (otherItem !== item) {
+      otherItem.classList.remove('active');
+      otherItem.querySelector('.accordion-toggle').textContent = '+';
+    }
+  });
+  
+  // Toggle current item
+  if (item.classList.contains('active')) {
+    item.classList.remove('active');
+    toggle.textContent = '+';
+  } else {
+    item.classList.add('active');
+    toggle.textContent = '−';
+  }
+}
+</script>
+</body>
+</html>
