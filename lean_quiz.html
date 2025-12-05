@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.quiz-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.quiz-subtitle {
+  font-size: 1.1rem;
+  color: #5a7070;
+  line-height: 1.6;
+}
+
+.quiz-box {
+  background: white;
+  padding: 50px 45px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.question-counter {
+  font-size: 1rem;
+  color: #1a8a8a;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 35px;
+  line-height: 1.5;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.option {
+  background: #f8f9fa;
+  padding: 20px 25px;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  position: relative;
+}
+
+.option:hover {
+  background: #e0f2fe;
+  border-color: #1a8a8a;
+  transform: translateX(5px);
+}
+
+.option.selected {
+  background: #bae6fd;
+  border-color: #1a8a8a;
+}
+
+.option.correct {
+  background: #d1fae5;
+  border-color: #10b981;
+  animation: correctPulse 0.5s ease;
+}
+
+.option.incorrect {
+  background: #fee2e2;
+  border-color: #ef4444;
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.option-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option.correct .option-icon,
+.option.incorrect .option-icon {
+  opacity: 1;
+}
+
+.feedback {
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback.correct {
+  background: #d1fae5;
+  color: #065f46;
+  border: 2px solid #10b981;
+}
+
+.feedback.incorrect {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 2px solid #ef4444;
+}
+
+.quiz-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.btn.show {
+  display: inline-block;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.results {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.results.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.results-score {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1a8a8a;
+  margin-bottom: 20px;
+}
+
+.results-message {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.results-detail {
+  font-size: 1.1rem;
+  color: #5a7070;
+  margin-bottom: 30px;
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 40px 20px;
+  }
+  
+  .quiz-title {
+    font-size: 2rem;
+  }
+  
+  .quiz-box {
+    padding: 35px 25px;
+  }
+  
+  .question-text {
+    font-size: 1.3rem;
+  }
+  
+  .option {
+    padding: 18px 20px;
+    font-size: 1rem;
+  }
+  
+  .results-score {
+    font-size: 3rem;
+  }
+  
+  .results-message {
+    font-size: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h2 class="quiz-title">Lean Principles Quiz</h2>
+    <p class="quiz-subtitle">Test your knowledge of Lean methodology, principles, and waste elimination</p>
+  </div>
+  
+  <div class="quiz-box">
+    <div id="quiz-content">
+      <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">10</span></div>
+      <div class="question-text" id="question-text"></div>
+      
+      <div class="options" id="options"></div>
+      
+      <div class="feedback" id="feedback"></div>
+      
+      <div class="quiz-buttons">
+        <button class="btn btn-submit show" id="submit-btn">Submit Answer</button>
+        <button class="btn btn-next" id="next-btn">Next Question</button>
+      </div>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="results-score" id="score"></div>
+      <div class="results-message" id="results-message"></div>
+      <div class="results-detail" id="results-detail"></div>
+      <button class="btn-restart" onclick="restartQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const quizData = [
+  {
+    question: "Who developed the Toyota Production System that Lean is based on?",
+    options: ["Henry Ford", "Taiichi Ohno", "Sakichi Toyoda", "Eiji Toyoda"],
+    correct: 1,
+    explanation: "Taiichi Ohno, Chief Engineer at Toyota, developed the Toyota Production System (TPS) and identified the original seven wastes."
+  },
+  {
+    question: "What is the first principle of Lean Thinking?",
+    options: ["Create Flow", "Define Value", "Establish Pull", "Pursue Perfection"],
+    correct: 1,
+    explanation: "Define Value is the first principle - understanding what creates value from the customer's perspective."
+  },
+  {
+    question: "What does DOWNTIME stand for in Lean waste elimination?",
+    options: [
+      "Defects, Overproduction, Waiting, Non-Utilized Talent, Transportation, Inventory, Motion, Extra Processing",
+      "Delays, Orders, Waste, Needs, Time, Inventory, Motion, Errors",
+      "Design, Operations, Work, Need, Transport, Items, Materials, Equipment",
+      "Defects, Orders, Work, Navigation, Tasks, Items, Motion, Equipment"
+    ],
+    correct: 0,
+    explanation: "DOWNTIME represents the 8 types of waste: Defects, Overproduction, Waiting, Non-Utilized Talent, Transportation, Inventory, Motion, and Extra Processing."
+  },
+  {
+    question: "In what year did Henry Ford create flow production at Highland Park, Michigan?",
+    options: ["1908", "1913", "1918", "1950"],
+    correct: 1,
+    explanation: "Henry Ford created flow production in 1913 at Highland Park, Michigan, revolutionizing manufacturing."
+  },
+  {
+    question: "What does Value Stream Mapping help identify?",
+    options: [
+      "Employee performance metrics",
+      "Customer satisfaction scores",
+      "Waste and bottlenecks in processes",
+      "Product pricing strategies"
+    ],
+    correct: 2,
+    explanation: "Value Stream Mapping is a visual tool that helps teams identify waste and bottlenecks in the process of delivering value to customers."
+  },
+  {
+    question: "Which Lean principle involves letting customer demand pull products through the process?",
+    options: ["Define Value", "Create Flow", "Establish Pull", "Map Value Stream"],
+    correct: 2,
+    explanation: "Establish Pull means letting customer demand pull products through the process rather than pushing based on forecasts."
+  },
+  {
+    question: "What type of waste involves producing more than needed or before it's needed?",
+    options: ["Defects", "Overproduction", "Waiting", "Inventory"],
+    correct: 1,
+    explanation: "Overproduction is making more than needed or before it's needed, and is considered one of the worst wastes."
+  },
+  {
+    question: "When was the term 'Lean' officially coined?",
+    options: ["1913", "1950", "1973", "1990"],
+    correct: 3,
+    explanation: "The term 'lean' was coined in 1990 in the book 'The Machine That Changed the World'."
+  },
+  {
+    question: "Which step in Value Stream Mapping comes AFTER identifying waste?",
+    options: [
+      "Identify the Process",
+      "Map Current State",
+      "Design Future State",
+      "Implement Changes"
+    ],
+    correct: 2,
+    explanation: "After identifying waste, the next step is to Design Future State - creating an improved map that eliminates waste and optimizes flow."
+  },
+  {
+    question: "What is the 8th waste that was added to the original 7 wastes in the 1990s?",
+    options: [
+      "Extra Processing",
+      "Non-Utilized Talent",
+      "Transportation",
+      "Defects"
+    ],
+    correct: 1,
+    explanation: "Non-Utilized Talent (underusing people's skills, knowledge, and abilities) was added as the 8th waste in the 1990s when TPS was adopted in the Western world."
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selectedOption = null;
+
+function loadQuestion() {
+  const question = quizData[currentQuestion];
+  document.getElementById('current-question').textContent = currentQuestion + 1;
+  document.getElementById('total-questions').textContent = quizData.length;
+  document.getElementById('question-text').textContent = question.question;
+  
+  const optionsContainer = document.getElementById('options');
+  optionsContainer.innerHTML = '';
+  
+  question.options.forEach((option, index) => {
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    optionDiv.innerHTML = `${option}<span class="option-icon"></span>`;
+    optionDiv.onclick = () => selectOption(index);
+    optionsContainer.appendChild(optionDiv);
+  });
+  
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('submit-btn').classList.add('show');
+  document.getElementById('next-btn').classList.remove('show');
+  document.getElementById('submit-btn').disabled = true;
+  selectedOption = null;
+}
+
+function selectOption(index) {
+  if (document.querySelector('.option.correct') || document.querySelector('.option.incorrect')) {
+    return;
+  }
+  
+  selectedOption = index;
+  document.querySelectorAll('.option').forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === index) {
+      opt.classList.add('selected');
+    }
+  });
+  document.getElementById('submit-btn').disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedOption === null) return;
+  
+  const question = quizData[currentQuestion];
+  const options = document.querySelectorAll('.option');
+  const feedback = document.getElementById('feedback');
+  
+  options.forEach((opt, index) => {
+    opt.style.cursor = 'default';
+    opt.onclick = null;
+    
+    if (index === question.correct) {
+      opt.classList.add('correct');
+      opt.querySelector('.option-icon').textContent = '✓';
+    } else if (index === selectedOption) {
+      opt.classList.add('incorrect');
+      opt.querySelector('.option-icon').textContent = '✗';
+    }
+  });
+  
+  if (selectedOption === question.correct) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+  } else {
+    feedback.className = 'feedback incorrect show';
+    feedback.innerHTML = `<strong>Not quite.</strong> ${question.explanation}`;
+  }
+  
+  document.getElementById('submit-btn').classList.remove('show');
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-content').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  
+  const percentage = Math.round((score / quizData.length) * 100);
+  document.getElementById('score').textContent = `${percentage}%`;
+  document.getElementById('results-detail').textContent = `You got ${score} out of ${quizData.length} questions correct.`;
+  
+  let message = '';
+  if (percentage === 100) {
+    message = '🎉 Perfect! You\'re a Lean expert!';
+  } else if (percentage >= 80) {
+    message = '👏 Excellent work! You know your Lean principles!';
+  } else if (percentage >= 60) {
+    message = '👍 Good job! You have a solid understanding of Lean.';
+  } else {
+    message = '📚 Keep learning! Review the Lean principles and try again.';
+  }
+  
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  selectedOption = null;
+  document.getElementById('quiz-content').style.display = 'block';
+  document.getElementById('results').classList.remove('show');
+  loadQuestion();
+}
+
+document.getElementById('submit-btn').onclick = submitAnswer;
+document.getElementById('next-btn').onclick = nextQuestion;
+
+// Load first question
+loadQuestion();
+</script>
+</body>
+</html>
