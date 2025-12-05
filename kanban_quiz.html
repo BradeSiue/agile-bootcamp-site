@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.quiz-title {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.quiz-subtitle {
+  font-size: 1.1rem;
+  color: white;
+  line-height: 1.6;
+}
+
+.quiz-box {
+  background: white;
+  padding: 50px 45px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.question-counter {
+  font-size: 1rem;
+  color: #1a8a8a;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 35px;
+  line-height: 1.5;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.option {
+  background: #f8f9fa;
+  padding: 20px 25px;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  color: #2d3d3d;
+  position: relative;
+}
+
+.option:hover {
+  background: #e0f2fe;
+  border-color: #1a8a8a;
+  transform: translateX(5px);
+}
+
+.option.selected {
+  background: #bae6fd;
+  border-color: #1a8a8a;
+}
+
+.option.correct {
+  background: #d1fae5;
+  border-color: #10b981;
+  animation: correctPulse 0.5s ease;
+}
+
+.option.incorrect {
+  background: #fee2e2;
+  border-color: #ef4444;
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.option-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option.correct .option-icon,
+.option.incorrect .option-icon {
+  opacity: 1;
+}
+
+.feedback {
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+  display: none;
+}
+
+.feedback.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback.correct {
+  background: #d1fae5;
+  color: #065f46;
+  border: 2px solid #10b981;
+}
+
+.feedback.incorrect {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 2px solid #ef4444;
+}
+
+.quiz-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.btn.show {
+  display: inline-block;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.results {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.results.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.results-score {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1a8a8a;
+  margin-bottom: 20px;
+}
+
+.results-message {
+  font-size: 1.5rem;
+  color: #0f6868;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.results-detail {
+  font-size: 1.1rem;
+  color: #5a7070;
+  margin-bottom: 30px;
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 138, 138, 0.3);
+}
+
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 40px 20px;
+  }
+  
+  .quiz-title {
+    font-size: 2rem;
+  }
+  
+  .quiz-box {
+    padding: 35px 25px;
+  }
+  
+  .question-text {
+    font-size: 1.3rem;
+  }
+  
+  .option {
+    padding: 18px 20px;
+    font-size: 1rem;
+  }
+  
+  .results-score {
+    font-size: 3rem;
+  }
+  
+  .results-message {
+    font-size: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h2 class="quiz-title">Kanban Method Quiz</h2>
+    <p class="quiz-subtitle">Test your knowledge of Kanban boards, WIP limits, metrics, and flow management</p>
+  </div>
+  
+  <div class="quiz-box">
+    <div id="quiz-content">
+      <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">10</span></div>
+      <div class="question-text" id="question-text"></div>
+      
+      <div class="options" id="options"></div>
+      
+      <div class="feedback" id="feedback"></div>
+      
+      <div class="quiz-buttons">
+        <button class="btn btn-submit show" id="submit-btn">Submit Answer</button>
+        <button class="btn btn-next" id="next-btn">Next Question</button>
+      </div>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="results-score" id="score"></div>
+      <div class="results-message" id="results-message"></div>
+      <div class="results-detail" id="results-detail"></div>
+      <button class="btn-restart" onclick="restartQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const quizData = [
+  {
+    question: "What does 'Kanban' mean in Japanese?",
+    options: ["Workflow", "Signboard", "Visual board", "Task card"],
+    correct: 1,
+    explanation: "Kanban means 'signboard' in Japanese, reflecting its visual nature as a tool for tracking work."
+  },
+  {
+    question: "What is the main purpose of WIP (Work-In-Progress) limits in Kanban?",
+    options: [
+      "To increase the number of tasks the team can work on",
+      "To prevent the team from doing too many tasks at once",
+      "To track how many tasks are completed",
+      "To measure team velocity"
+    ],
+    correct: 1,
+    explanation: "Kanban uses Work-In-Progress limits to prevent the team from doing too many tasks at once, which helps maintain focus and flow."
+  },
+  {
+    question: "In Kanban, what does Lead Time measure?",
+    options: [
+      "The time a task spends being actively worked on",
+      "The number of tasks completed per week",
+      "The total time from 'To Do' to 'Done'",
+      "The time spent in the review stage"
+    ],
+    correct: 2,
+    explanation: "Lead Time is the total time it takes for a task to move from 'To Do' to 'Done', measuring the complete journey through the workflow."
+  },
+  {
+    question: "What does Cycle Time measure in Kanban?",
+    options: [
+      "Total time from start to finish",
+      "Time spent in each column",
+      "Time a task spends actively being worked on ('In Progress' to 'Done')",
+      "Time between sprints"
+    ],
+    correct: 2,
+    explanation: "Cycle Time is the time a task spends actively being worked on, from 'In Progress' to 'Done', measuring active work time."
+  },
+  {
+    question: "What is Throughput in Kanban?",
+    options: [
+      "The maximum WIP limit allowed",
+      "The number of work items completed in a specific time period",
+      "The average time to complete a task",
+      "The number of columns on the board"
+    ],
+    correct: 1,
+    explanation: "Throughput is the number of work items completed in a specific time period, measuring team productivity."
+  },
+  {
+    question: "What does a Cumulative Flow Diagram (CFD) show?",
+    options: [
+      "Individual task progress",
+      "Team member workload",
+      "How work items move through different stages over time",
+      "Sprint velocity"
+    ],
+    correct: 2,
+    explanation: "A Cumulative Flow Diagram shows how work items move through different stages of the workflow over time, helping teams understand flow efficiency and bottlenecks."
+  },
+  {
+    question: "If the 'In Progress' column has a WIP limit of 3, what happens?",
+    options: [
+      "Only 3 people can work on tasks",
+      "The team cannot start a new task until one is finished",
+      "Tasks must be completed in 3 days",
+      "The team can have 3 tasks in each column"
+    ],
+    correct: 1,
+    explanation: "When the WIP limit is reached (3 tasks in 'In Progress'), the team cannot start a new task until one is finished, preventing overload."
+  },
+  {
+    question: "What is one benefit of Kanban's visual workflow?",
+    options: [
+      "It eliminates the need for meetings",
+      "It makes the entire workflow visible and helps identify bottlenecks",
+      "It automatically assigns tasks to team members",
+      "It generates reports automatically"
+    ],
+    correct: 1,
+    explanation: "Kanban makes the entire workflow visible, which helps the team understand bottlenecks and track progress in real time."
+  },
+  {
+    question: "What does a Cumulative Flow Diagram help teams identify?",
+    options: [
+      "Individual performance metrics",
+      "Flow issues, bottlenecks, and long-term trends",
+      "Budget allocation",
+      "Customer satisfaction scores"
+    ],
+    correct: 1,
+    explanation: "A CFD helps teams spot flow issues early, reveals long-term trends like increasing lead times, and makes bottlenecks visible."
+  },
+  {
+    question: "In Kanban, what emphasizes continuous delivery?",
+    options: [
+      "Fixed sprint cycles",
+      "Visualizing work and limiting WIP",
+      "Daily standup meetings",
+      "Retrospectives"
+    ],
+    correct: 1,
+    explanation: "Kanban emphasizes visualizing work and continuous delivery by managing flow and limiting work in progress (WIP)."
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selectedOption = null;
+
+function loadQuestion() {
+  const question = quizData[currentQuestion];
+  document.getElementById('current-question').textContent = currentQuestion + 1;
+  document.getElementById('total-questions').textContent = quizData.length;
+  document.getElementById('question-text').textContent = question.question;
+  
+  const optionsContainer = document.getElementById('options');
+  optionsContainer.innerHTML = '';
+  
+  question.options.forEach((option, index) => {
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    optionDiv.innerHTML = `${option}<span class="option-icon"></span>`;
+    optionDiv.onclick = () => selectOption(index);
+    optionsContainer.appendChild(optionDiv);
+  });
+  
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('submit-btn').classList.add('show');
+  document.getElementById('next-btn').classList.remove('show');
+  document.getElementById('submit-btn').disabled = true;
+  selectedOption = null;
+}
+
+function selectOption(index) {
+  if (document.querySelector('.option.correct') || document.querySelector('.option.incorrect')) {
+    return;
+  }
+  
+  selectedOption = index;
+  document.querySelectorAll('.option').forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === index) {
+      opt.classList.add('selected');
+    }
+  });
+  document.getElementById('submit-btn').disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedOption === null) return;
+  
+  const question = quizData[currentQuestion];
+  const options = document.querySelectorAll('.option');
+  const feedback = document.getElementById('feedback');
+  
+  options.forEach((opt, index) => {
+    opt.style.cursor = 'default';
+    opt.onclick = null;
+    
+    if (index === question.correct) {
+      opt.classList.add('correct');
+      opt.querySelector('.option-icon').textContent = '✓';
+    } else if (index === selectedOption) {
+      opt.classList.add('incorrect');
+      opt.querySelector('.option-icon').textContent = '✗';
+    }
+  });
+  
+  if (selectedOption === question.correct) {
+    score++;
+    feedback.className = 'feedback correct show';
+    feedback.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+  } else {
+    feedback.className = 'feedback incorrect show';
+    feedback.innerHTML = `<strong>Not quite.</strong> ${question.explanation}`;
+  }
+  
+  document.getElementById('submit-btn').classList.remove('show');
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-content').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  
+  const percentage = Math.round((score / quizData.length) * 100);
+  document.getElementById('score').textContent = `${percentage}%`;
+  document.getElementById('results-detail').textContent = `You got ${score} out of ${quizData.length} questions correct.`;
+  
+  let message = '';
+  if (percentage === 100) {
+    message = '🎉 Perfect! You\'re a Kanban master!';
+  } else if (percentage >= 80) {
+    message = '👏 Excellent work! You understand Kanban well!';
+  } else if (percentage >= 60) {
+    message = '👍 Good job! You have a solid grasp of Kanban.';
+  } else {
+    message = '📚 Keep learning! Review the Kanban Method and try again.';
+  }
+  
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  selectedOption = null;
+  document.getElementById('quiz-content').style.display = 'block';
+  document.getElementById('results').classList.remove('show');
+  loadQuestion();
+}
+
+document.getElementById('submit-btn').onclick = submitAnswer;
+document.getElementById('next-btn').onclick = nextQuestion;
+
+// Load first question
+loadQuestion();
+</script>
+</body>
+</html>
