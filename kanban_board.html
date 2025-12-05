@@ -53,8 +53,8 @@ body {
   margin: 0 auto;
 }
 
-/* Visual Example Section */
-.visual-example {
+/* Interactive Board */
+.board-container {
   background: white;
   padding: 40px;
   border-radius: 16px;
@@ -62,97 +62,98 @@ body {
   margin-bottom: 40px;
 }
 
-.example-title {
-  font-size: 1.5rem;
-  color: #0f6868;
-  font-weight: 700;
-  margin-bottom: 30px;
+.board-instruction {
   text-align: center;
+  padding: 15px;
+  background: rgba(26, 138, 138, 0.1);
+  border-radius: 8px;
+  color: #0f6868;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  font-weight: 500;
 }
 
-.board-visual {
+.board-instruction-icon {
+  font-size: 1.5rem;
+  margin-right: 8px;
+}
+
+.kanban-board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-bottom: 30px;
 }
 
-@media (max-width: 1024px) {
-  .board-visual {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-  }
-}
-
-@media (max-width: 768px) {
-  .board-visual {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    font-size: 0.85rem;
-  }
-  
-  .column-label {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-  
-  .column-desc {
-    font-size: 0.75rem;
-  }
-  
-  .sample-card {
-    font-size: 0.75rem;
-    padding: 8px;
-  }
-}
-
-.column-visual {
-  text-align: center;
-}
-
-.column-box {
+.column {
   background: #f8f9fa;
   border-radius: 12px;
   padding: 20px 15px;
-  min-height: 300px;
-  position: relative;
+  min-height: 400px;
+  transition: background 0.3s ease;
 }
 
-.column-label {
+.column.drag-over {
+  background: rgba(26, 138, 138, 0.08);
+  border: 2px dashed #1a8a8a;
+}
+
+.column-header {
   font-size: 1.2rem;
   font-weight: 700;
   color: white;
-  padding: 15px;
+  padding: 18px 15px;
   border-radius: 8px;
   margin-bottom: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.todo-label { background: linear-gradient(135deg, #10b981, #059669); }
-.progress-label { background: linear-gradient(135deg, #f59e0b, #d97706); }
-.review-label { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-.done-label { background: linear-gradient(135deg, #1a8a8a, #2dd4bf); }
+.todo-header { background: linear-gradient(135deg, #10b981, #059669); }
+.progress-header { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.review-header { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.done-header { background: linear-gradient(135deg, #1a8a8a, #2dd4bf); }
+
+.column-title {
+  font-size: 1.2rem;
+}
 
 .column-desc {
-  font-size: 0.9rem;
-  color: #5a7070;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.sample-card {
-  background: white;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-left: 3px solid #1a8a8a;
   font-size: 0.85rem;
-  text-align: left;
-  color: #2d3d3d;
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
 }
 
-.arrow-container {
+.task-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #1a8a8a;
+  cursor: move;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(26, 138, 138, 0.2);
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.task-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d3d3d;
+}
+
+.arrow-flow {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -162,58 +163,18 @@ body {
   color: #1a8a8a;
 }
 
+.arrow-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #5a7070;
+}
+
 /* Key Concepts Section */
 .concepts-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
   margin-bottom: 40px;
-}
-
-@media (max-width: 1024px) {
-  .concepts-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  
-  .concept-card {
-    padding: 25px;
-  }
-  
-  .concept-icon {
-    font-size: 2rem;
-  }
-  
-  .concept-title {
-    font-size: 1.1rem;
-  }
-  
-  .concept-text {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .concepts-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-  }
-  
-  .concept-card {
-    padding: 20px;
-  }
-  
-  .concept-icon {
-    font-size: 1.8rem;
-  }
-  
-  .concept-title {
-    font-size: 1rem;
-  }
-  
-  .concept-text {
-    font-size: 0.85rem;
-  }
 }
 
 .concept-card {
@@ -246,92 +207,52 @@ body {
   line-height: 1.6;
 }
 
-/* Simple Interactive Demo */
-.interactive-demo {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
-}
-
-.demo-title {
-  font-size: 1.5rem;
-  color: #0f6868;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.demo-instruction {
-  text-align: center;
-  padding: 15px;
-  background: rgba(26, 138, 138, 0.1);
-  border-radius: 8px;
-  color: #0f6868;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
-}
-
-.demo-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-}
-
-.demo-column {
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 15px;
-  min-height: 250px;
-}
-
-.demo-column-header {
-  font-size: 0.95rem;
-  font-weight: 700;
-  padding: 10px;
-  border-radius: 6px;
-  color: white;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.demo-card {
-  background: white;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  border-left: 3px solid #1a8a8a;
-  font-size: 0.85rem;
-  cursor: move;
-  transition: transform 0.2s ease;
-  font-weight: 500;
-}
-
-.demo-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 3px 8px rgba(26, 138, 138, 0.2);
-}
-
-.demo-card.dragging {
-  opacity: 0.5;
-}
-
 @media (max-width: 1024px) {
-  .demo-board {
+  .kanban-board,
+  .concepts-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 15px;
   }
   
-  .demo-column-header {
-    font-size: 0.85rem;
-    padding: 8px;
+  .column {
+    padding: 15px 12px;
   }
   
-  .demo-card {
+  .column-header {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .column-title {
+    font-size: 1rem;
+  }
+  
+  .column-desc {
     font-size: 0.75rem;
-    padding: 8px;
+  }
+  
+  .task-card {
+    padding: 12px;
+  }
+  
+  .task-title {
+    font-size: 0.85rem;
+  }
+  
+  .concept-card {
+    padding: 25px;
+  }
+  
+  .concept-icon {
+    font-size: 2rem;
+  }
+  
+  .concept-title {
+    font-size: 1.1rem;
+  }
+  
+  .concept-text {
+    font-size: 0.9rem;
   }
 }
 
@@ -340,33 +261,69 @@ body {
     padding: 40px 20px;
   }
   
-  .visual-example,
-  .interactive-demo {
+  .board-container {
     padding: 25px;
   }
   
-  .demo-board {
+  .kanban-board,
+  .concepts-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 10px;
   }
   
-  .demo-column-header {
-    font-size: 0.75rem;
-    padding: 6px;
+  .column {
+    padding: 12px 8px;
+    min-height: 300px;
   }
   
-  .demo-card {
+  .column-header {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+  
+  .column-title {
+    font-size: 0.85rem;
+  }
+  
+  .column-desc {
     font-size: 0.7rem;
-    padding: 6px;
+  }
+  
+  .task-card {
+    padding: 10px;
+  }
+  
+  .task-title {
+    font-size: 0.75rem;
   }
   
   .section-title {
     font-size: 2rem;
   }
   
-  .arrow-container {
+  .arrow-flow {
     font-size: 1.5rem;
     gap: 15px;
+  }
+  
+  .arrow-text {
+    font-size: 0.9rem;
+  }
+  
+  .concept-card {
+    padding: 20px;
+  }
+  
+  .concept-icon {
+    font-size: 1.8rem;
+  }
+  
+  .concept-title {
+    font-size: 1rem;
+  }
+  
+  .concept-text {
+    font-size: 0.85rem;
   }
 }
 </style>
@@ -379,55 +336,81 @@ body {
       A Kanban board is a visual tool used to track work items as they move through different stages of the workflow.
     </p>
     <p class="intro-text">
-      Boards can be physical (sticky notes) or digital. The key is visualizing work and limiting work in progress to improve flow.
+      Boards can be physical (sticky notes) or digital (Asana, Trello, Jira, Microsoft Planner). The key is visualizing work and limiting work in progress to improve flow.
     </p>
   </div>
   
-  <!-- Visual Example -->
-  <div class="visual-example">
-    <div class="board-visual">
-      <div class="column-visual">
-        <div class="column-box">
-          <div class="column-label todo-label">📋 To Do</div>
+  <!-- Interactive Kanban Board -->
+  <div class="board-container">
+    <div class="board-instruction">
+      <span class="board-instruction-icon">👆</span>
+      <strong>Try it yourself!</strong> Drag and drop cards between columns to see how work flows through a Kanban system from left to right.
+    </div>
+    
+    <div class="kanban-board">
+      <div class="column">
+        <div class="column-header todo-header">
+          <div class="column-title">📋 To Do</div>
           <div class="column-desc">Work not yet started</div>
-          <div class="sample-card">User Story 1</div>
-          <div class="sample-card">User Story 2</div>
-          <div class="sample-card">User Story 3</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Create FAQ page</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Add case studies</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Design quiz module</div>
         </div>
       </div>
       
-      <div class="column-visual">
-        <div class="column-box">
-          <div class="column-label progress-label">⚡ In Progress</div>
+      <div class="column">
+        <div class="column-header progress-header">
+          <div class="column-title">⚡ In Progress</div>
           <div class="column-desc">Work being actively done</div>
-          <div class="sample-card">User Story 4</div>
-          <div class="sample-card">User Story 5</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Build Kanban board</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Write Lean content</div>
         </div>
       </div>
       
-      <div class="column-visual">
-        <div class="column-box">
-          <div class="column-label review-label">👁️ Review / Testing</div>
+      <div class="column">
+        <div class="column-header review-header">
+          <div class="column-title">👁️ Review / Testing</div>
           <div class="column-desc">Optional stage depending on workflow</div>
-          <div class="sample-card">User Story 6</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Test Agile principles</div>
         </div>
       </div>
       
-      <div class="column-visual">
-        <div class="column-box">
-          <div class="column-label done-label">✅ Done</div>
+      <div class="column">
+        <div class="column-header done-header">
+          <div class="column-title">✅ Done</div>
           <div class="column-desc">Completed tasks</div>
-          <div class="sample-card">User Story 7</div>
-          <div class="sample-card">User Story 8</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Complete Scrum page</div>
+        </div>
+        <div class="task-card" draggable="true">
+          <div class="task-title">Launch home page</div>
         </div>
       </div>
     </div>
     
-    <div class="arrow-container">
+    <div class="arrow-flow">
       <span>→</span>
-      <span style="color: #5a7070; font-size: 1.1rem; font-weight: 600;">Work flows from LEFT to RIGHT</span>
+      <span class="arrow-text">Work flows from LEFT to RIGHT</span>
       <span>→</span>
     </div>
+  </div>
+  
+  <!-- Kanban Principles Header -->
+  <div class="section-header" style="margin-bottom: 30px; margin-top: 40px;">
+    <h2 class="section-title" style="font-size: 2rem;">Kanban Principles</h2>
   </div>
   
   <!-- Key Concepts -->
@@ -456,56 +439,23 @@ body {
       <p class="concept-text">Track lead time and cycle time to understand how quickly work moves and use those insights to improve.</p>
     </div>
   </div>
-  
-  <!-- Simple Interactive Demo -->
-  <div class="interactive-demo">
-    <h3 class="demo-title">Try It: Simple Kanban Demo</h3>
-    <div class="demo-instruction">
-      👆 <strong>Drag and drop cards</strong> between columns to see how work moves through the workflow
-    </div>
-    
-    <div class="demo-board">
-      <div class="demo-column">
-        <div class="demo-column-header todo-label">📋 To Do</div>
-        <div class="demo-card" draggable="true">Create FAQ page</div>
-        <div class="demo-card" draggable="true">Add case studies</div>
-        <div class="demo-card" draggable="true">Design quiz module</div>
-      </div>
-      
-      <div class="demo-column">
-        <div class="demo-column-header progress-label">⚡ In Progress</div>
-        <div class="demo-card" draggable="true">Build Kanban board</div>
-        <div class="demo-card" draggable="true">Write Lean content</div>
-      </div>
-      
-      <div class="demo-column">
-        <div class="demo-column-header review-label">👁️ Review</div>
-        <div class="demo-card" draggable="true">Test Agile principles</div>
-      </div>
-      
-      <div class="demo-column">
-        <div class="demo-column-header done-label">✅ Done</div>
-        <div class="demo-card" draggable="true">Complete Scrum page</div>
-        <div class="demo-card" draggable="true">Launch home page</div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
 let draggedElement = null;
 
-const demoCards = document.querySelectorAll('.demo-card');
-const demoColumns = document.querySelectorAll('.demo-column');
+const taskCards = document.querySelectorAll('.task-card');
+const columns = document.querySelectorAll('.column');
 
-demoCards.forEach(card => {
+taskCards.forEach(card => {
   card.addEventListener('dragstart', handleDragStart);
   card.addEventListener('dragend', handleDragEnd);
 });
 
-demoColumns.forEach(column => {
+columns.forEach(column => {
   column.addEventListener('dragover', handleDragOver);
   column.addEventListener('drop', handleDrop);
+  column.addEventListener('dragleave', handleDragLeave);
 });
 
 function handleDragStart(e) {
@@ -516,6 +466,9 @@ function handleDragStart(e) {
 
 function handleDragEnd(e) {
   this.classList.remove('dragging');
+  columns.forEach(column => {
+    column.classList.remove('drag-over');
+  });
 }
 
 function handleDragOver(e) {
@@ -523,13 +476,20 @@ function handleDragOver(e) {
     e.preventDefault();
   }
   e.dataTransfer.dropEffect = 'move';
+  this.classList.add('drag-over');
   return false;
+}
+
+function handleDragLeave(e) {
+  this.classList.remove('drag-over');
 }
 
 function handleDrop(e) {
   if (e.stopPropagation) {
-    e.stopPropagation();
+    e.stopPagation();
   }
+  
+  this.classList.remove('drag-over');
   
   if (draggedElement && draggedElement !== this) {
     this.appendChild(draggedElement);
