@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.waste-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-subtitle {
+  font-size: 1.5rem;
+  color: #0f6868;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.section-divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #1a8a8a, #2dd4bf);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.waste-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.waste-card {
+  background: transparent;
+  perspective: 1000px;
+  height: 250px;
+  opacity: 0;
+  animation: popIn 0.5s ease forwards;
+}
+
+.waste-card:nth-child(1) { animation-delay: 0.1s; }
+.waste-card:nth-child(2) { animation-delay: 0.15s; }
+.waste-card:nth-child(3) { animation-delay: 0.2s; }
+.waste-card:nth-child(4) { animation-delay: 0.25s; }
+.waste-card:nth-child(5) { animation-delay: 0.3s; }
+.waste-card:nth-child(6) { animation-delay: 0.35s; }
+.waste-card:nth-child(7) { animation-delay: 0.4s; }
+.waste-card:nth-child(8) { animation-delay: 0.45s; }
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.waste-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.waste-card:hover .waste-card-inner {
+  transform: rotateY(180deg);
+}
+
+.waste-card-front,
+.waste-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 30px 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.waste-card-front {
+  background: white;
+}
+
+.waste-card-back {
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.flip-hint {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+.waste-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1a8a8a, #2dd4bf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 15px;
+  box-shadow: 0 3px 12px rgba(26, 138, 138, 0.3);
+}
+
+.waste-title {
+  font-size: 1.2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.waste-description {
+  font-size: 0.95rem;
+  color: #5a7070;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .waste-container {
+    padding: 50px 20px;
+  }
+  
+  .section-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .waste-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .waste-card {
+    height: 220px;
+  }
+  
+  .waste-card-front,
+  .waste-card-back {
+    padding: 25px 20px;
+  }
+  
+  .waste-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 1.6rem;
+  }
+  
+  .waste-title {
+    font-size: 1.1rem;
+  }
+  
+  .flip-hint {
+    font-size: 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="waste-container">
+  <div class="section-header">
+    <p class="section-subtitle">The 8 Types of Waste in Lean (DOWNTIME)</p>
+    <div class="section-divider"></div>
+  </div>
+  
+  <div class="waste-grid">
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">⏱️</div>
+          <h3 class="waste-title">Defects</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Defects</h3>
+          <p class="waste-description" style="color: white;">Errors requiring rework, fixing, or scrapping of products</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">📦</div>
+          <h3 class="waste-title">Overproduction</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Overproduction</h3>
+          <p class="waste-description" style="color: white;">Making more than needed or before it's needed</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">⏳</div>
+          <h3 class="waste-title">Waiting</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Waiting</h3>
+          <p class="waste-description" style="color: white;">Idle time when work isn't moving forward</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">🧠</div>
+          <h3 class="waste-title">Non-Utilized Talent</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Non-Utilized Talent</h3>
+          <p class="waste-description" style="color: white;">Underusing people's skills, knowledge, and abilities</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">🚚</div>
+          <h3 class="waste-title">Transportation</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Transportation</h3>
+          <p class="waste-description" style="color: white;">Unnecessary movement of materials or information</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">📊</div>
+          <h3 class="waste-title">Inventory</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Inventory</h3>
+          <p class="waste-description" style="color: white;">Excess materials, work-in-progress, or finished goods</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">🏃</div>
+          <h3 class="waste-title">Motion</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Motion</h3>
+          <p class="waste-description" style="color: white;">Unnecessary movement of people or equipment</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="waste-card">
+      <div class="waste-card-inner">
+        <div class="waste-card-front">
+          <div class="waste-icon">⚙️</div>
+          <h3 class="waste-title">Extra Processing</h3>
+          <p class="flip-hint">Hover to flip</p>
+        </div>
+        <div class="waste-card-back">
+          <h3 class="waste-title" style="color: white; margin-bottom: 15px;">Extra Processing</h3>
+          <p class="waste-description" style="color: white;">Doing more work than required by the customer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
