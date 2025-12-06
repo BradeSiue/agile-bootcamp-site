@@ -212,6 +212,42 @@ body {
   position: relative;
 }
 
+.choice-text {
+  margin-bottom: 12px;
+}
+
+.choice-consequences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.consequence-tag {
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.consequence-tag.morale {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.consequence-tag.value {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.consequence-tag.velocity {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .choice-btn:hover {
   border-color: #1a8a8a;
   transform: translateX(10px);
@@ -536,28 +572,31 @@ const scenarios = {
       choices: [
         {
           text: 'Prioritize the CEO\'s feature to keep leadership happy',
+          consequences: { morale: -10, value: -15, velocity: -5 },
           outcome: {
             icon: '😐',
             title: 'Leadership Happy, Users Frustrated',
-            text: 'The CEO is pleased, but user complaints increased. The team had to rush, affecting quality.',
+            text: 'The CEO is pleased, but user complaints increased 40%. The team had to rush, affecting quality and creating technical debt.',
             impact: { morale: -10, value: -15, velocity: -5 }
           }
         },
         {
           text: 'Focus on bug fixes based on user feedback data',
+          consequences: { morale: 10, value: 15, velocity: 5 },
           outcome: {
             icon: '😊',
             title: 'Users Satisfied, CEO Informed',
-            text: 'You showed the CEO data proving bug fixes provide more value. Users are happy and team morale improved.',
+            text: 'You showed the CEO data proving bug fixes provide more value. User satisfaction increased 25%. Team morale improved.',
             impact: { morale: 10, value: 15, velocity: 5 }
           }
         },
         {
           text: 'Negotiate a compromise: minimal viable feature + critical bugs',
+          consequences: { morale: 5, value: 5, velocity: 0 },
           outcome: {
             icon: '🤝',
             title: 'Balanced Approach',
-            text: 'Both sides got something. Team appreciated the balanced workload.',
+            text: 'Both sides got something. Team appreciated the balanced workload and delivered both items successfully.',
             impact: { morale: 5, value: 5, velocity: 0 }
           }
         }
@@ -570,28 +609,31 @@ const scenarios = {
       choices: [
         {
           text: 'Accept the cuts and reduce scope proportionally',
+          consequences: { morale: -5, value: -10, velocity: -10 },
           outcome: {
             icon: '📉',
             title: 'Scope Reduced',
-            text: 'You adjusted the roadmap. Stakeholders were disappointed but understood the constraints.',
+            text: 'You adjusted the roadmap. Stakeholders were disappointed but understood the constraints. Team lost key members.',
             impact: { morale: -5, value: -10, velocity: -10 }
           }
         },
         {
           text: 'Present an ROI analysis showing the cost of delays',
+          consequences: { morale: 15, value: 10, velocity: 10 },
           outcome: {
             icon: '📈',
             title: 'Budget Preserved',
-            text: 'Your data convinced finance. The team stayed intact and velocity increased.',
+            text: 'Your data convinced finance. The team stayed intact and velocity increased. Leadership respects your analytical approach.',
             impact: { morale: 15, value: 10, velocity: 10 }
           }
         },
         {
           text: 'Propose outsourcing non-critical work instead',
+          consequences: { morale: 0, value: -5, velocity: -10 },
           outcome: {
             icon: '🤔',
             title: 'Mixed Results',
-            text: 'Outsourcing saved money but created communication overhead.',
+            text: 'Outsourcing saved money but created communication overhead. Handoffs slow down delivery.',
             impact: { morale: 0, value: -5, velocity: -10 }
           }
         }
@@ -604,28 +646,31 @@ const scenarios = {
       choices: [
         {
           text: 'Add it to the current sprint immediately',
+          consequences: { morale: -20, value: -10, velocity: -15 },
           outcome: {
             icon: '😓',
             title: 'Sprint Overloaded',
-            text: 'Team is stressed and nothing got finished properly. Quality suffered.',
+            text: 'Team is stressed and nothing got finished properly. Quality suffered. Sprint goal missed completely.',
             impact: { morale: -20, value: -10, velocity: -15 }
           }
         },
         {
           text: 'Add to backlog for next sprint after proper refinement',
+          consequences: { morale: 10, value: 10, velocity: 10 },
           outcome: {
             icon: '✅',
             title: 'Proper Process Followed',
-            text: 'Client understood after explanation. Team respected the decision and maintained focus.',
+            text: 'Client understood after explanation. Team respected the decision and maintained focus. Sprint delivered successfully.',
             impact: { morale: 10, value: 10, velocity: 10 }
           }
         },
         {
           text: 'Negotiate pulling one item out to make room',
+          consequences: { morale: 0, value: 5, velocity: -5 },
           outcome: {
             icon: '⚖️',
             title: 'Trade-off Made',
-            text: 'Team accommodated the change while maintaining sprint integrity.',
+            text: 'Team accommodated the change while maintaining sprint integrity. Some context switching occurred.',
             impact: { morale: 0, value: 5, velocity: -5 }
           }
         }
@@ -638,28 +683,31 @@ const scenarios = {
       choices: [
         {
           text: 'Continue adding items as stakeholders request',
+          consequences: { morale: -15, value: -20, velocity: -15 },
           outcome: {
             icon: '😵',
             title: 'Backlog Explosion',
-            text: 'Team is paralyzed by options. Nothing valuable gets delivered.',
+            text: 'Team is paralyzed by options. Analysis paralysis sets in. Nothing valuable gets delivered. Stakeholders frustrated.',
             impact: { morale: -15, value: -20, velocity: -15 }
           }
         },
         {
           text: 'Freeze the backlog and refine top 20 items only',
+          consequences: { morale: 20, value: 15, velocity: 15 },
           outcome: {
             icon: '🎯',
             title: 'Clear Focus',
-            text: 'Team appreciated the clarity. Velocity and morale improved significantly.',
+            text: 'Team appreciated the clarity. Velocity and morale improved significantly. Delivered high-value features.',
             impact: { morale: 20, value: 15, velocity: 15 }
           }
         },
         {
           text: 'Archive items older than 6 months',
+          consequences: { morale: 10, value: 5, velocity: 5 },
           outcome: {
             icon: '🗂️',
             title: 'Backlog Cleaned',
-            text: 'Removed stale items. Team had better focus but some stakeholders were upset.',
+            text: 'Removed stale items. Team had better focus but some stakeholders were upset about "lost" ideas.',
             impact: { morale: 10, value: 5, velocity: 5 }
           }
         }
@@ -672,28 +720,31 @@ const scenarios = {
       choices: [
         {
           text: 'Release on time with known bugs',
+          consequences: { morale: -15, value: -25, velocity: -10 },
           outcome: {
             icon: '🐛',
             title: 'Buggy Release',
-            text: 'Users reported issues immediately. Customer support overwhelmed. Trust damaged.',
+            text: 'Users reported issues immediately. Customer support overwhelmed. Trust damaged. Team spent next sprint firefighting.',
             impact: { morale: -15, value: -25, velocity: -10 }
           }
         },
         {
           text: 'Delay release until bugs are fixed',
+          consequences: { morale: 10, value: 20, velocity: 5 },
           outcome: {
             icon: '✨',
             title: 'Quality First',
-            text: 'Marketing was upset but release was smooth. Users praised the stability.',
+            text: 'Marketing was upset but release was smooth. Users praised the stability. Long-term trust built.',
             impact: { morale: 10, value: 20, velocity: 5 }
           }
         },
         {
           text: 'Release with feature flags to enable gradually',
+          consequences: { morale: 15, value: 15, velocity: 10 },
           outcome: {
             icon: '🎛️',
             title: 'Smart Rollout',
-            text: 'Bugs were caught early with limited impact. Team learned valuable lesson.',
+            text: 'Bugs were caught early with limited impact. Team learned valuable lesson. Progressive delivery worked perfectly.',
             impact: { morale: 15, value: 15, velocity: 10 }
           }
         }
@@ -708,15 +759,17 @@ const scenarios = {
       choices: [
         {
           text: 'Side with the developer pushing for features',
+          consequences: { morale: -15, value: 5, velocity: -10 },
           outcome: {
             icon: '😟',
             title: 'Conflict Escalated',
-            text: 'The other developer felt unheard and morale dropped. Technical debt grew.',
+            text: 'The other developer felt unheard and morale dropped. Technical debt grew. One developer considering leaving.',
             impact: { morale: -15, value: 5, velocity: -10 }
           }
         },
         {
           text: 'Facilitate a discussion to find common ground',
+          consequences: { morale: 15, value: 10, velocity: 10 },
           outcome: {
             icon: '🤝',
             title: 'Compromise Reached',
@@ -726,10 +779,11 @@ const scenarios = {
         },
         {
           text: 'Suggest a technical spike to assess refactoring needs',
+          consequences: { morale: 10, value: 5, velocity: 0 },
           outcome: {
             icon: '🔍',
             title: 'Data-Driven Decision',
-            text: 'Spike revealed critical refactoring needs. Team made informed decision.',
+            text: 'Spike revealed critical refactoring needs. Team made informed decision based on evidence.',
             impact: { morale: 10, value: 5, velocity: 0 }
           }
         }
@@ -742,28 +796,31 @@ const scenarios = {
       choices: [
         {
           text: 'Keep all meetings as they are - they\'re important',
+          consequences: { morale: -20, value: -15, velocity: -20 },
           outcome: {
             icon: '😫',
             title: 'Team Burnout',
-            text: 'Developers are frustrated and productivity plummeted. Some are looking for other jobs.',
+            text: 'Developers are frustrated and productivity plummeted. Some are looking for other jobs. Actual work time shrinking.',
             impact: { morale: -20, value: -15, velocity: -20 }
           }
         },
         {
           text: 'Strictly time-box Daily Scrum to 15 minutes',
+          consequences: { morale: 20, value: 15, velocity: 20 },
           outcome: {
             icon: '⚡',
             title: 'Efficiency Improved',
-            text: 'Team appreciated the focus. Productivity increased significantly.',
+            text: 'Team appreciated the focus. Productivity increased significantly. More time for actual development.',
             impact: { morale: 20, value: 15, velocity: 20 }
           }
         },
         {
           text: 'Survey team and eliminate unnecessary meetings',
+          consequences: { morale: 15, value: 10, velocity: 15 },
           outcome: {
             icon: '📊',
             title: 'Meeting Optimization',
-            text: 'Removed 2 meetings per week. Team felt empowered and engaged.',
+            text: 'Removed 2 meetings per week. Team felt empowered and engaged. Balance restored.',
             impact: { morale: 15, value: 10, velocity: 15 }
           }
         }
@@ -776,28 +833,31 @@ const scenarios = {
       choices: [
         {
           text: 'Tell the team to wait for IT approval',
+          consequences: { morale: -15, value: -20, velocity: -15 },
           outcome: {
             icon: '😐',
             title: 'Sprint Failed',
-            text: 'Sprint goal wasn\'t met. Team felt you didn\'t fight for them.',
+            text: 'Sprint goal wasn\'t met. Team felt you didn\'t fight for them. Trust in Scrum Master role decreased.',
             impact: { morale: -15, value: -20, velocity: -15 }
           }
         },
         {
           text: 'Escalate to leadership immediately',
+          consequences: { morale: 20, value: 20, velocity: 15 },
           outcome: {
             icon: '🚀',
             title: 'Impediment Removed',
-            text: 'Got approval in 2 days. Team appreciated your advocacy and delivered successfully.',
+            text: 'Got approval in 2 days. Team appreciated your advocacy and delivered successfully. Demonstrated Scrum Master value.',
             impact: { morale: 20, value: 20, velocity: 15 }
           }
         },
         {
           text: 'Help team find a workaround with mock data',
+          consequences: { morale: 10, value: 10, velocity: 5 },
           outcome: {
             icon: '🔧',
             title: 'Creative Solution',
-            text: 'Team found an alternative path. Sprint goal adjusted but delivered value.',
+            text: 'Team found an alternative path. Sprint goal adjusted but delivered value. Problem-solving skills improved.',
             impact: { morale: 10, value: 10, velocity: 5 }
           }
         }
@@ -810,28 +870,31 @@ const scenarios = {
       choices: [
         {
           text: 'Comply with all leadership requests',
+          consequences: { morale: -20, value: -10, velocity: -20 },
           outcome: {
             icon: '📄',
             title: 'Bureaucracy Wins',
-            text: 'Team spends hours on reports. Velocity dropped and morale suffered.',
+            text: 'Team spends hours on reports. Velocity dropped and morale suffered. Agile principles abandoned.',
             impact: { morale: -20, value: -10, velocity: -20 }
           }
         },
         {
           text: 'Educate leadership on Agile metrics and transparency',
+          consequences: { morale: 20, value: 15, velocity: 20 },
           outcome: {
             icon: '💡',
             title: 'Leadership Buy-In',
-            text: 'Showed them burndown charts and demos. They understood and reduced reporting.',
+            text: 'Showed them burndown charts and demos. They understood and reduced reporting. Trust in Agile increased.',
             impact: { morale: 20, value: 15, velocity: 20 }
           }
         },
         {
           text: 'Create automated dashboards to reduce manual work',
+          consequences: { morale: 15, value: 10, velocity: 10 },
           outcome: {
             icon: '📊',
             title: 'Smart Solution',
-            text: 'Leadership got their visibility, team kept their time. Win-win.',
+            text: 'Leadership got their visibility, team kept their time. Win-win solution. Demonstrated Scrum Master creativity.',
             impact: { morale: 15, value: 10, velocity: 10 }
           }
         }
@@ -844,28 +907,31 @@ const scenarios = {
       choices: [
         {
           text: 'Remove them from the sprint to maintain velocity',
+          consequences: { morale: -25, value: 5, velocity: 10 },
           outcome: {
             icon: '😢',
             title: 'Trust Broken',
-            text: 'Junior felt abandoned. Team learned they\'re not safe to fail.',
+            text: 'Junior felt abandoned. Team learned they\'re not safe to fail. Psychological safety destroyed. Future collaboration damaged.',
             impact: { morale: -25, value: 5, velocity: 10 }
           }
         },
         {
           text: 'Pair them with a senior developer for learning',
+          consequences: { morale: 20, value: 15, velocity: 15 },
           outcome: {
             icon: '🌱',
             title: 'Team Growth',
-            text: 'Junior improved rapidly. Team culture strengthened through mentorship.',
+            text: 'Junior improved rapidly. Team culture strengthened through mentorship. Long-term velocity increased.',
             impact: { morale: 20, value: 15, velocity: 15 }
           }
         },
         {
           text: 'Assign them simpler tasks to build confidence',
+          consequences: { morale: 10, value: 10, velocity: 5 },
           outcome: {
             icon: '📈',
             title: 'Gradual Improvement',
-            text: 'Junior gained confidence and contributed meaningfully.',
+            text: 'Junior gained confidence and contributed meaningfully. Steady progress made. Team supported growth.',
             impact: { morale: 10, value: 10, velocity: 5 }
           }
         }
@@ -880,28 +946,31 @@ const scenarios = {
       choices: [
         {
           text: 'Ignore the debt and build new features as requested',
+          consequences: { morale: -20, value: -25, velocity: -20 },
           outcome: {
             icon: '💥',
             title: 'System Crash',
-            text: 'Two sprints later, production crashed. Spent a week in emergency fixes.',
+            text: 'Two sprints later, production crashed. Spent a week in emergency fixes. Customer trust lost.',
             impact: { morale: -20, value: -25, velocity: -20 }
           }
         },
         {
           text: 'Explain the risks and request time for refactoring',
+          consequences: { morale: 15, value: 20, velocity: 15 },
           outcome: {
             icon: '🔧',
             title: 'Debt Addressed',
-            text: 'PO understood after seeing the data. System stability improved significantly.',
+            text: 'PO understood after seeing the data. System stability improved significantly. Team proud of quality work.',
             impact: { morale: 15, value: 20, velocity: 15 }
           }
         },
         {
           text: 'Secretly fix it while working on features',
+          consequences: { morale: 5, value: 5, velocity: -10 },
           outcome: {
             icon: '😬',
             title: 'Risky Move',
-            text: 'Fixed the debt but features were rushed. Mixed results.',
+            text: 'Fixed the debt but features were rushed. Mixed results. Transparency issues created.',
             impact: { morale: 5, value: 5, velocity: -10 }
           }
         }
@@ -914,28 +983,31 @@ const scenarios = {
       choices: [
         {
           text: 'Work overtime to try to meet the commitment',
+          consequences: { morale: -25, value: -15, velocity: -20 },
           outcome: {
             icon: '😵',
             title: 'Burnout',
-            text: 'Worked 60-hour weeks. Delivered buggy code and got sick.',
+            text: 'Worked 60-hour weeks. Delivered buggy code and got sick. Quality suffered. Unsustainable pace set.',
             impact: { morale: -25, value: -15, velocity: -20 }
           }
         },
         {
           text: 'Explain why the estimate was 2 weeks',
+          consequences: { morale: 15, value: 20, velocity: 10 },
           outcome: {
             icon: '📊',
             title: 'Realistic Expectations Set',
-            text: 'PO renegotiated with client. Delivered quality work on realistic timeline.',
+            text: 'PO renegotiated with client. Delivered quality work on realistic timeline. Trust in estimates increased.',
             impact: { morale: 15, value: 20, velocity: 10 }
           }
         },
         {
           text: 'Deliver a minimal version in 3 days',
+          consequences: { morale: 10, value: 15, velocity: 5 },
           outcome: {
             icon: '🎯',
             title: 'MVP Delivered',
-            text: 'Client got core functionality. Iterated based on feedback.',
+            text: 'Client got core functionality. Iterated based on feedback. Agile principles demonstrated.',
             impact: { morale: 10, value: 15, velocity: 5 }
           }
         }
@@ -948,28 +1020,31 @@ const scenarios = {
       choices: [
         {
           text: 'Refuse and work alone',
+          consequences: { morale: -10, value: -10, velocity: -15 },
           outcome: {
             icon: '🚫',
             title: 'Missed Opportunity',
-            text: 'Made mistakes that would\'ve been caught by pairing. Took longer to fix.',
+            text: 'Made mistakes that would\'ve been caught by pairing. Took longer to fix. Collaboration culture weakened.',
             impact: { morale: -10, value: -10, velocity: -15 }
           }
         },
         {
           text: 'Try pair programming for this feature',
+          consequences: { morale: 15, value: 20, velocity: 10 },
           outcome: {
             icon: '🎯',
             title: 'Better Quality',
-            text: 'Caught bugs early and learned new techniques. Feature was solid.',
+            text: 'Caught bugs early and learned new techniques. Feature was solid. Knowledge sharing improved.',
             impact: { morale: 15, value: 20, velocity: 10 }
           }
         },
         {
           text: 'Suggest pairing for code review instead',
+          consequences: { morale: 10, value: 10, velocity: 5 },
           outcome: {
             icon: '👀',
             title: 'Compromise',
-            text: 'Got feedback without constant pairing. Good middle ground.',
+            text: 'Got feedback without constant pairing. Good middle ground. Code quality improved.',
             impact: { morale: 10, value: 10, velocity: 5 }
           }
         }
@@ -982,28 +1057,31 @@ const scenarios = {
       choices: [
         {
           text: 'Say testing is QA\'s job, not yours',
+          consequences: { morale: -15, value: -20, velocity: -20 },
           outcome: {
             icon: '🐛',
             title: 'Quality Issues',
-            text: 'Bugs slipped through. Customer complaints increased. Spent sprints fixing.',
+            text: 'Bugs slipped through. Customer complaints increased. Spent sprints fixing. Definition of Done compromised.',
             impact: { morale: -15, value: -20, velocity: -20 }
           }
         },
         {
           text: 'Include test writing in your Definition of Done',
+          consequences: { morale: 20, value: 25, velocity: 15 },
           outcome: {
             icon: '✅',
             title: 'Quality Culture',
-            text: 'Bugs decreased dramatically. Releases became smooth. Team pride increased.',
+            text: 'Bugs decreased dramatically. Releases became smooth. Team pride increased. Long-term velocity improved.',
             impact: { morale: 20, value: 25, velocity: 15 }
           }
         },
         {
           text: 'Write tests only for critical paths',
+          consequences: { morale: 10, value: 15, velocity: 5 },
           outcome: {
             icon: '⚖️',
             title: 'Balanced Approach',
-            text: 'Major bugs caught. Still some minor issues but manageable.',
+            text: 'Major bugs caught. Still some minor issues but manageable. Pragmatic solution adopted.',
             impact: { morale: 10, value: 15, velocity: 5 }
           }
         }
@@ -1016,28 +1094,31 @@ const scenarios = {
       choices: [
         {
           text: 'Use the new tech immediately in production code',
+          consequences: { morale: -10, value: -15, velocity: -20 },
           outcome: {
             icon: '⚠️',
             title: 'Risky Decision',
-            text: 'New tech had issues. Spent sprint debugging instead of delivering features.',
+            text: 'New tech had issues. Spent sprint debugging instead of delivering features. Sprint goal missed.',
             impact: { morale: -10, value: -15, velocity: -20 }
           }
         },
         {
           text: 'Stick with proven technology',
+          consequences: { morale: 0, value: 5, velocity: 5 },
           outcome: {
             icon: '😐',
             title: 'Safe but Stagnant',
-            text: 'Delivered reliably but missed improvement opportunities.',
+            text: 'Delivered reliably but missed improvement opportunities. Technical debt accumulated.',
             impact: { morale: 0, value: 5, velocity: 5 }
           }
         },
         {
           text: 'Build a proof-of-concept first',
+          consequences: { morale: 20, value: 20, velocity: 15 },
           outcome: {
             icon: '🔬',
             title: 'Smart Innovation',
-            text: 'Validated the tech worked. Adopted it gradually with great results.',
+            text: 'Validated the tech worked. Adopted it gradually with great results. Demonstrated responsible innovation.',
             impact: { morale: 20, value: 20, velocity: 15 }
           }
         }
@@ -1075,7 +1156,27 @@ function loadScenario() {
   scenario.choices.forEach((choice, index) => {
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
-    btn.textContent = choice.text;
+    
+    // Add consequences display if available
+    let consequencesHTML = '';
+    if (choice.consequences) {
+      consequencesHTML = '<div class="choice-consequences">';
+      if (choice.consequences.morale !== 0) {
+        const sign = choice.consequences.morale > 0 ? '+' : '';
+        consequencesHTML += `<span class="consequence-tag morale">😊 Morale: ${sign}${choice.consequences.morale}</span>`;
+      }
+      if (choice.consequences.value !== 0) {
+        const sign = choice.consequences.value > 0 ? '+' : '';
+        consequencesHTML += `<span class="consequence-tag value">💎 Value: ${sign}${choice.consequences.value}</span>`;
+      }
+      if (choice.consequences.velocity !== 0) {
+        const sign = choice.consequences.velocity > 0 ? '+' : '';
+        consequencesHTML += `<span class="consequence-tag velocity">⚡ Velocity: ${sign}${choice.consequences.velocity}</span>`;
+      }
+      consequencesHTML += '</div>';
+    }
+    
+    btn.innerHTML = `<div class="choice-text">${choice.text}</div>${consequencesHTML}`;
     btn.onclick = () => makeChoice(index);
     choicesContainer.appendChild(btn);
   });
