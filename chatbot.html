@@ -6,7 +6,7 @@
   <title>Agile Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -33,7 +33,7 @@
       padding: 10px;
       display: flex;
       justify-content: flex-end;
-      align-items: flex-start;
+      align-items: flex-end;
       min-height: 60px;
     }
 
@@ -41,62 +41,239 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 10px;
+      gap: 15px;
     }
 
-    /* Minimize/Maximize Button */
-    .minimize-button {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      border-radius: 50%;
+    /* Large Interactive Chat Button - Elongated Pill Style */
+    .chat-button {
+      width: auto;
+      min-width: 240px;
+      height: 70px;
+      padding: 0 28px;
+      background: linear-gradient(135deg, #1a8a8a 0%, #2dd4bf 100%);
+      border-radius: 35px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(26, 138, 138, 0.4);
-      display: none;
+      box-shadow: 0 10px 40px rgba(26, 138, 138, 0.6);
+      display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
+      gap: 12px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
+      animation: breathe 2.5s ease-in-out infinite, float 3s ease-in-out infinite;
     }
 
-    .minimize-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(26, 138, 138, 0.5);
+    @keyframes breathe {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 10px 40px rgba(26, 138, 138, 0.6);
+      }
+      50% { 
+        transform: scale(1.05);
+        box-shadow: 0 15px 60px rgba(26, 138, 138, 0.9);
+      }
     }
 
-    .minimize-button svg {
-      width: 20px;
-      height: 20px;
+    @keyframes float {
+      0%, 100% { 
+        transform: translateY(0px);
+      }
+      50% { 
+        transform: translateY(-8px);
+      }
+    }
+
+    .chat-button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 20px 70px rgba(26, 138, 138, 1);
+      animation: none;
+    }
+
+    .chat-button:active {
+      transform: scale(1.02);
+    }
+
+    /* Multiple pulsing rings for dramatic effect */
+    .chat-button::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 45px;
+      border: 4px solid rgba(26, 138, 138, 0.5);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    .chat-button::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 45px;
+      border: 4px solid rgba(45, 212, 191, 0.4);
+      animation: pulse-ring 2s ease-out infinite 1s;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.95);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .chat-button svg {
+      width: 36px;
+      height: 36px;
       fill: white;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      flex-shrink: 0;
     }
 
-    .minimize-button.show {
+    .chat-button:hover svg {
+      transform: scale(1.1);
+    }
+
+    .button-text {
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      white-space: nowrap;
+    }
+
+    .chat-button .close-icon {
+      display: none;
+    }
+
+    .chat-button.open {
+      animation: none;
+      min-width: 70px;
+      padding: 0;
+      width: 70px;
+      border-radius: 35px;
+    }
+
+    .chat-button.open .button-text {
+      display: none;
+    }
+
+    .chat-button.open .chat-icon {
+      display: none;
+    }
+
+    .chat-button.open .close-icon {
+      display: block;
+    }
+
+    .chat-button.open::before,
+    .chat-button.open::after {
+      animation: none;
+      opacity: 0;
+    }
+
+    /* Help text tooltip - bigger and bolder */
+    .help-text {
+      position: absolute;
+      right: 255px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fffe 100%);
+      color: #0f6868;
+      padding: 14px 22px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(15px) scale(0.9);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 2px solid rgba(26, 138, 138, 0.2);
+    }
+
+    .help-text::after {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid white;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+
+    .chat-button:hover + .help-text {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .chat-button.open + .help-text {
+      display: none;
+    }
+
+    .chat-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border-radius: 50%;
       display: flex;
-      animation: fadeIn 0.3s ease;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      animation: bounce-badge 1.2s ease-in-out infinite;
+      border: 4px solid white;
+      box-shadow: 0 6px 15px rgba(239, 68, 68, 0.6);
     }
 
-    /* Chat Window - Always Visible */
+    @keyframes bounce-badge {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.2) rotate(-5deg); }
+      75% { transform: scale(1.2) rotate(5deg); }
+    }
+
+    .chat-button.open .chat-badge {
+      display: none;
+    }
+
+    /* Chat Window */
     .chat-window {
       width: 380px;
       height: 500px;
       background: #f5f9f9;
-      border-radius: 16px;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
-      display: flex;
+      border-radius: 20px;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+      display: none;
       flex-direction: column;
       overflow: hidden;
-      animation: slideIn 0.4s ease;
+      border: 3px solid rgba(26, 138, 138, 0.1);
     }
 
-    .chat-window.minimized {
-      display: none;
+    .chat-window.open {
+      display: flex;
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    @keyframes slideIn {
+    @keyframes slideUp {
       from { 
         opacity: 0;
-        transform: translateY(-20px) scale(0.95);
+        transform: translateY(30px) scale(0.9);
       }
       to { 
         opacity: 1;
@@ -104,30 +281,44 @@
       }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     @media (max-width: 400px) {
       .chat-window {
         width: 320px;
         height: 450px;
+      }
+      
+      .chat-button {
+        min-width: 220px;
+        height: 65px;
+        padding: 0 24px;
+      }
+      
+      .chat-button svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .button-text {
+        font-size: 1.05rem;
+      }
+      
+      .help-text {
+        display: none;
       }
     }
 
     .chat-header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: white;
-      padding: 16px 18px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
     .chat-header-icon {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: rgba(255,255,255,0.2);
       border-radius: 50%;
       display: flex;
@@ -137,8 +328,8 @@
     }
 
     .chat-header-icon svg {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       fill: white;
     }
 
@@ -147,50 +338,51 @@
     }
 
     .chat-header-text h1 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 2px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 3px;
     }
 
     .chat-header-text p {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       opacity: 0.9;
     }
 
-    .chat-header-minimize {
+    .chat-header-close {
       background: rgba(255,255,255,0.2);
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
+      transition: all 0.2s;
       flex-shrink: 0;
     }
 
-    .chat-header-minimize:hover {
+    .chat-header-close:hover {
       background: rgba(255,255,255,0.3);
+      transform: rotate(90deg);
     }
 
-    .chat-header-minimize svg {
+    .chat-header-close svg {
       width: 18px;
       height: 18px;
-      fill: white;
+      stroke: white;
+      fill: none;
     }
 
     .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    /* Custom scrollbar */
     .chat-messages::-webkit-scrollbar {
       width: 6px;
     }
@@ -229,10 +421,10 @@
     }
 
     .message-bubble {
-      padding: 11px 14px;
-      border-radius: 14px;
+      padding: 12px 15px;
+      border-radius: 16px;
       line-height: 1.5;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
     }
 
     .message.user .message-bubble {
@@ -251,7 +443,7 @@
     .message-bubble a {
       color: var(--primary);
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       border-bottom: 1px solid transparent;
       transition: border-bottom 0.2s;
     }
@@ -262,18 +454,18 @@
 
     .typing-indicator {
       display: flex;
-      gap: 4px;
-      padding: 11px 14px;
+      gap: 5px;
+      padding: 12px 15px;
       background: var(--bot-bubble);
-      border-radius: 14px;
+      border-radius: 16px;
       border-bottom-left-radius: 4px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       width: fit-content;
     }
 
     .typing-indicator span {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       background: var(--primary);
       border-radius: 50%;
       animation: bounce 1.4s infinite ease-in-out;
@@ -289,36 +481,36 @@
     }
 
     .quick-questions {
-      padding: 8px 16px 12px;
+      padding: 10px 18px 12px;
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       background: #f5f9f9;
       border-top: 1px solid #e8f0f0;
     }
 
     .quick-question {
-      padding: 7px 12px;
+      padding: 8px 14px;
       background: white;
-      border: 1.5px solid var(--primary);
+      border: 2px solid var(--primary);
       color: var(--primary);
-      border-radius: 16px;
-      font-size: 0.8rem;
+      border-radius: 18px;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .quick-question:hover {
       background: var(--primary);
       color: white;
-      transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(26, 138, 138, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 138, 138, 0.3);
     }
 
     .chat-input-container {
-      padding: 12px 16px;
+      padding: 14px 18px;
       background: white;
       border-top: 1px solid #e0e0e0;
     }
@@ -331,10 +523,10 @@
 
     .chat-input {
       flex: 1;
-      padding: 11px 14px;
+      padding: 12px 16px;
       border: 2px solid #e0e0e0;
-      border-radius: 20px;
-      font-size: 0.875rem;
+      border-radius: 24px;
+      font-size: 0.9rem;
       font-family: inherit;
       outline: none;
       transition: all 0.2s;
@@ -346,8 +538,8 @@
     }
 
     .send-button {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       background: var(--primary);
       border: none;
       border-radius: 50%;
@@ -369,50 +561,16 @@
     }
 
     .send-button svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       fill: white;
-    }
-
-    /* Clear chat button */
-    .clear-button {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      flex-shrink: 0;
-      margin-left: 4px;
-    }
-
-    .clear-button:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    .clear-button svg {
-      width: 16px;
-      height: 16px;
-      stroke: white;
-      fill: none;
     }
   </style>
 </head>
 <body>
 
   <div class="chat-container">
-    <!-- Minimize Button (shows when chat is minimized) -->
-    <button class="minimize-button" id="minimizeButton" onclick="toggleMinimize()">
-      <svg viewBox="0 0 24 24">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-      </svg>
-    </button>
-
-    <!-- Chat Window (Always visible) -->
+    <!-- Chat Window (appears above button) -->
     <div class="chat-window" id="chatWindow">
       <div class="chat-header">
         <div class="chat-header-icon">
@@ -420,16 +578,11 @@
         </div>
         <div class="chat-header-text">
           <h1>Agile Bootcamp Assistant</h1>
-          <p>Ask me anything about Agile training</p>
+          <p>Ask me anything about Agile</p>
         </div>
-        <button class="clear-button" onclick="clearChat()" title="Clear chat">
+        <button class="chat-header-close" onclick="toggleChat()">
           <svg viewBox="0 0 24 24">
-            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <button class="chat-header-minimize" onclick="toggleMinimize()" title="Minimize">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 13H5v-2h14v2z"/>
+            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
       </div>
@@ -437,16 +590,16 @@
       <div class="chat-messages" id="chatMessages">
         <div class="message bot">
           <div class="message-bubble">
-            👋 Welcome to Group 1's Agile Method Bootcamp. How can I help you today?
+            👋 Welcome to Group 1's Agile Method Bootcamp. I can answer questions about our training, help you navigate the site, and answer any questions about the Agile material covered in our courses. How can I help you today?
           </div>
         </div>
       </div>
 
       <div class="quick-questions" id="quickQuestions">
         <button class="quick-question" onclick="askQuestion('How do I sign up?')">How do I sign up?</button>
-        <button class="quick-question" onclick="askQuestion('What is included?')">What's included?</button>
-        <button class="quick-question" onclick="askQuestion('Who is this for?')">Who is it for?</button>
-        <button class="quick-question" onclick="askQuestion('What is Scrum?')">What is Scrum?</button>
+        <button class="quick-question" onclick="askQuestion('What is the Agile Manifesto?')">Agile Manifesto</button>
+        <button class="quick-question" onclick="askQuestion('Explain Scrum roles')">Scrum Roles</button>
+        <button class="quick-question" onclick="askQuestion('What are user stories?')">User Stories</button>
       </div>
 
       <div class="chat-input-container">
@@ -464,33 +617,32 @@
         </div>
       </div>
     </div>
+
+    <!-- Large Interactive Chat Button -->
+    <button class="chat-button" id="chatButton" onclick="toggleChat()">
+      <span class="chat-badge">1</span>
+      <svg class="chat-icon" viewBox="0 0 24 24">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      </svg>
+      <span class="button-text">Group 1's Agile Assistant</span>
+      <svg class="close-icon" viewBox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+    <div class="help-text">💬 Click to get answers!</div>
   </div>
 
   <script>
-    function toggleMinimize() {
+    function toggleChat() {
       const chatWindow = document.getElementById('chatWindow');
-      const minimizeButton = document.getElementById('minimizeButton');
+      const chatButton = document.getElementById('chatButton');
       
-      chatWindow.classList.toggle('minimized');
+      chatWindow.classList.toggle('open');
+      chatButton.classList.toggle('open');
       
-      if (chatWindow.classList.contains('minimized')) {
-        minimizeButton.classList.add('show');
-      } else {
-        minimizeButton.classList.remove('show');
+      if (chatWindow.classList.contains('open')) {
         document.getElementById('chatInput').focus();
       }
-    }
-
-    function clearChat() {
-      const messagesDiv = document.getElementById('chatMessages');
-      messagesDiv.innerHTML = `
-        <div class="message bot">
-          <div class="message-bubble">
-            👋 Welcome to Group 1's Agile Method Bootcamp. How can I help you today?
-          </div>
-        </div>
-      `;
-      document.getElementById('quickQuestions').style.display = 'flex';
     }
 
     // SITE PAGES - Your Google Sites URLs
@@ -502,10 +654,11 @@
       scrum: "https://sites.google.com/view/agilemethodbootcamp/scrum-framework",
       kanban: "https://sites.google.com/view/agilemethodbootcamp/kanban-method",
       lean: "https://sites.google.com/view/agilemethodbootcamp/lean-principles",
-      tools: "https://sites.google.com/view/agilemethodbootcamp/agile-tools-and-techniques",
+      ethics: "https://sites.google.com/view/agilemethodbootcamp/code-of-ethics",
+      pmi: "https://sites.google.com/view/agilemethodbootcamp/pmi-ethical-decision-making-framework",
+      tools: "https://sites.google.com/view/agilemethodbootcamp/agile-tools-of-the-trade",
       management: "https://sites.google.com/view/agilemethodbootcamp/agile-project-management",
       casestudies: "https://sites.google.com/view/agilemethodbootcamp/agile-success-stories",
-      interactive: "https://sites.google.com/view/agilemethodbootcamp/interactive-learning-modules",
       resources: "https://sites.google.com/view/agilemethodbootcamp/resources",
       practicetest: "https://sites.google.com/view/agilemethodbootcamp/practice-test",
       contact: "https://sites.google.com/view/agilemethodbootcamp/contact-us"
@@ -529,8 +682,8 @@
 • <a href="${sitePages.scrum}" target="_top">Scrum Framework</a>
 • <a href="${sitePages.kanban}" target="_top">Kanban Method</a>
 • <a href="${sitePages.lean}" target="_top">Lean Principles</a>
-• <a href="${sitePages.tools}" target="_top">Tools & Techniques</a>
-• <a href="${sitePages.casestudies}" target="_top">Real Case Studies</a>
+• <a href="${sitePages.ethics}" target="_top">Code of Ethics</a>
+• <a href="${sitePages.tools}" target="_top">Agile Tools of the Trade</a>
 • <a href="${sitePages.practicetest}" target="_top">Practice Tests</a>
 
 See our <a href="${sitePages.course}" target="_top">Course Overview</a> for full details!`,
@@ -604,7 +757,7 @@ More details: <a href="${sitePages.scrum}" target="_top">Scrum Framework</a>`,
 
 Example: "As a customer, I want to save my cart so that I can purchase later"
 
-More: <a href="${sitePages.tools}" target="_top">Tools & Techniques</a>`,
+More: <a href="${sitePages.tools}" target="_top">Agile Tools of the Trade</a>`,
 
       standup: `**Daily Standup** is a 15-minute sync where team members share:
 • What I did yesterday
@@ -648,7 +801,7 @@ Held at the end of each sprint.`,
 • **Planning Poker**: Team consensus estimation
 • **T-Shirt Sizing**: S, M, L, XL categories
 
-More: <a href="${sitePages.tools}" target="_top">Tools & Techniques</a>`,
+More: <a href="${sitePages.tools}" target="_top">Agile Tools of the Trade</a>`,
 
       navigation: `Quick navigation to our pages:
 • <a href="${sitePages.about}" target="_top">About Us</a>
@@ -658,21 +811,678 @@ More: <a href="${sitePages.tools}" target="_top">Tools & Techniques</a>`,
 • <a href="${sitePages.practicetest}" target="_top">Practice Test</a>
 • <a href="${sitePages.contact}" target="_top">Contact Us</a>`,
 
-      greeting: `Hello! 👋 How can I help you today? Ask me about:
+      greeting: `Hello! 👋 How can I help you today? I can answer questions about:
 • Training information & pricing
 • How to sign up
-• Agile concepts (Scrum, Kanban, Lean)
-• Course content`,
+• Agile concepts & methodologies
+• Course material and content
+• Site navigation`,
 
-      thanks: `You're very welcome! Feel free to ask more questions, or <a href="${sitePages.contact}" target="_top">contact us</a> when you're ready to get started!`,
+      thanks: `You're very welcome! Feel free to ask more questions about our training or any Agile concepts. Or <a href="${sitePages.contact}" target="_top">contact us</a> when you're ready to get started!`,
 
       default: `I can help you with:
 • **Training info** - pricing, duration, format
 • **Signing up** - how to get started
-• **Agile topics** - Scrum, Kanban, Lean explained
-• **Course details** - what's included
+• **Agile topics** - Scrum, Kanban, Lean, tools, ethics
+• **Course content** - detailed material questions
+• **Navigation** - finding pages
 
-Try asking: "How do I sign up?" or "What is Scrum?"`
+Try asking about specific Agile concepts like "What is a Sprint?" or "Explain user stories"`
+    };
+
+    // COMPREHENSIVE COURSE MATERIAL RESPONSES
+    const materialResponses = {
+      // AGILE FUNDAMENTALS
+      agilemanifesto: `The **Agile Manifesto** (2001) has **4 core values**:
+
+1. **Individuals and interactions** over processes and tools
+2. **Working software** over comprehensive documentation  
+3. **Customer collaboration** over contract negotiation
+4. **Responding to change** over following a plan
+
+Learn more: <a href="${sitePages.fundamentals}" target="_top">Agile Fundamentals</a>`,
+
+      agileprinciples: `The **12 Agile Principles** include:
+
+1. Satisfy customers through early & continuous delivery
+2. Welcome changing requirements
+3. Deliver working software frequently
+4. Business & developers work together daily
+5. Build projects around motivated individuals
+6. Face-to-face conversation is most effective
+7. Working software is primary measure of progress
+8. Sustainable development pace
+9. Continuous attention to technical excellence
+10. Simplicity - maximizing work not done
+11. Self-organizing teams
+12. Regular reflection and adaptation
+
+<a href="${sitePages.fundamentals}" target="_top">Learn more about Agile Fundamentals</a>`,
+
+      // SCRUM DETAILED
+      scrumroles: `**Scrum has 3 roles**:
+
+**Product Owner**:
+• Maximizes product value
+• Manages product backlog
+• Defines acceptance criteria  
+• Makes priority decisions
+
+**Scrum Master**:
+• Facilitates Scrum events
+• Removes obstacles
+• Coaches the team
+• Protects from distractions
+
+**Development Team**:
+• Cross-functional (5-9 people)
+• Self-organizing
+• Delivers increments
+• Collectively accountable
+
+<a href="${sitePages.scrum}" target="_top">Scrum Framework Details</a>`,
+
+      scrumevents: `**Scrum has 5 events**:
+
+1. **Sprint** (2-4 weeks): Time-boxed iteration
+2. **Sprint Planning**: Plan the sprint work
+3. **Daily Scrum** (15 min): Daily sync meeting
+4. **Sprint Review**: Demo completed work
+5. **Sprint Retrospective**: Reflect & improve
+
+All events are time-boxed to create rhythm and minimize waste.
+
+<a href="${sitePages.scrum}" target="_top">Learn Scrum Events</a>`,
+
+      scrumartifacts: `**Scrum has 3 artifacts**:
+
+1. **Product Backlog**:
+   • Ordered list of everything needed
+   • Owned by Product Owner
+   • Never complete
+
+2. **Sprint Backlog**:
+   • Sprint Goal + selected items + plan
+   • Owned by Development Team
+   • Updated daily
+
+3. **Increment**:
+   • Sum of completed items
+   • Must be "Done" 
+   • Potentially releasable
+
+<a href="${sitePages.scrum}" target="_top">Scrum Artifacts Explained</a>`,
+
+      scrumpillars: `**Scrum is built on 3 pillars** (from Empiricism):
+
+1. **Transparency**: 
+   • Everyone sees the process
+   • Common standards & definition
+
+2. **Inspection**:
+   • Regularly check artifacts & progress
+   • Detect undesirable variances
+
+3. **Adaptation**:
+   • Adjust process when needed
+   • Minimize further deviation
+
+These enable continuous improvement!
+
+<a href="${sitePages.scrum}" target="_top">More on Scrum</a>`,
+
+      sprintplanning: `**Sprint Planning** answers 2 questions:
+
+**What can be delivered?**
+• Review Product Backlog
+• Forecast functionality
+• Create Sprint Goal
+
+**How will work be done?**
+• Development Team plans work
+• Decompose items into tasks
+• Create Sprint Backlog
+
+Time-boxed to 8 hours for 1-month Sprint (shorter for shorter Sprints).
+
+<a href="${sitePages.scrum}" target="_top">Learn Sprint Planning</a>`,
+
+      dailystandup: `**Daily Scrum** (Daily Standup):
+
+• **Time**: 15 minutes, same time/place daily
+• **Who**: Development Team (required)
+• **Format**: Each member answers:
+  - What did I do yesterday?
+  - What will I do today?
+  - Any impediments?
+
+**Purpose**: Synchronize activities, create plan for next 24 hours
+
+<a href="${sitePages.scrum}" target="_top">Scrum Events</a>`,
+
+      sprintreview: `**Sprint Review**:
+
+• **When**: End of Sprint
+• **Duration**: 4 hours for 1-month Sprint
+• **Who**: Scrum Team + Stakeholders
+• **Purpose**:
+  - Demo completed work
+  - Get feedback
+  - Adapt Product Backlog
+  - Discuss what's next
+
+Informal meeting, NOT a status meeting!
+
+<a href="${sitePages.scrum}" target="_top">Sprint Review Details</a>`,
+
+      // KANBAN DETAILED  
+      kanbanprinciples: `**Kanban Core Principles**:
+
+1. **Visualize workflow**: Make work visible on board
+2. **Limit WIP**: Set work-in-progress limits
+3. **Manage flow**: Optimize continuous flow
+4. **Make policies explicit**: Clear process rules
+5. **Implement feedback loops**: Regular reviews
+6. **Improve collaboratively**: Team-driven changes
+
+Start with what you have, evolve incrementally!
+
+<a href="${sitePages.kanban}" target="_top">Kanban Method</a>`,
+
+      kanbanboard: `**Kanban Board Setup**:
+
+**Typical columns**:
+• Backlog / To Do
+• In Progress / Doing  
+• Review / Testing
+• Done
+
+**Key elements**:
+• Cards represent work items
+• Columns show workflow stages
+• WIP limits control flow
+• Swimlanes group work types
+
+Customize to your process!
+
+<a href="${sitePages.kanban}" target="_top">Kanban Board Guide</a>`,
+
+      wiplimits: `**WIP (Work-In-Progress) Limits**:
+
+**Why limit WIP?**
+• Reduces multitasking
+• Identifies bottlenecks
+• Improves flow
+• Speeds delivery
+• Increases quality
+
+**How to set**:
+• Start with team size
+• Adjust based on flow
+• Lower = more focus
+• Monitor & tune
+
+Example: "Doing" column limited to 3 items
+
+<a href="${sitePages.kanban}" target="_top">WIP Limits Explained</a>`,
+
+      leadtime: `**Lead Time** vs **Cycle Time**:
+
+**Lead Time**:
+• Customer request → Delivery
+• Full journey time
+• Customer perspective
+
+**Cycle Time**:
+• Work starts → Work completes  
+• Active work time
+• Team perspective
+
+**Goal**: Reduce both for faster delivery!
+
+Track these metrics to improve flow.
+
+<a href="${sitePages.kanban}" target="_top">Kanban Metrics</a>`,
+
+      // LEAN DETAILED
+      leanprinciples: `**5 Lean Principles**:
+
+1. **Value**: Define what customers value
+2. **Value Stream**: Map all steps to deliver value
+3. **Flow**: Make value flow without interruption
+4. **Pull**: Produce only what's needed when needed
+5. **Perfection**: Continuously improve toward perfection
+
+**Goal**: Eliminate waste, maximize value!
+
+<a href="${sitePages.lean}" target="_top">Lean Principles</a>`,
+
+      leanwaste: `**7 Types of Waste** (TIMWOOD):
+
+1. **T**ransportation - Unnecessary movement
+2. **I**nventory - Excess work in progress
+3. **M**otion - Unnecessary people movement  
+4. **W**aiting - Idle time
+5. **O**verproduction - Making too much/too soon
+6. **O**ver-processing - More work than needed
+7. **D**efects - Errors requiring rework
+
+**In Software**:
+• Partially done work
+• Extra features
+• Task switching
+• Waiting for approvals
+• Handoffs
+• Defects/bugs
+• Unnecessary meetings
+
+<a href="${sitePages.lean}" target="_top">Eliminate Waste</a>`,
+
+      valuestreammap: `**Value Stream Mapping**:
+
+**Steps**:
+1. Identify product/service
+2. Map current state
+3. Calculate lead time & process time
+4. Identify waste
+5. Design future state
+6. Create implementation plan
+
+**Benefits**:
+• Visualize entire flow
+• Spot bottlenecks
+• Find waste
+• Align team
+• Drive improvement
+
+<a href="${sitePages.lean}" target="_top">Value Stream Mapping</a>`,
+
+      justintime: `**Just-In-Time (JIT)**:
+
+**Concept**: Produce only what's needed, when needed, in the right amount
+
+**Benefits**:
+• Reduces inventory costs
+• Minimizes waste
+• Improves cash flow
+• Faster problem detection
+• Increases flexibility
+
+**Requires**:
+• Reliable processes
+• Quality at source
+• Smooth workflow
+• Supplier relationships
+
+<a href="${sitePages.lean}" target="_top">JIT & Lean</a>`,
+
+      // AGILE TOOLS
+      userstories: `**User Stories** format:
+
+"As a **[user type]**, I want **[goal]** so that **[benefit]**"
+
+**INVEST Criteria**:
+• **I**ndependent - Standalone value
+• **N**egotiable - Details can evolve
+• **V**aluable - Delivers user value
+• **E**stimable - Can be sized
+• **S**mall - Fits in a sprint
+• **T**estable - Has clear criteria
+
+**Example**: "As a customer, I want to save my cart so that I can purchase items later"
+
+**Acceptance Criteria**: Specific conditions for "done"
+
+<a href="${sitePages.tools}" target="_top">User Stories Guide</a>`,
+
+      storymapping: `**Story Mapping**:
+
+**Structure**:
+• **Horizontal axis**: User journey/activities in sequence
+• **Vertical axis**: Priority (top = highest)
+
+**Purpose**:
+• Visualize user experience
+• Identify MVP (top slice)
+• Plan releases
+• Find gaps in functionality
+• Build shared understanding
+
+**Process**:
+1. Define user activities (backbone)
+2. Break into tasks
+3. Arrange by priority
+4. Slice releases
+5. Identify dependencies
+
+<a href="${sitePages.tools}" target="_top">Story Mapping</a>`,
+
+      planningpoker: `**Planning Poker**:
+
+**How it works**:
+1. Each team member has cards (Fibonacci: 1,2,3,5,8,13,21...)
+2. Product Owner describes story
+3. Team discusses briefly
+4. Everyone votes simultaneously
+5. Reveal cards together
+6. Discuss outliers (high/low)
+7. Re-vote until consensus
+
+**Benefits**:
+• Prevents anchoring bias
+• Encourages discussion
+• Builds team alignment
+• Estimates relative complexity
+• Engages whole team
+
+<a href="${sitePages.tools}" target="_top">Estimation Techniques</a>`,
+
+      tshirtsizing: `**T-Shirt Sizing**:
+
+**Sizes**: XS, S, M, L, XL, XXL
+
+**When to use**:
+• Early-stage estimation
+• Product backlog refinement  
+• Quick initial sizing
+• High-level planning
+
+**Advantages**:
+• Simple and intuitive
+• Fast estimation
+• Easy for stakeholders
+• Less precise (less debate)
+
+**Can convert to story points**:
+• XS = 1
+• S = 2
+• M = 3
+• L = 5
+• XL = 8
+• XXL = 13
+
+<a href="${sitePages.tools}" target="_top">T-Shirt Sizing</a>`,
+
+      disciplinedagile: `**PMI Disciplined Agile (DA) Toolkit**:
+
+**4 Views**:
+• **Mindset**: Principles, promises, guidelines
+• **People**: Roles and team structures
+• **Flow**: Context-sensitive processes
+• **Practices**: Toolkit for different scales
+
+**4 Layers**:
+• Foundation
+• Disciplined DevOps
+• Value Streams
+• Disciplined Agile Enterprise
+
+**Core Idea**: Choose Your WoW (Way of Working) - no one-size-fits-all approach
+
+<a href="${sitePages.tools}" target="_top">Disciplined Agile</a>`,
+
+      // CODE OF ETHICS
+      codeofethics: `**PMI Code of Ethics** - 4 core values:
+
+**1. Responsibility**:
+• Own your decisions & actions
+• Protect project & public interest
+• Report unethical conduct
+
+**2. Respect**:
+• Listen to others
+• Direct approach to conflict
+• Professional conduct
+
+**3. Fairness**:
+• Transparent decision-making
+• No favoritism or discrimination
+• Opportunities for all
+
+**4. Honesty**:
+• Truthful in communication
+• Understand truth
+• Accurate information
+
+Each value has Aspirational & Mandatory standards.
+
+<a href="${sitePages.ethics}" target="_top">Code of Ethics</a>`,
+
+      ethicalframework: `**PMI Ethical Decision-Making Framework**:
+
+**Steps**:
+1. **Assess** the situation
+   - Gather facts
+   - Identify stakeholders
+   - Consider perspectives
+
+2. **Reflect** on options
+   - Apply Code of Ethics
+   - Consider consequences
+   - Seek guidance if needed
+
+3. **Decide** on action
+   - Choose best option
+   - Document reasoning
+   - Commit to decision
+
+4. **Implement** the decision
+   - Take action
+   - Communicate clearly
+   - Monitor results
+
+**Key**: Balance values when they conflict
+
+<a href="${sitePages.pmi}" target="_top">Ethical Decision-Making</a>`,
+
+      // PROJECT MANAGEMENT
+      releaseplanning: `**Release Planning** in Agile:
+
+**Purpose**: Plan multiple sprints to deliver product increment
+
+**Steps**:
+1. Define release goal
+2. Estimate product backlog
+3. Calculate team velocity
+4. Determine number of sprints
+5. Prioritize features
+6. Create release roadmap
+
+**Considers**:
+• Business value
+• Dependencies
+• Risk
+• Team capacity
+• Market timing
+
+Flexible - adjusts based on learning!
+
+<a href="${sitePages.management}" target="_top">Agile Project Management</a>`,
+
+      velocity: `**Velocity** in Agile:
+
+**Definition**: Amount of work team completes per sprint (in story points)
+
+**How to calculate**:
+• Sum story points of completed stories
+• Track over multiple sprints
+• Average for planning
+
+**Uses**:
+• Forecast future capacity
+• Plan releases
+• Set realistic expectations
+• Track team performance trends
+
+**Notes**:
+• Unique to each team
+• Don't compare across teams
+• Stabilizes after 3-5 sprints
+
+<a href="${sitePages.management}" target="_top">Velocity Tracking</a>`,
+
+      burndown: `**Burndown Chart**:
+
+**Shows**: Remaining work over time
+
+**Types**:
+• **Sprint Burndown**: Daily progress in sprint
+• **Release Burndown**: Progress toward release
+
+**Elements**:
+• X-axis: Time (days/sprints)
+• Y-axis: Remaining work (points/hours)
+• Ideal line: Linear completion
+• Actual line: Real progress
+
+**Insights**:
+• Are we on track?
+• Need to add/remove work?
+• Velocity trends
+• Scope changes
+
+<a href="${sitePages.tools}" target="_top">Burndown Charts</a>`,
+
+      "definitionofdone": `**Definition of Done (DoD)**:
+
+**Purpose**: Shared understanding of "complete"
+
+**Typical criteria**:
+• Code written & reviewed
+• Unit tests passed
+• Integration tests passed
+• Documentation updated
+• Acceptance criteria met
+• Deployed to test environment
+• Product Owner accepts
+
+**Benefits**:
+• Clear quality standard
+• Prevents incomplete work
+• Builds trust
+• Enables transparency
+
+Each team defines their own DoD!
+
+<a href="${sitePages.scrum}" target="_top">Scrum Practices</a>`,
+
+      // ADDITIONAL CONCEPTS
+      technicaldebt: `**Technical Debt**:
+
+**Definition**: Cost of additional rework caused by quick/easy solutions instead of better approaches
+
+**Causes**:
+• Tight deadlines
+• Lack of knowledge
+• Poor design
+• Changing requirements
+
+**Managing debt**:
+• Track and visualize
+• Allocate time for refactoring
+• Include in backlog
+• Regular code reviews
+• Automated testing
+
+**Rule of thumb**: Spend 10-20% of capacity on reducing technical debt
+
+<a href="${sitePages.management}" target="_top">Managing Tech Debt</a>`,
+
+      continuousimprovement: `**Continuous Improvement** (Kaizen):
+
+**Agile practices**:
+• Sprint Retrospectives
+• Daily feedback loops
+• Inspect & adapt
+• Small incremental changes
+
+**Lean practices**:
+• PDCA cycle (Plan-Do-Check-Act)
+• Gemba walks (go see)
+• 5 Whys analysis
+• Root cause analysis
+
+**Culture**:
+• Everyone contributes
+• Safe to experiment
+• Learn from failures
+• Celebrate improvements
+
+**Goal**: Get 1% better every day!
+
+<a href="${sitePages.lean}" target="_top">Continuous Improvement</a>`,
+
+      mvp: `**MVP (Minimum Viable Product)**:
+
+**Definition**: Smallest version that delivers value and enables learning
+
+**Purpose**:
+• Test assumptions
+• Get early feedback
+• Reduce time to market
+• Minimize waste
+• Validate ideas
+
+**Not**:
+• Half-baked product
+• All features with low quality
+• Just a prototype
+
+**Is**:
+• Fully functional (even if simple)
+• Delivers core value
+• Good quality
+• Learning tool
+
+<a href="${sitePages.fundamentals}" target="_top">MVP Concept</a>`,
+
+      stakeholdermanagement: `**Stakeholder Management** in Agile:
+
+**Key practices**:
+• Regular demos (Sprint Review)
+• Transparent backlogs
+• Clear roadmaps
+• Frequent communication
+• Manage expectations
+
+**Stakeholder types**:
+• Sponsors
+• Customers/Users
+• Business owners
+• Leadership
+• Other teams
+
+**Product Owner's role**:
+• Primary interface
+• Balances interests
+• Sets priorities
+• Communicates vision
+
+<a href="${sitePages.management}" target="_top">Stakeholder Management</a>`,
+
+      scalingagile: `**Scaling Agile** frameworks:
+
+**Common frameworks**:
+• **SAFe** (Scaled Agile Framework)
+• **LeSS** (Large-Scale Scrum)
+• **Scrum@Scale**
+• **Disciplined Agile** (DA)
+• **Nexus**
+
+**Challenges**:
+• Coordination across teams
+• Dependencies management
+• Shared resources
+• Architectural alignment
+• Cultural change
+
+**Keys to success**:
+• Start small, scale gradually
+• Maintain agile principles
+• Invest in training
+• Leadership support
+
+<a href="${sitePages.management}" target="_top">Scaling Agility</a>`
     };
 
     function findBestResponse(input) {
@@ -680,60 +1490,78 @@ Try asking: "How do I sign up?" or "What is Scrum?"`
       
       // Greetings
       if (/^(hi|hello|hey|howdy|good morning|good afternoon|good evening)/.test(lower)) return responses.greeting;
-      
-      // Thanks
       if (lower.includes("thank")) return responses.thanks;
       
-      // Sign up / Registration
+      // Training/Business
       if (lower.includes("sign up") || lower.includes("signup") || lower.includes("register") || lower.includes("enroll") || lower.includes("join") || lower.includes("get started")) return responses.signup;
-      
-      // Pricing
       if (lower.includes("price") || lower.includes("cost") || lower.includes("how much") || lower.includes("quote") || lower.includes("fee")) return responses.pricing;
-      
-      // Audience
       if ((lower.includes("who") && lower.includes("for")) || lower.includes("audience") || lower.includes("companies") || lower.includes("teams")) return responses.whoisitfor;
-      
-      // Content
       if (lower.includes("include") || lower.includes("cover") || lower.includes("learn") || lower.includes("curriculum") || lower.includes("course content")) return responses.whatisincluded;
-      
-      // Duration
       if (lower.includes("how long") || lower.includes("duration") || lower.includes("length")) return responses.duration;
-      
-      // Location/Format
       if (lower.includes("where") || lower.includes("location") || lower.includes("on-site") || lower.includes("virtual") || lower.includes("online") || lower.includes("remote")) return responses.location;
-      
-      // About
       if (lower.includes("about") && (lower.includes("you") || lower.includes("company"))) return responses.aboutus;
-      
-      // Contact
       if (lower.includes("contact") || lower.includes("reach") || lower.includes("email") || lower.includes("phone")) return responses.contact;
-      
-      // Resources
       if (lower.includes("resource") || lower.includes("download") || lower.includes("template")) return responses.resources;
-      
-      // Case Studies
       if (lower.includes("case stud") || lower.includes("success stor") || lower.includes("example")) return responses.casestudies;
-      
-      // Practice Test
       if (lower.includes("practice") || lower.includes("test") || lower.includes("quiz") || lower.includes("exam")) return responses.practicetest;
-      
-      // Navigation
       if (lower.includes("navigate") || lower.includes("find") || lower.includes("pages") || lower.includes("menu") || lower.includes("site map")) return responses.navigation;
       
-      // Agile Topics
-      if (lower.includes("what is scrum") || lower.includes("explain scrum")) return responses.scrum;
-      if (lower.includes("kanban")) return responses.kanban;
-      if (lower.includes("lean")) return responses.lean;
-      if (lower.includes("what is agile") || lower.includes("explain agile") || lower.includes("manifesto")) return responses.agile;
-      if (lower.includes("sprint") && !lower.includes("retrospective")) return responses.sprint;
-      if (lower.includes("user stor")) return responses.userstory;
-      if (lower.includes("standup") || lower.includes("stand-up") || lower.includes("daily scrum")) return responses.standup;
-      if (lower.includes("backlog")) return responses.backlog;
+      // Course Material - Agile Fundamentals
+      if (lower.includes("agile manifesto") || lower.includes("manifesto")) return materialResponses.agilemanifesto;
+      if (lower.includes("12 principle") || lower.includes("agile principle")) return materialResponses.agileprinciples;
+      if (lower.includes("what is agile") || lower.includes("explain agile") || lower.includes("agile foundation")) return responses.agile;
+      
+      // Scrum Deep Dive
+      if (lower.includes("scrum role")) return materialResponses.scrumroles;
+      if (lower.includes("scrum event")) return materialResponses.scrumevents;
+      if (lower.includes("scrum artifact")) return materialResponses.scrumartifacts;
+      if (lower.includes("scrum pillar") || lower.includes("transparency") || lower.includes("inspection") || lower.includes("adaptation")) return materialResponses.scrumpillars;
+      if (lower.includes("sprint planning")) return materialResponses.sprintplanning;
+      if (lower.includes("daily scrum") || lower.includes("standup") || lower.includes("stand-up")) return materialResponses.dailystandup;
+      if (lower.includes("sprint review")) return materialResponses.sprintreview;
+      if (lower.includes("retrospective") || lower.includes("retro")) return responses.retrospective;
       if (lower.includes("product owner")) return responses.productowner;
       if (lower.includes("scrum master")) return responses.scrummaster;
-      if (lower.includes("retrospective") || lower.includes("retro")) return responses.retrospective;
-      if (lower.includes("estimat") || lower.includes("story point") || lower.includes("planning poker")) return responses.estimation;
-      if (lower.includes("scrum")) return responses.scrum;
+      if (lower.includes("backlog")) return responses.backlog;
+      if (lower.includes("sprint") && !lower.includes("planning") && !lower.includes("review") && !lower.includes("retro")) return responses.sprint;
+      if (lower.includes("definition of done") || lower.includes("dod")) return materialResponses.definitionofdone;
+      if (lower.includes("what is scrum") || lower.includes("explain scrum")) return responses.scrum;
+      
+      // Kanban
+      if (lower.includes("kanban principle")) return materialResponses.kanbanprinciples;
+      if (lower.includes("kanban board")) return materialResponses.kanbanboard;
+      if (lower.includes("wip") || lower.includes("work in progress") || lower.includes("work-in-progress")) return materialResponses.wiplimits;
+      if (lower.includes("lead time") || lower.includes("cycle time")) return materialResponses.leadtime;
+      if (lower.includes("kanban")) return responses.kanban;
+      
+      // Lean
+      if (lower.includes("lean principle")) return materialResponses.leanprinciples;
+      if (lower.includes("waste") || lower.includes("timwood") || lower.includes("muda")) return materialResponses.leanwaste;
+      if (lower.includes("value stream")) return materialResponses.valuestreammap;
+      if (lower.includes("just in time") || lower.includes("just-in-time") || lower.includes("jit")) return materialResponses.justintime;
+      if (lower.includes("continuous improvement") || lower.includes("kaizen")) return materialResponses.continuousimprovement;
+      if (lower.includes("lean")) return responses.lean;
+      
+      // Tools & Techniques
+      if (lower.includes("user stor")) return materialResponses.userstories;
+      if (lower.includes("story map")) return materialResponses.storymapping;
+      if (lower.includes("planning poker")) return materialResponses.planningpoker;
+      if (lower.includes("t-shirt") || lower.includes("tshirt") || lower.includes("t shirt")) return materialResponses.tshirtsizing;
+      if (lower.includes("estimat") || lower.includes("story point")) return responses.estimation;
+      if (lower.includes("disciplined agile") || lower.includes("pmi da") || lower.includes("da toolkit")) return materialResponses.disciplinedagile;
+      if (lower.includes("burndown")) return materialResponses.burndown;
+      if (lower.includes("velocity")) return materialResponses.velocity;
+      
+      // Ethics
+      if (lower.includes("code of ethics") || lower.includes("ethical standard")) return materialResponses.codeofethics;
+      if (lower.includes("ethical decision") || lower.includes("ethics framework") || lower.includes("ethical framework")) return materialResponses.ethicalframework;
+      
+      // Project Management
+      if (lower.includes("release plan")) return materialResponses.releaseplanning;
+      if (lower.includes("stakeholder")) return materialResponses.stakeholdermanagement;
+      if (lower.includes("scaling") || lower.includes("safe") || lower.includes("less") || lower.includes("nexus")) return materialResponses.scalingagile;
+      if (lower.includes("technical debt")) return materialResponses.technicaldebt;
+      if (lower.includes("mvp") || lower.includes("minimum viable")) return materialResponses.mvp;
       
       return responses.default;
     }
@@ -805,11 +1633,6 @@ Try asking: "How do I sign up?" or "What is Scrum?"`
         }
         return false;
       }
-    });
-
-    // Auto-focus input on load
-    window.addEventListener('load', function() {
-      document.getElementById('chatInput').focus();
     });
   </script>
 </body>
