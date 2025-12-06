@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 40px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #5a7070;
+  line-height: 1.6;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: white;
+  padding: 35px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  border-top: 4px solid #1a8a8a;
+  position: relative;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(26, 138, 138, 0.2);
+}
+
+.stat-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.stat-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #1a8a8a;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #2d3d3d;
+  font-weight: 600;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.stat-source {
+  font-size: 0.85rem;
+  color: #5a7070;
+  font-style: italic;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.stat-source a {
+  color: #1a8a8a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.stat-source a:hover {
+  text-decoration: underline;
+}
+
+/* Category Sections */
+.category-section {
+  margin-bottom: 60px;
+}
+
+.category-title {
+  font-size: 2rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #2dd4bf;
+}
+
+/* Comparison Cards */
+.comparison-section {
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.comparison-title {
+  font-size: 1.8rem;
+  color: #0f6868;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.comparison-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-card.agile {
+  border-top: 5px solid #10b981;
+}
+
+.comparison-card.waterfall {
+  border-top: 5px solid #ef4444;
+}
+
+.comparison-label {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.comparison-label.agile {
+  color: #10b981;
+}
+
+.comparison-label.waterfall {
+  color: #ef4444;
+}
+
+.comparison-stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.comparison-stat.agile {
+  color: #10b981;
+}
+
+.comparison-stat.waterfall {
+  color: #ef4444;
+}
+
+.comparison-text {
+  font-size: 1rem;
+  color: #2d3d3d;
+  margin-bottom: 15px;
+}
+
+/* Sources Section */
+.sources-section {
+  background: #f8f9fa;
+  padding: 40px;
+  border-radius: 16px;
+  margin-top: 50px;
+}
+
+.sources-title {
+  font-size: 1.8rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.sources-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.source-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.source-number {
+  display: inline-block;
+  background: #1a8a8a;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 700;
+  margin-right: 12px;
+  font-size: 0.9rem;
+}
+
+.source-text {
+  font-size: 0.95rem;
+  color: #2d3d3d;
+  line-height: 1.6;
+}
+
+.source-text a {
+  color: #1a8a8a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.source-text a:hover {
+  text-decoration: underline;
+}
+
+.verified-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0 20px;
+    margin: 40px auto;
+  }
+  
+  .dashboard-title {
+    font-size: 2rem;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2 class="dashboard-title">📊 Agile by the Numbers</h2>
+  </div>
+  
+  <!-- McKinsey Performance Metrics -->
+  <div class="category-section">
+    <h3 class="category-title">🎯 Impact on Organizational Performance</h3>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🚀</div>
+        <div class="stat-number">30%</div>
+        <div class="stat-label">Gains in Customer Satisfaction</div>
+        <div class="stat-source">Source: <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/the-impact-of-agility-how-to-shape-your-organization-to-compete" target="_blank">McKinsey & Company</a> - Highly successful Agile transformations deliver 30% improvements</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">😊</div>
+        <div class="stat-number">30%</div>
+        <div class="stat-label">Employee Engagement Boost</div>
+        <div class="stat-source">Source: <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/the-impact-of-agility-how-to-shape-your-organization-to-compete" target="_blank">McKinsey & Company</a> - Average 30% improvement in employee engagement scores</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-number">30%</div>
+        <div class="stat-label">Efficiency Improvements</div>
+        <div class="stat-source">Source: <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/the-impact-of-agility-how-to-shape-your-organization-to-compete" target="_blank">McKinsey & Company</a> - Organizations report significant efficiency gains</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-number">50%</div>
+        <div class="stat-label">Operational Performance Gain</div>
+        <div class="stat-source">Source: <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/enterprise-agility-buzz-or-business-impact" target="_blank">McKinsey & Company</a> - Improvements in speed, target achievement, and metrics</div>
+      </div>
+
+
+    </div>
+  </div>
+  
+  <!-- Agile vs Waterfall Comparison -->
+  <div class="comparison-section">
+    <h3 class="comparison-title">⚔️ Agile vs Waterfall: Project Success Rates</h3>
+    <div class="comparison-grid">
+      <div class="comparison-card agile">
+        <div class="comparison-label agile">🚀 Agile Projects</div>
+        <div class="comparison-stat agile">42%</div>
+        <div class="comparison-text">Success Rate</div>
+        <div class="stat-source">Source: <a href="https://www.agilegenesis.com/post/agile-vs-waterfall-comparing-success-rates-in-project-management" target="_blank">Standish Group Chaos Report 2020</a> (via Agile Genesis)</div>
+      </div>
+      
+      <div class="comparison-card waterfall">
+        <div class="comparison-label waterfall">🌊 Waterfall Projects</div>
+        <div class="comparison-stat waterfall">13%</div>
+        <div class="comparison-text">Success Rate</div>
+        <div class="stat-source">Source: <a href="https://www.agilegenesis.com/post/agile-vs-waterfall-comparing-success-rates-in-project-management" target="_blank">Standish Group Chaos Report 2020</a> (via Agile Genesis)</div>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px; padding: 25px; background: rgba(16, 185, 129, 0.1); border-radius: 12px;">
+      <p style="font-size: 1.2rem; color: #065f46; font-weight: 700; margin-bottom: 15px;">
+        🏆 Agile projects have 3x higher success rate than Waterfall
+      </p>
+      <p style="font-size: 1rem; color: #047857;">
+        <strong>Agile Failure Rate:</strong> 11% | <strong>Waterfall Failure Rate:</strong> 59%
+      </p>
+    </div>
+  </div>
+  
+
+
+
+
+</div>
+</body>
+</html>
