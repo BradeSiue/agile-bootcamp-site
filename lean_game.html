@@ -113,11 +113,25 @@ body {
   color: white;
   padding: 15px 20px;
   border-radius: 10px;
-  font-weight: 600;
   cursor: move;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(26, 138, 138, 0.3);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.waste-badge-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.waste-badge-hint {
+  font-size: 0.8rem;
+  opacity: 0.95;
+  line-height: 1.3;
+  font-weight: 400;
 }
 
 .waste-badge:hover {
@@ -263,6 +277,8 @@ body {
   text-align: center;
   display: none;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .results.show {
@@ -293,6 +309,84 @@ body {
   font-size: 1.1rem;
   color: #5a7070;
   margin-bottom: 30px;
+}
+
+.answer-review {
+  text-align: left;
+  margin: 30px 0;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.answer-review-title {
+  font-size: 1.3rem;
+  color: #0f6868;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.review-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-left: 5px solid #d0d0d0;
+}
+
+.review-item.correct {
+  border-left-color: #10b981;
+  background: #f0fdf4;
+}
+
+.review-item.incorrect {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+.review-scenario {
+  font-size: 0.95rem;
+  color: #2d3d3d;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.review-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.review-your-answer {
+  font-size: 0.9rem;
+  color: #5a7070;
+  margin-bottom: 8px;
+}
+
+.review-your-answer strong {
+  color: #2d3d3d;
+}
+
+.review-correct-answer {
+  font-size: 0.9rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.review-explanation {
+  font-size: 0.85rem;
+  color: #5a7070;
+  line-height: 1.6;
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(26, 138, 138, 0.05);
+  border-radius: 6px;
+  font-style: italic;
 }
 
 .restart-btn {
@@ -356,14 +450,38 @@ body {
       <div class="waste-types-section">
         <h3 class="section-title">🗑️ Waste Types (DOWNTIME)</h3>
         <div class="waste-types" id="waste-types">
-          <div class="waste-badge" draggable="true" data-waste="Defects">⏱️ Defects</div>
-          <div class="waste-badge" draggable="true" data-waste="Overproduction">📦 Overproduction</div>
-          <div class="waste-badge" draggable="true" data-waste="Waiting">⏳ Waiting</div>
-          <div class="waste-badge" draggable="true" data-waste="Non-Utilized Talent">🧠 Non-Utilized Talent</div>
-          <div class="waste-badge" draggable="true" data-waste="Transportation">🚚 Transportation</div>
-          <div class="waste-badge" draggable="true" data-waste="Inventory">📊 Inventory</div>
-          <div class="waste-badge" draggable="true" data-waste="Motion">🏃 Motion</div>
-          <div class="waste-badge" draggable="true" data-waste="Extra Processing">⚙️ Extra Processing</div>
+          <div class="waste-badge" draggable="true" data-waste="Defects">
+            <div class="waste-badge-title">⏱️ Defects</div>
+            <div class="waste-badge-hint">Errors requiring rework or fixing</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Overproduction">
+            <div class="waste-badge-title">📦 Overproduction</div>
+            <div class="waste-badge-hint">Making more than needed</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Waiting">
+            <div class="waste-badge-title">⏳ Waiting</div>
+            <div class="waste-badge-hint">Idle time when work isn't moving</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Non-Utilized Talent">
+            <div class="waste-badge-title">🧠 Non-Utilized Talent</div>
+            <div class="waste-badge-hint">Underusing people's skills</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Transportation">
+            <div class="waste-badge-title">🚚 Transportation</div>
+            <div class="waste-badge-hint">Unnecessary movement of materials</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Inventory">
+            <div class="waste-badge-title">📊 Inventory</div>
+            <div class="waste-badge-hint">Excess work-in-progress</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Motion">
+            <div class="waste-badge-title">🏃 Motion</div>
+            <div class="waste-badge-hint">Unnecessary movement of people</div>
+          </div>
+          <div class="waste-badge" draggable="true" data-waste="Extra Processing">
+            <div class="waste-badge-title">⚙️ Extra Processing</div>
+            <div class="waste-badge-hint">Doing more work than required</div>
+          </div>
         </div>
       </div>
       
@@ -429,6 +547,12 @@ body {
     <div class="results-score" id="final-score"></div>
     <div class="results-message" id="results-message"></div>
     <div class="results-detail" id="results-detail"></div>
+    
+    <div class="answer-review">
+      <h3 class="answer-review-title">📊 Answer Review</h3>
+      <div id="review-items"></div>
+    </div>
+    
     <button class="restart-btn" onclick="restartGame()">Play Again</button>
   </div>
 </div>
@@ -470,11 +594,12 @@ document.querySelectorAll('.scenario-box').forEach(box => {
     
     if (draggedElement && !this.querySelector('.dropped-badge')) {
       const wasteType = draggedElement.dataset.waste;
+      const badgeTitle = draggedElement.querySelector('.waste-badge-title').textContent;
       
       // Create dropped badge
       const droppedBadge = document.createElement('div');
       droppedBadge.className = 'dropped-badge';
-      droppedBadge.textContent = draggedElement.textContent;
+      droppedBadge.textContent = badgeTitle;
       droppedBadge.dataset.waste = wasteType;
       this.appendChild(droppedBadge);
       
@@ -547,7 +672,8 @@ function checkAnswers() {
     }
   });
   
-  setTimeout(() => showResults(correct), 1000);
+  // Show results after brief animation
+  setTimeout(() => showResults(correct), 1500);
 }
 
 function showResults(correct) {
@@ -571,6 +697,60 @@ function showResults(correct) {
   
   document.getElementById('results-message').textContent = message;
   document.getElementById('results-detail').textContent = `You correctly matched ${correct} out of 8 waste scenarios (${percentage}%)`;
+  
+  // Build detailed review
+  buildAnswerReview();
+}
+
+function buildAnswerReview() {
+  const reviewContainer = document.getElementById('review-items');
+  reviewContainer.innerHTML = '';
+  
+  const wasteExplanations = {
+    'Defects': 'Defects are errors, bugs, or mistakes that require rework, fixing, or scrapping. They waste time and resources because work must be redone.',
+    'Overproduction': 'Overproduction means making more than what customers need or making it before it\'s needed. This ties up resources and creates unnecessary inventory.',
+    'Waiting': 'Waiting is idle time when people or processes are not moving forward. This includes waiting for approvals, information, or resources.',
+    'Non-Utilized Talent': 'Non-Utilized Talent means not fully using people\'s skills, knowledge, creativity, or ideas. It wastes human potential and innovation.',
+    'Transportation': 'Transportation waste is the unnecessary movement of materials, information, or products between locations. Each handoff adds time and risk.',
+    'Inventory': 'Inventory waste is excess materials, work-in-progress, or finished goods sitting idle. It ties up capital and can become obsolete.',
+    'Motion': 'Motion waste is unnecessary movement of people or equipment, like walking long distances, searching for tools, or excessive clicking through systems.',
+    'Extra Processing': 'Extra Processing means doing more work than required by the customer, like excessive documentation, redundant approvals, or over-engineering.'
+  };
+  
+  const scenarios = [
+    { num: 1, text: 'Production bug requires 3 days of fixing and re-testing', correct: 'Defects' },
+    { num: 2, text: 'Team built 15 features but customer only asked for 8', correct: 'Overproduction' },
+    { num: 3, text: 'Developer blocked waiting for manager approval for 2 weeks', correct: 'Waiting' },
+    { num: 4, text: 'Junior developer\'s ideas ignored, never asked for input', correct: 'Non-Utilized Talent' },
+    { num: 5, text: 'Files passed through 5 departments taking 2-3 days each', correct: 'Transportation' },
+    { num: 6, text: '47 unfinished user stories in progress simultaneously', correct: 'Inventory' },
+    { num: 7, text: 'Engineer walks to different building to access test server', correct: 'Motion' },
+    { num: 8, text: 'Extensive documentation for every line of code', correct: 'Extra Processing' }
+  ];
+  
+  scenarios.forEach(scenario => {
+    const userAnswer = answers[scenario.correct];
+    const isCorrect = userAnswer === scenario.correct;
+    
+    const reviewItem = document.createElement('div');
+    reviewItem.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+    
+    reviewItem.innerHTML = `
+      <div class="review-scenario">
+        <span class="review-icon">${isCorrect ? '✓' : '✗'}</span>
+        <span><strong>Scenario ${scenario.num}:</strong> ${scenario.text}</span>
+      </div>
+      <div class="review-your-answer">
+        Your answer: <strong>${userAnswer || 'No answer'}</strong>
+      </div>
+      ${!isCorrect ? `<div class="review-correct-answer">✓ Correct answer: ${scenario.correct}</div>` : ''}
+      <div class="review-explanation">
+        ${wasteExplanations[scenario.correct]}
+      </div>
+    `;
+    
+    reviewContainer.appendChild(reviewItem);
+  });
 }
 
 function restartGame() {
