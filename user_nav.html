@@ -218,7 +218,7 @@ body {
   
   <div class="page-nav">
     <!-- Previous Page -->
-    <a href="https://sites.google.com/view/agilemethodbootcamp/practice-test" target="_top" class="nav-link prev">
+    <a href="https://sites.google.com/view/agilemethodbootcamp/practice-test" target="_blank" class="nav-link prev">
       <div class="nav-icon">←</div>
       <div class="nav-content">
         <div class="nav-label">Previous Page</div>
@@ -228,7 +228,7 @@ body {
     </a>
     
     <!-- Next Page -->
-    <a href="https://sites.google.com/view/agilemethodbootcamp/resources" target="_top" class="nav-link next">
+    <a href="https://sites.google.com/view/agilemethodbootcamp/resources" target="_blank" class="nav-link next">
       <div class="nav-content">
         <div class="nav-label">Next Page</div>
         <div class="nav-title">Resources</div>
@@ -238,20 +238,5 @@ body {
     </a>
   </div>
 </div>
-
-<script>
-  // Handle navigation clicks to work in Google Sites iframe
-  document.querySelectorAll('.nav-link').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      var url = this.getAttribute('href');
-      try {
-        window.top.location.href = url;
-      } catch(err) {
-        window.open(url, '_top');
-      }
-    });
-  });
-</script>
 </body>
 </html>
