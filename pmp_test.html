@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PMP Practice Exam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      max-width: 800px;
+      width: 100%;
+      background: #ffffff;
+      margin: 24px;
+      padding: 24px 20px 32px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .progress-bar-wrapper {
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 8px;
+      flex: 1;
+      margin-left: 12px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      width: 0;
+      background: linear-gradient(90deg, #2563eb, #22c55e);
+      transition: width 0.25s ease-out;
+    }
+
+    .question-card {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 18px 16px 20px;
+      margin-bottom: 1rem;
+    }
+
+    .question-text {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: #111827;
+    }
+
+    .question-meta {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 0.75rem;
+    }
+
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .option-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      transition: border-color 0.18s ease, background-color 0.18s ease;
+      font-size: 0.95rem;
+      color: #111827;
+    }
+
+    .option-label:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .option-label input[type="radio"] {
+      margin-right: 8px;
+      margin-top: 3px;
+    }
+
+    .feedback {
+      margin-top: 0.75rem;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+    }
+
+    .feedback.correct {
+      background: #ecfdf3;
+      border-color: #4ade80;
+      color: #166534;
+    }
+
+    .feedback.incorrect {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+
+    .feedback strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 9px 16px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:disabled {
+      background: #9ca3af;
+      cursor: default;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .results-section {
+      margin-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1rem;
+    }
+
+    .results-summary {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: #111827;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      margin-left: 6px;
+      font-weight: 600;
+    }
+
+    .result-item {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 12px 12px 10px;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .result-item.correct {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+
+    .result-item.incorrect {
+      border-color: #fecaca;
+      background: #fef2f2;
+    }
+
+    .result-question {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .result-meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .result-answer {
+      margin-bottom: 2px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+
+    .tag-correct {
+      background: #bbf7d0;
+      color: #166534;
+    }
+
+    .tag-incorrect {
+      background: #fecaca;
+      color: #b91c1c;
+    }
+
+    @media (max-width: 600px) {
+      .app-container {
+        margin: 16px;
+        padding: 18px 14px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <h1>PMP® Practice Exam</h1>
+    <p class="subtitle">
+      Answer one question at a time. You will see the correct answer and explanation after each question and a full review at the end.
+    </p>
+
+    <div id="quiz-section">
+      <div class="progress">
+        <div id="question-counter">Question 1 of 5</div>
+        <div class="progress-bar-wrapper">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div id="question-meta" class="question-meta"></div>
+        <div id="question-text" class="question-text"></div>
+        <ul id="options-list" class="options-list"></ul>
+        <div id="feedback" class="feedback hidden"></div>
+      </div>
+
+      <div class="button-row">
+        <button id="submit-btn" class="btn-primary" onclick="submitAnswer()">Submit answer</button>
+        <button id="next-btn" class="btn-secondary" onclick="nextQuestion()" disabled>
+          Next question
+        </button>
+      </div>
+    </div>
+
+    <div id="results-section" class="results-section hidden">
+      <h2>Review your results</h2>
+      <p id="results-summary" class="results-summary"></p>
+      <div id="results-list"></div>
+    </div>
+  </div>
+
+  <script>
+    // === CONFIG: Add / edit PMP-style questions here ===
+    const questions = [
+      {
+        id: 1,
+        domain: "People",
+        text: "You are leading a cross-functional project team that is struggling with frequent misunderstandings. Tasks are dropped because team members assume others are handling them. What is the most appropriate action?",
+        options: [
+          "Send a detailed reminder email after every meeting summarizing who does what.",
+          "Introduce a RACI or responsibility assignment matrix and review it with the team.",
+          "Escalate the issue to the sponsor and request that responsibilities be reassigned.",
+          "Ask team members to track their own tasks independently without a shared tool."
+        ],
+        correctIndex: 1,
+        explanation:
+          "A RACI or responsibility assignment matrix clarifies who is Responsible, Accountable, Consulted, and Informed for key activities. This directly addresses confusion about ownership and reduces misunderstandings."
+      },
+      {
+        id: 2,
+        domain: "Process",
+        text: "Midway through a project, your customer requests a change that will add significant scope but also increase expected business value. What should you do first?",
+        options: [
+          "Reject the change request because it increases scope.",
+          "Implement the change immediately to keep the customer satisfied.",
+          "Send the change request to the sponsor and ask for written approval.",
+          "Analyze the impact on scope, schedule, cost, and risks before making a recommendation."
+        ],
+        correctIndex: 3,
+        explanation:
+          "The project manager should first perform an impact analysis on scope, schedule, cost, and risks, and then present options through the change control process. Decisions should be made with full understanding of trade-offs."
+      },
+      {
+        id: 3,
+        domain: "Business Environment",
+        text: "Your project has reached its objectives, but the organization has decided to shift strategy and no longer requires the product you are building. What is the best action?",
+        options: [
+          "Continue the project to avoid wasting the work already done.",
+          "Recommend formally terminating the project and documenting lessons learned.",
+          "Ask the team to work at a slower pace until a decision is reversed.",
+          "Try to change the product so it fits the new strategy without informing stakeholders."
+        ],
+        correctIndex: 1,
+        explanation:
+          "If the project no longer supports the organization’s strategy or delivers needed value, the appropriate action is to recommend formal termination and capture lessons learned for future initiatives."
+      },
+      {
+        id: 4,
+        domain: "Process",
+        text: "A key stakeholder raises a concern that identified project risks are not being actively managed. Which tool or artifact would best demonstrate how risks are being tracked and addressed?",
+        options: [
+          "The stakeholder engagement plan",
+          "The work breakdown structure (WBS)",
+          "The risk register and risk response plans",
+          "The project charter"
+        ],
+        correctIndex: 2,
+        explanation:
+          "The risk register and risk response plans show identified risks, their owners, responses, and status. These artifacts are used to demonstrate that risks are being monitored and actively managed."
+      },
+      {
+        id: 5,
+        domain: "People",
+        text: "A senior engineer on your team is frequently interrupting others in meetings and dismissing their ideas. Morale is starting to drop. What should you do?",
+        options: [
+          "Publicly ask the engineer to stop interrupting in the next meeting.",
+          "Ignore the behavior, as it comes from a high performer.",
+          "Discuss the behavior privately, explain the impact on the team, and agree on expectations.",
+          "Remove the engineer from all future meetings."
+        ],
+        correctIndex: 2,
+        explanation:
+          "Addressing the behavior privately and respectfully is the most appropriate response. The project manager should explain the impact on the team and work with the engineer to set clear expectations for future interactions."
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    const userAnswers = new Array(questions.length).fill(null);
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+
+      // Counter and progress bar
+      const counter = document.getElementById("question-counter");
+      counter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
+      const progressBar = document.getElementById("progress-bar");
+      const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Question text & meta
+      document.getElementById("question-text").textContent = q.text;
+      document.getElementById("question-meta").textContent = `Domain: ${q.domain}`;
+
+      // Options
+      const optionsList = document.getElementById("options-list");
+      optionsList.innerHTML = "";
+
+      q.options.forEach((opt, idx) => {
+        const li = document.createElement("li");
+        li.className = "option-item";
+
+        const label = document.createElement("label");
+        label.className = "option-label";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "option";
+        input.value = idx;
+
+        const span = document.createElement("span");
+        span.textContent = opt;
+
+        label.appendChild(input);
+        label.appendChild(span);
+        li.appendChild(label);
+        optionsList.appendChild(li);
+      });
+
+      // Reset feedback & buttons
+      const feedback = document.getElementById("feedback");
+      feedback.classList.add("hidden");
+      feedback.textContent = "";
+
+      const submitBtn = document.getElementById("submit-btn");
+      const nextBtn = document.getElementById("next-btn");
+
+      submitBtn.disabled = false;
+      nextBtn.disabled = true;
+      nextBtn.textContent =
+        currentQuestionIndex === questions.length - 1
+          ? "Finish and view results"
+          : "Next question";
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="option"]:checked');
+      const feedback = document.getElementById("feedback");
+
+      if (!selected) {
+        feedback.className = "feedback incorrect";
+        feedback.classList.remove("hidden");
+        feedback.innerHTML =
+          "<strong>Please select an answer.</strong>Choose one option before submitting.";
+        return;
+      }
+
+      const answerIndex = parseInt(selected.value, 10);
+      userAnswers[currentQuestionIndex] = answerIndex;
+
+      const q = questions[currentQuestionIndex];
+      const isCorrect = answerIndex === q.correctIndex;
+
+      document.getElementById("submit-btn").disabled = true;
+      document.getElementById("next-btn").disabled = false;
+
+      // Lock options
+      document
+        .querySelectorAll('input[name="option"]')
+        .forEach((input) => (input.disabled = true));
+
+      feedback.classList.remove("hidden");
+      if (isCorrect) {
+        feedback.className = "feedback correct";
+        feedback.innerHTML =
+          "<strong>Correct.</strong>" + " " + q.explanation;
+      } else {
+        const correctText = q.options[q.correctIndex];
+        feedback.className = "feedback incorrect";
+        feedback.innerHTML =
+          `<strong>Incorrect.</strong> The correct answer is: <em>${correctText}</em>.<br>${q.explanation}`;
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      // Fill progress bar to 100%
+      const progressBar = document.getElementById("progress-bar");
+      progressBar.style.width = "100%";
+
+      const quizSection = document.getElementById("quiz-section");
+      const resultsSection = document.getElementById("results-section");
+      const resultsSummary = document.getElementById("results-summary");
+      const resultsList = document.getElementById("results-list");
+
+      quizSection.classList.add("hidden");
+      resultsSection.classList.remove("hidden");
+
+      let correctCount = 0;
+      questions.forEach((q, idx) => {
+        if (userAnswers[idx] === q.correctIndex) {
+          correctCount++;
+        }
+      });
+
+      const scorePercent = Math.round((correctCount / questions.length) * 100);
+      resultsSummary.innerHTML = `
+        You answered ${correctCount} out of ${questions.length} questions correctly.
+        <span class="score-badge">Score: ${scorePercent}%</span>
+      `;
+
+      resultsList.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const userAnswerIndex = userAnswers[idx];
+        const isCorrect = userAnswerIndex === q.correctIndex;
+
+        const item = document.createElement("div");
+        item.className = "result-item " + (isCorrect ? "correct" : "incorrect");
+
+        const qText = document.createElement("div");
+        qText.className = "result-question";
+        qText.textContent = `Q${idx + 1}. ${q.text}`;
+
+        const meta = document.createElement("div");
+        meta.className = "result-meta";
+        meta.textContent = `Domain: ${q.domain}`;
+
+        const userAns = document.createElement("div");
+        userAns.className = "result-answer";
+        let userText = userAnswerIndex !== null ? q.options[userAnswerIndex] : "No answer selected";
+
+        userAns.innerHTML = `<strong>Your answer:</strong> ${userText}`;
+
+        const correctAns = document.createElement("div");
+        correctAns.className = "result-answer";
+        correctAns.innerHTML = `<strong>Correct answer:</strong> ${q.options[q.correctIndex]}`;
+
+        const tag = document.createElement("span");
+        tag.className = "tag " + (isCorrect ? "tag-correct" : "tag-incorrect");
+        tag.textContent = isCorrect ? "Correct" : "Incorrect";
+
+        const explanation = document.createElement("div");
+        explanation.className = "result-explanation";
+        explanation.textContent = q.explanation;
+
+        qText.appendChild(tag);
+        item.appendChild(qText);
+        item.appendChild(meta);
+        item.appendChild(userAns);
+        item.appendChild(correctAns);
+        item.appendChild(explanation);
+
+        resultsList.appendChild(item);
+      });
+    }
+
+    // Initialize first question
+    renderQuestion();
+  </script>
+</body>
+</html>
