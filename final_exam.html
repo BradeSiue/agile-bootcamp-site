@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agile Method Bootcamp - Cumulative Exam</title>
+  <title>Agile Project Management - Practice Exam</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
@@ -646,11 +646,15 @@
   <div class="exam-container">
     <!-- Setup Screen -->
     <div class="setup-screen" id="setupScreen">
-      <h1>Agile Method Bootcamp - Practice Exam</h1>
+      <h1>Agile Project Management - Practice Exam</h1>
       
       <p class="welcome-message">Welcome Group 1!</p>
       
       <p>Three exam sets. Choose your exam and number of questions. Questions are randomized each time. You'll see feedback after every question and a full review at the end.</p>
+      
+      <p style="color: #2d87a8; font-weight: 600; margin-bottom: 30px;">
+        ⏱️ Exams are timed: 15 minutes for 10 questions, 30 minutes for 20 questions, and 60 minutes for 40 questions.
+      </p>
 
       <div class="setup-options">
         <div class="option-group">
@@ -700,7 +704,7 @@
             <span class="info-value timer-value" id="timerDisplay">00:00</span>
           </div>
         </div>
-        <button class="home-btn" onclick="confirmExit()" title="Return to Home">
+        <button class="home-btn" id="homeBtn" title="Return to Home">
           🏠 Home
         </button>
       </div>
@@ -1293,6 +1297,14 @@
 
     document.getElementById('startExamBtn').addEventListener('click', startExam);
 
+    // Home button event listener
+    document.addEventListener('DOMContentLoaded', function() {
+      const homeBtn = document.getElementById('homeBtn');
+      if (homeBtn) {
+        homeBtn.addEventListener('click', confirmExit);
+      }
+    });
+
     function startExam() {
       // Generate question set based on version and count
       generateQuestions();
@@ -1389,7 +1401,53 @@
       shuffleArray(allQuestions, seed);
 
       // Select the requested number of questions
-      examState.questions = allQuestions.slice(0, examState.questionCount);
+      const selectedQuestions = allQuestions.slice(0, examState.questionCount);
+      
+      // Randomize answer positions for each question
+      examState.questions = selectedQuestions.map((question, index) => {
+        // Create array of answer objects with their original index
+        const answersWithIndex = question.answers.map((answer, idx) => ({
+          text: answer,
+          originalIndex: idx
+        }));
+        
+        // Shuffle answers using question index as additional seed
+        const answerSeed = seed * 1000 + index;
+        shuffleArrayWithSeed(answersWithIndex, answerSeed);
+        
+        // Find new position of correct answer
+        const newCorrectIndex = answersWithIndex.findIndex(
+          item => item.originalIndex === question.correct
+        );
+        
+        // Return question with shuffled answers
+        return {
+          question: question.question,
+          answers: answersWithIndex.map(item => item.text),
+          correct: newCorrectIndex,
+          explanation: question.explanation
+        };
+      });
+    }
+    
+    function shuffleArrayWithSeed(array, seed) {
+      let currentIndex = array.length;
+      
+      const random = (function(s) {
+        let x = Math.sin(s++) * 10000;
+        return function() {
+          x = Math.sin(s++) * 10000;
+          return x - Math.floor(x);
+        };
+      })(seed);
+
+      while (0 !== currentIndex) {
+        const randomIndex = Math.floor(random() * currentIndex);
+        currentIndex -= 1;
+        const temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
     }
 
     function shuffleArray(array, seed) {
@@ -1583,7 +1641,8 @@
       const confirmed = confirm('Are you sure you want to exit? Your progress will be lost.');
       if (confirmed) {
         stopTimer();
-        restartExam();
+        // Use location.href for maximum compatibility
+        window.location.href = window.location.href.split('?')[0].split('#')[0];
       }
     }
 
@@ -1619,119 +1678,57 @@
         message = '💪 Review and Try Again!';
       }
 
-      // Generate complete results HTML
-      let resultsHTML = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exam Results - ${percentage}%</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: #f0f0f0;
-      color: #2d3d3d;
-      padding: 40px 20px;
-      line-height: 1.6;
-    }
-    .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-    .header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 3px solid #2d87a8; }
-    .score { font-size: 5rem; color: #2d87a8; font-weight: 700; margin-bottom: 15px; }
-    .message { font-size: 2rem; color: #3d4f5c; font-weight: 700; margin-bottom: 10px; }
-    .detail { font-size: 1.2rem; color: #5a7070; }
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
-    .stat-card { background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 25px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8; }
-    .stat-value { font-size: 2.5rem; color: #2d87a8; font-weight: 700; }
-    .stat-label { font-size: 0.95rem; color: #5a7070; font-weight: 600; margin-top: 8px; }
-    .section-title { font-size: 1.8rem; color: #3d4f5c; font-weight: 700; margin: 40px 0 20px; padding-bottom: 15px; border-bottom: 3px solid #2d87a8; }
-    .question-item { background: #f8f9fa; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #d0d0d0; }
-    .question-item.correct { border-left-color: #10b981; background: #f0fdf4; }
-    .question-item.incorrect { border-left-color: #ef4444; background: #fef2f2; }
-    .question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: #2d3d3d; }
-    .answer-line { margin: 8px 0; font-size: 1rem; }
-    .your-answer { color: #2d3d3d; font-weight: 600; }
-    .correct-answer { color: #10b981; font-weight: 600; }
-    .explanation { margin-top: 15px; padding: 15px; background: white; border-radius: 8px; font-size: 0.95rem; line-height: 1.6; }
-    .home-btn { display: inline-block; margin: 30px auto; padding: 15px 40px; background: linear-gradient(135deg, #2d87a8 0%, #3d9ec4 100%); color: white; text-decoration: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 6px 25px rgba(45,135,168,0.3); transition: all 0.3s ease; text-align: center; cursor: pointer; border: none; }
-    .home-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(45,135,168,0.4); }
-    .print-btn { display: inline-block; margin: 30px 10px; padding: 15px 40px; background: linear-gradient(135deg, #5a7070 0%, #6a8080 100%); color: white; text-decoration: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 6px 25px rgba(90,112,112,0.3); transition: all 0.3s ease; text-align: center; cursor: pointer; border: none; }
-    .print-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(90,112,112,0.4); }
-    .button-group { text-align: center; }
-    @media print { .home-btn, .print-btn { display: none; } }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="score">${percentage}%</div>
-      <div class="message">${message}</div>
-      <div class="detail">You answered ${correct} out of ${totalQuestions} questions correctly</div>
-    </div>
+      // Build detailed results text
+      let resultsText = `EXAM COMPLETE!\n\n`;
+      resultsText += `${message}\n\n`;
+      resultsText += `Your Score: ${percentage}% (${correct}/${totalQuestions})\n`;
+      resultsText += `Time Taken: ${timeDisplay}\n`;
+      resultsText += `Correct: ${correct}\n`;
+      resultsText += `Incorrect: ${incorrect}\n\n`;
+      resultsText += `========================\n`;
+      resultsText += `DETAILED RESULTS:\n`;
+      resultsText += `========================\n\n`;
 
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-value">${correct}</div>
-        <div class="stat-label">Correct Answers</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${incorrect}</div>
-        <div class="stat-label">Incorrect Answers</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${percentage}%</div>
-        <div class="stat-label">Overall Score</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">${timeDisplay}</div>
-        <div class="stat-label">Time Taken</div>
-      </div>
-    </div>
-
-    <h2 class="section-title">📝 Complete Review - All Questions & Explanations</h2>
-`;
-
-      // Add all questions
+      // Add all questions with answers
       examState.questions.forEach((question, index) => {
         const userAnswer = examState.userAnswers[index];
         const isCorrect = userAnswer !== null && userAnswer === question.correct;
         const wasAnswered = userAnswer !== null;
 
-        resultsHTML += `
-    <div class="question-item ${isCorrect ? 'correct' : 'incorrect'}">
-      <div class="question-text"><strong>Question ${index + 1}:</strong> ${question.question}</div>
-      <div class="answer-line your-answer">
-        ${isCorrect ? '✓' : '✗'} Your answer: ${wasAnswered ? question.answers[userAnswer] : 'Not answered'}
-      </div>`;
-
-        if (!isCorrect) {
-          resultsHTML += `
-      <div class="answer-line correct-answer">✓ Correct answer: ${question.answers[question.correct]}</div>`;
+        resultsText += `QUESTION ${index + 1}:\n`;
+        resultsText += `${question.question}\n\n`;
+        
+        if (wasAnswered) {
+          resultsText += `Your Answer: ${question.answers[userAnswer]} ${isCorrect ? '✓' : '✗'}\n`;
+        } else {
+          resultsText += `Your Answer: Not answered ✗\n`;
         }
-
-        resultsHTML += `
-      <div class="explanation"><strong>Explanation:</strong> ${question.explanation}</div>
-    </div>`;
+        
+        if (!isCorrect) {
+          resultsText += `Correct Answer: ${question.answers[question.correct]} ✓\n`;
+        }
+        
+        resultsText += `\nExplanation: ${question.explanation}\n`;
+        resultsText += `\n${'='.repeat(50)}\n\n`;
       });
 
-      resultsHTML += `
-    <div class="button-group">
-      <button class="print-btn" onclick="window.print()">🖨️ Print Results</button>
-      <button class="home-btn" onclick="window.close()">🏠 Close & Return to Exam</button>
-    </div>
-  </div>
-</body>
-</html>`;
-
-      // Open results in new tab
-      const newWindow = window.open('', '_blank');
-      newWindow.document.write(resultsHTML);
-      newWindow.document.close();
-
-      // Show simple completion message in current window
-      alert(`Exam Complete! 🎉\n\nYour Score: ${percentage}%\n${correct} correct out of ${totalQuestions}\n\nComplete results opened in new tab.\n\nClick OK to return to home and take another exam.`);
+      // Create downloadable text file
+      const blob = new Blob([resultsText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = `Agile_Exam_Results_${percentage}percent.txt`;
+      
+      // Show alert with results summary
+      const alertMessage = `EXAM COMPLETE! 🎉\n\n${message}\n\nYour Score: ${percentage}%\nCorrect: ${correct}/${totalQuestions}\nTime: ${timeDisplay}\n\n✅ Your detailed results file will download automatically.\n\n📄 Open the downloaded text file to see:\n• All questions\n• Your answers\n• Correct answers\n• Full explanations\n\nClick OK to return to home and take another exam.`;
+      
+      alert(alertMessage);
+      
+      // Trigger download
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(url);
       
       // Return to home
       restartExam();
@@ -1741,8 +1738,8 @@
       // Stop any running timer
       stopTimer();
 
-      // For iframe compatibility, just reload the page
-      window.location.reload();
+      // Reload page using location.href for maximum compatibility
+      window.location.href = window.location.href.split('?')[0].split('#')[0];
     }
   </script>
 </body>
