@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agile Final Exam Flashcards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f0f0f0;
+      color: #2d3d3d;
+      line-height: 1.6;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .flashcard-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      color: #3d4f5c;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #5a7070;
+      font-size: 1.1rem;
+    }
+
+    .controls {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .card-counter {
+      font-size: 1.1rem;
+      color: #2d87a8;
+      font-weight: 600;
+    }
+
+    .topic-filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topic-filter label {
+      font-weight: 600;
+      color: #2d3d3d;
+    }
+
+    .topic-select {
+      padding: 8px 15px;
+      border: 2px solid #d0d0d0;
+      border-radius: 6px;
+      background: white;
+      color: #2d3d3d;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .topic-select:focus {
+      outline: none;
+      border-color: #2d87a8;
+    }
+
+    .shuffle-btn {
+      padding: 10px 20px;
+      background: #2d87a8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .shuffle-btn:hover {
+      background: #236b8a;
+      transform: translateY(-1px);
+    }
+
+    .card-wrapper {
+      perspective: 1000px;
+      margin-bottom: 30px;
+    }
+
+    .flashcard {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      border: 3px solid #2d87a8;
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, #2d87a8 0%, #3d9ec4 100%);
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .card-topic {
+      font-size: 0.85rem;
+      color: #2d87a8;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(45, 135, 168, 0.1);
+      border-radius: 6px;
+    }
+
+    .card-back .card-topic {
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .card-question {
+      font-size: 1.4rem;
+      color: #2d3d3d;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .card-hint {
+      font-size: 0.95rem;
+      color: #5a7070;
+      font-style: italic;
+      text-align: center;
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 2px solid #e0e0e0;
+    }
+
+    .card-answer {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .card-explanation {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      border-left: 4px solid white;
+    }
+
+    .card-memory-tip {
+      font-size: 0.95rem;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      border-left: 4px solid #fbbf24;
+      margin-top: auto;
+    }
+
+    .memory-tip-label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 5px;
+      color: #fbbf24;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 15px 30px;
+      background: white;
+      color: #2d87a8;
+      border: 2px solid #2d87a8;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #2d87a8;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .flip-hint {
+      text-align: center;
+      color: #5a7070;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2d87a8 0%, #3d9ec4 100%);
+      transition: width 0.3s ease;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .flashcard {
+        height: 600px;
+      }
+
+      .card-face {
+        padding: 25px;
+      }
+
+      .card-question {
+        font-size: 1.2rem;
+      }
+
+      .card-answer {
+        font-size: 1.1rem;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .topic-filter {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .topic-select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="flashcard-container">
+    <div class="header">
+      <h1>Agile Final Exam Flashcards</h1>
+      <p>Click cards to flip • Master your exam knowledge</p>
+    </div>
+
+    <div class="controls">
+      <div class="card-counter" id="cardCounter">Card 1 of 50</div>
+      
+      <div class="topic-filter">
+        <label for="topicSelect">Filter by topic:</label>
+        <select id="topicSelect" class="topic-select">
+          <option value="all">All Topics</option>
+          <option value="agile-fundamentals">Agile Fundamentals</option>
+          <option value="scrum-framework">Scrum Framework</option>
+          <option value="scrum-roles">Scrum Roles</option>
+          <option value="scrum-events">Scrum Events</option>
+          <option value="scrum-artifacts">Scrum Artifacts</option>
+          <option value="agile-estimation">Agile Estimation</option>
+          <option value="leadership">Leadership in Agile</option>
+          <option value="kanban">Kanban</option>
+          <option value="lean">Lean Principles</option>
+          <option value="agile-tools">Agile Tools</option>
+        </select>
+      </div>
+
+      <button class="shuffle-btn" id="shuffleBtn">🔀 Shuffle</button>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 2%"></div>
+    </div>
+
+    <div class="card-wrapper">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="card-face card-front">
+          <span class="card-topic" id="cardTopic">Loading...</span>
+          <div class="card-question" id="cardQuestion">Loading question...</div>
+          <div class="card-hint">💡 Click to see the answer</div>
+        </div>
+        
+        <div class="card-face card-back">
+          <span class="card-topic" id="cardTopicBack">Loading...</span>
+          <div class="card-answer" id="cardAnswer">Loading answer...</div>
+          <div class="card-explanation" id="cardExplanation">Loading explanation...</div>
+          <div class="card-memory-tip" id="cardMemoryTip">
+            <span class="memory-tip-label">💡 Memory Tip:</span>
+            <span id="memoryTipText">Loading tip...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-hint">Click card to flip • Use arrows to navigate</div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="prevBtn" onclick="previousCard()">
+        ← Previous
+      </button>
+      <button class="nav-btn" id="nextBtn" onclick="nextCard()">
+        Next →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Flashcard data with memory tips
+    const flashcards = [
+      // Agile Fundamentals
+      {
+        topic: "Agile Fundamentals",
+        topicId: "agile-fundamentals",
+        question: "Which of the following is a characteristic of Agile methodology?",
+        answer: "C) Iterative and incremental approach",
+        explanation: "Agile methodology is characterized by an iterative and incremental approach, delivering work in small chunks rather than all at once. This allows for continuous feedback and adaptation.",
+        memoryTip: "Think 'ITERATE' - Agile teams repeat cycles of planning, building, and reviewing, constantly improving with each iteration."
+      },
+      {
+        topic: "Agile Fundamentals",
+        topicId: "agile-fundamentals",
+        question: "In which scenario is the Waterfall methodology most effective?",
+        answer: "C) Projects with well-defined requirements and scope",
+        explanation: "Waterfall is most effective when requirements are well-defined and unlikely to change, as it follows a linear, sequential approach where each phase must be completed before the next begins.",
+        memoryTip: "Waterfall = Water flowing DOWN in one direction. Once it goes down, it can't go back up! Best for fixed requirements."
+      },
+      {
+        topic: "Agile Fundamentals",
+        topicId: "agile-fundamentals",
+        question: "What is a key principle stated in the Agile Manifesto?",
+        answer: "C) Individuals and interactions over processes and tools",
+        explanation: "The Agile Manifesto values 'Individuals and interactions over processes and tools,' emphasizing that people and their communication are more important than rigid processes.",
+        memoryTip: "Remember 'People > Process' - Agile puts PEOPLE first. The 4 values all follow the pattern: [Agile thing] OVER [Traditional thing]."
+      },
+      {
+        topic: "Agile Fundamentals",
+        topicId: "agile-fundamentals",
+        question: "Which Agile value emphasizes delivering functional products over extensive documentation?",
+        answer: "B) Working software over comprehensive documentation",
+        explanation: "The Agile Manifesto states 'Working software over comprehensive documentation,' meaning that while documentation has value, a functioning product is more important.",
+        memoryTip: "SHOW, don't tell! Would you rather read a 100-page manual or actually USE the working software?"
+      },
+
+      // Scrum Framework
+      {
+        topic: "Scrum Framework",
+        topicId: "scrum-framework",
+        question: "What is the primary purpose of a Sprint in Scrum?",
+        answer: "B) To deliver a potentially shippable product increment",
+        explanation: "The primary purpose of a Sprint is to deliver a potentially shippable product increment. Sprints are time-boxed iterations (typically 2-4 weeks) that result in a working product.",
+        memoryTip: "Sprint = Short RACE to the finish line with a working product. Athletes don't stop mid-sprint - neither do Scrum teams!"
+      },
+      {
+        topic: "Scrum Framework",
+        topicId: "scrum-framework",
+        question: "Which of the following is NOT a Scrum event?",
+        answer: "D) Project Kickoff",
+        explanation: "Project Kickoff is not a Scrum event. The five Scrum events are: Sprint, Sprint Planning, Daily Scrum, Sprint Review, and Sprint Retrospective.",
+        memoryTip: "Remember 'S-P-D-R-R' for the 5 events: Sprint, Planning, Daily, Review, Retrospective. No 'Kickoff' in that list!"
+      },
+      {
+        topic: "Scrum Framework",
+        topicId: "scrum-framework",
+        question: "How long is a typical Sprint in Scrum?",
+        answer: "B) 2-4 weeks",
+        explanation: "A typical Sprint lasts 2-4 weeks. This time-box provides enough time to deliver meaningful work while maintaining the agility to respond to change.",
+        memoryTip: "Think of a MONTH split in half. 2 weeks minimum, 4 weeks (1 month) maximum. Not too short, not too long - just right!"
+      },
+      {
+        topic: "Scrum Framework",
+        topicId: "scrum-framework",
+        question: "What does 'time-boxed' mean in Scrum?",
+        answer: "B) Events have a maximum duration that cannot be exceeded",
+        explanation: "Time-boxed means events have a maximum duration that cannot be exceeded. This ensures efficiency and prevents meetings from running too long.",
+        memoryTip: "Time-BOX = Put time in a BOX with a LID on it. Once the lid closes (time's up), you're DONE. No extensions!"
+      },
+
+      // Scrum Roles
+      {
+        topic: "Scrum Roles",
+        topicId: "scrum-roles",
+        question: "Who is responsible for managing the product backlog in Scrum?",
+        answer: "C) Product Owner",
+        explanation: "The Product Owner is responsible for managing the product backlog, including prioritizing items, ensuring clarity, and maximizing the value of the product.",
+        memoryTip: "Product OWNER = OWNS the product backlog. It's in the name! They decide what goes in the product."
+      },
+      {
+        topic: "Scrum Roles",
+        topicId: "scrum-roles",
+        question: "Which role in Scrum is responsible for facilitating the Scrum process?",
+        answer: "B) Scrum Master",
+        explanation: "The Scrum Master is responsible for facilitating the Scrum process, coaching the team, removing impediments, and ensuring Scrum is understood and enacted.",
+        memoryTip: "Scrum MASTER = MASTER of the Scrum process (not the boss!). Like a martial arts master who teaches and guides."
+      },
+      {
+        topic: "Scrum Roles",
+        topicId: "scrum-roles",
+        question: "What is the primary responsibility of the Development Team?",
+        answer: "C) Deliver a potentially releasable increment each Sprint",
+        explanation: "The Development Team is responsible for delivering a potentially releasable increment of working product at the end of each Sprint.",
+        memoryTip: "Development Team = DEVELOPERS who BUILD stuff. Their job is simple: DELIVER working software every Sprint!"
+      },
+      {
+        topic: "Scrum Roles",
+        topicId: "scrum-roles",
+        question: "Which Scrum role represents the voice of the customer?",
+        answer: "C) Product Owner",
+        explanation: "The Product Owner represents the voice of the customer and stakeholders, ensuring the team builds the right product with maximum value.",
+        memoryTip: "Product Owner = Customer's VOICE in the room. Imagine them wearing a customer costume to every meeting!"
+      },
+
+      // Scrum Events
+      {
+        topic: "Scrum Events",
+        topicId: "scrum-events",
+        question: "What is the purpose of the Sprint Retrospective?",
+        answer: "C) To reflect on the past Sprint and plan improvements",
+        explanation: "The Sprint Retrospective is held at the end of each Sprint for the team to reflect on what went well, what didn't, and plan improvements for the next Sprint.",
+        memoryTip: "RETRO-spective = Looking BACKWARD in time (retro). Like watching a REPLAY of the Sprint to learn from it."
+      },
+      {
+        topic: "Scrum Events",
+        topicId: "scrum-events",
+        question: "How long is a typical Daily Scrum meeting?",
+        answer: "B) 15 minutes",
+        explanation: "The Daily Scrum is time-boxed to 15 minutes. This short duration forces the team to stay focused on the three key questions and coordinate their work efficiently.",
+        memoryTip: "15 minutes = Quarter of an hour = Quick coffee break. Stand up, sync up, sit down. That's it!"
+      },
+      {
+        topic: "Scrum Events",
+        topicId: "scrum-events",
+        question: "What happens during Sprint Planning?",
+        answer: "B) The team selects items from the product backlog and plans how to deliver them",
+        explanation: "During Sprint Planning, the team selects product backlog items for the upcoming Sprint and creates a plan (Sprint Backlog) for how to deliver the selected work.",
+        memoryTip: "Sprint PLANNING = Making a PLAN for the Sprint. Before the race (Sprint), athletes plan their strategy!"
+      },
+      {
+        topic: "Scrum Events",
+        topicId: "scrum-events",
+        question: "Who attends the Sprint Review?",
+        answer: "B) The Scrum Team and stakeholders",
+        explanation: "The Sprint Review is attended by the Scrum Team (Product Owner, Scrum Master, Development Team) and key stakeholders to inspect the increment and adapt the product backlog.",
+        memoryTip: "Sprint REVIEW = SHOW and tell! Invite everyone interested (stakeholders) to see what you built. It's demo day!"
+      },
+
+      // Scrum Artifacts
+      {
+        topic: "Scrum Artifacts",
+        topicId: "scrum-artifacts",
+        question: "What does the Sprint Backlog contain?",
+        answer: "B) Selected product backlog items for the Sprint and a plan for delivering them",
+        explanation: "The Sprint Backlog contains the product backlog items selected for the Sprint plus the plan for delivering them. It's the Development Team's plan for the Sprint.",
+        memoryTip: "Sprint Backlog = Team's TO-DO list for THIS Sprint only. Take items from Product Backlog + add HOW to do it."
+      },
+      {
+        topic: "Scrum Artifacts",
+        topicId: "scrum-artifacts",
+        question: "Which artifact represents the sum of all completed product backlog items during a Sprint?",
+        answer: "C) Increment",
+        explanation: "The Increment is the sum of all product backlog items completed during a Sprint and all previous Sprints. It must be in a usable condition and meet the Definition of Done.",
+        memoryTip: "INCREMENT = Adding UP all the completed work. Like building with LEGO - each Sprint adds more bricks to the total!"
+      },
+      {
+        topic: "Scrum Artifacts",
+        topicId: "scrum-artifacts",
+        question: "Who owns the Product Backlog?",
+        answer: "B) The Product Owner",
+        explanation: "The Product Owner owns the Product Backlog and is responsible for its content, prioritization, and ensuring it's visible and understood by the team.",
+        memoryTip: "Product OWNER owns the Product BACKLOG. Same word = same person! Easy to remember."
+      },
+      {
+        topic: "Scrum Artifacts",
+        topicId: "scrum-artifacts",
+        question: "What is the Definition of Done?",
+        answer: "C) A shared understanding of what it means for work to be complete",
+        explanation: "The Definition of Done is a shared understanding among the team of what criteria must be met for work to be considered complete, ensuring quality and transparency.",
+        memoryTip: "Definition of DONE = Team's CHECKLIST. Like a recipe - you're not done until ALL steps are checked off!"
+      },
+
+      // Agile Estimation
+      {
+        topic: "Agile Estimation",
+        topicId: "agile-estimation",
+        question: "What are Story Points used for in Agile estimation?",
+        answer: "B) Expressing the overall size of a user story or feature",
+        explanation: "Story Points express the overall size, complexity, and effort of a user story or feature, not time. They're a relative measure comparing stories to each other.",
+        memoryTip: "Story Points = T-shirt sizes (S, M, L, XL), NOT hours! Compare stories to each other, not to the clock."
+      },
+      {
+        topic: "Agile Estimation",
+        topicId: "agile-estimation",
+        question: "Which technique involves team members using cards to vote on the estimate?",
+        answer: "B) Planning Poker",
+        explanation: "Planning Poker is an estimation technique where team members use cards to vote on estimates simultaneously, reducing bias and encouraging discussion.",
+        memoryTip: "Planning POKER = Playing CARDS to estimate! Everyone shows their card at once - no peeking, no bias."
+      },
+      {
+        topic: "Agile Estimation",
+        topicId: "agile-estimation",
+        question: "What is Velocity in Agile?",
+        answer: "B) The amount of work a team completes in a Sprint",
+        explanation: "Velocity is the amount of work (measured in story points or other units) that a team completes in a Sprint. It helps with Sprint planning and forecasting.",
+        memoryTip: "VELOCITY = SPEED of the team. How many story points can they finish in one Sprint? Track it like a speedometer!"
+      },
+      {
+        topic: "Agile Estimation",
+        topicId: "agile-estimation",
+        question: "Why do Agile teams use relative estimation instead of time-based estimation?",
+        answer: "B) It's more accurate because it compares work to other work, not to time",
+        explanation: "Relative estimation is more accurate because humans are better at comparing things to each other than estimating absolute time. Story points compare complexity, not predict hours.",
+        memoryTip: "Humans are BAD at guessing hours, but GOOD at comparing. Which is bigger: elephant or mouse? Easy! Which takes longer: 2 hrs or 3? Harder!"
+      },
+
+      // Leadership in Agile
+      {
+        topic: "Leadership in Agile",
+        topicId: "leadership",
+        question: "What is the focus of servant leadership in Agile?",
+        answer: "B) Serving the team and enabling their success",
+        explanation: "Servant leadership focuses on serving the team by removing obstacles, providing resources, and enabling team success rather than commanding and controlling.",
+        memoryTip: "SERVANT leader = The leader SERVES the team, not the other way around. Like a waiter serves food, they serve the team's needs!"
+      },
+      {
+        topic: "Leadership in Agile",
+        topicId: "leadership",
+        question: "Which strategy encourages team members to take ownership and make decisions?",
+        answer: "B) Empowerment",
+        explanation: "Empowerment encourages team members to take ownership of their work and make decisions, fostering accountability and innovation.",
+        memoryTip: "EMPOWER = Give POWER to the team! Let them make decisions instead of micromanaging. Trust = Power."
+      },
+      {
+        topic: "Leadership in Agile",
+        topicId: "leadership",
+        question: "What does 'self-organizing team' mean in Agile?",
+        answer: "B) The team decides how to accomplish their work without being directed",
+        explanation: "A self-organizing team decides how to best accomplish their work rather than being directed by others outside the team. They still collaborate with the Product Owner and Scrum Master.",
+        memoryTip: "SELF-organizing = Team organizes THEMSELVES! Like kids organizing their own game without parents telling them how."
+      },
+
+      // Kanban
+      {
+        topic: "Kanban",
+        topicId: "kanban",
+        question: "What is the purpose of Work In Progress (WIP) limits in Kanban?",
+        answer: "B) To improve flow and reduce bottlenecks",
+        explanation: "WIP limits improve flow by limiting how many items can be in progress at once. This reduces bottlenecks, context switching, and helps identify process issues.",
+        memoryTip: "WIP limits = Traffic lanes. Too many cars (work items) = traffic jam (bottleneck). Limit cars = smooth flow!"
+      },
+      {
+        topic: "Kanban",
+        topicId: "kanban",
+        question: "Which tool is used to visualize work stages in Kanban?",
+        answer: "B) Kanban Board",
+        explanation: "A Kanban Board visualizes work stages (like To Do, In Progress, Done) and shows the flow of work items through the process.",
+        memoryTip: "Kanban BOARD = Visual BOARD on wall. Sticky notes move across columns. See your work FLOW like watching a game board!"
+      },
+      {
+        topic: "Kanban",
+        topicId: "kanban",
+        question: "What is a key principle of Kanban?",
+        answer: "B) Visualize the workflow",
+        explanation: "A key Kanban principle is to visualize the workflow, making the work and its flow visible so problems can be identified and addressed.",
+        memoryTip: "Kanban = Japanese for 'VISUAL signal' or 'card'. It's all about SEEING your work! Make it VISIBLE!"
+      },
+      {
+        topic: "Kanban",
+        topicId: "kanban",
+        question: "How does Kanban differ from Scrum?",
+        answer: "B) Kanban has continuous flow while Scrum uses time-boxed iterations",
+        explanation: "Kanban emphasizes continuous flow without time-boxed iterations, while Scrum works in time-boxed Sprints. Both are valid Agile approaches with different strengths.",
+        memoryTip: "Kanban = River (continuous FLOW). Scrum = Waves (repeating SPRINTS). Both move forward, just differently!"
+      },
+
+      // Lean Principles
+      {
+        topic: "Lean Principles",
+        topicId: "lean",
+        question: "What does it mean to eliminate waste in Lean programming?",
+        answer: "A) Removing non-value-adding activities",
+        explanation: "Eliminating waste means removing non-value-adding activities - anything that doesn't contribute to delivering value to the customer.",
+        memoryTip: "WASTE = Anything the customer wouldn't PAY for. If it doesn't add value, it's TRASH! Throw it out."
+      },
+      {
+        topic: "Lean Principles",
+        topicId: "lean",
+        question: "Which principle focuses on reducing cycle time to deliver value quickly?",
+        answer: "B) Deliver Fast",
+        explanation: "The 'Deliver Fast' principle focuses on reducing cycle time by optimizing the value stream, eliminating delays, and delivering value to customers quickly.",
+        memoryTip: "Deliver FAST = Need for SPEED! Cut out delays. Customer wants it NOW, not next year. Time is money!"
+      },
+      {
+        topic: "Lean Principles",
+        topicId: "lean",
+        question: "What are the 5 core Lean Principles?",
+        answer: "A) Define Value, Map Value Stream, Create Flow, Establish Pull, Pursue Perfection",
+        explanation: "The 5 Lean Principles are: Define Value, Map the Value Stream, Create Flow, Establish Pull, and Pursue Perfection. These guide continuous improvement.",
+        memoryTip: "Remember 'D-M-C-E-P': Define, Map, Create, Establish, Pursue. Or think: 'Don't Make Crappy Everyday Products!'"
+      },
+      {
+        topic: "Lean Principles",
+        topicId: "lean",
+        question: "What does 'Establish Pull' mean in Lean?",
+        answer: "B) Work is pulled into production based on customer demand rather than pushed",
+        explanation: "'Establish Pull' means work is pulled into the system based on actual customer demand, rather than being pushed based on forecasts. This reduces overproduction and inventory.",
+        memoryTip: "PULL not PUSH! Customer PULLS what they need (like pulling items off a shelf), don't PUSH stuff they don't want!"
+      },
+      {
+        topic: "Lean Principles",
+        topicId: "lean",
+        question: "Which of the following is one of the 8 types of waste (DOWNTIME)?",
+        answer: "B) Defects",
+        explanation: "Defects is one of the 8 types of waste in DOWNTIME: Defects, Overproduction, Waiting, Non-Utilized Talent, Transportation, Inventory, Motion, Extra Processing.",
+        memoryTip: "Remember 'DOWNTIME' acronym: D-O-W-N-T-I-M-E. Each letter is a type of waste. Waste causes DOWNTIME!"
+      },
+
+      // Agile Tools
+      {
+        topic: "Agile Tools",
+        topicId: "agile-tools",
+        question: "What is a User Story in Agile?",
+        answer: "B) A short description of a feature from the user's perspective",
+        explanation: "A User Story is a short, simple description of a feature told from the perspective of the person who desires the capability, usually following the format: 'As a [role], I want [feature], so that [benefit].'",
+        memoryTip: "User STORY = Tell a STORY from the USER's view. 'As a [who], I want [what], so that [why]' - simple template!"
+      },
+      {
+        topic: "Agile Tools",
+        topicId: "agile-tools",
+        question: "What does INVEST stand for in writing good user stories?",
+        answer: "A) Independent, Negotiable, Valuable, Estimable, Small, Testable",
+        explanation: "INVEST is a mnemonic for criteria of good user stories: Independent, Negotiable, Valuable, Estimable, Small, and Testable.",
+        memoryTip: "INVEST in good stories! Each letter = quality: Independent, Negotiable, Valuable, Estimable, Small, Testable. Worth the INVESTMENT!"
+      },
+      {
+        topic: "Agile Tools",
+        topicId: "agile-tools",
+        question: "What is a Burndown Chart used for?",
+        answer: "B) Visualizing work remaining over time in a Sprint",
+        explanation: "A Burndown Chart visualizes the amount of work remaining (usually in story points or hours) over time during a Sprint, helping teams track progress toward their Sprint Goal.",
+        memoryTip: "BURN DOWN = Work BURNS away like a candle melting DOWN. Chart shows work disappearing over time until nothing left!"
+      },
+      {
+        topic: "Agile Tools",
+        topicId: "agile-tools",
+        question: "What is Continuous Integration (CI)?",
+        answer: "B) Frequently merging code changes into a shared repository with automated testing",
+        explanation: "Continuous Integration is the practice of frequently merging code changes into a shared repository, with automated builds and tests running to catch integration issues early.",
+        memoryTip: "Continuous Integration = Keep INTEGRATING code CONTINUOUSLY (all day long). Catch bugs EARLY, not at the end!"
+      },
+
+      // Additional cards to reach 40+
+      {
+        topic: "Agile Project Management",
+        topicId: "agile-tools",
+        question: "What is the purpose of a Sprint Goal?",
+        answer: "B) To provide an objective that can be met through implementing backlog items",
+        explanation: "A Sprint Goal provides an objective that can be met through implementing product backlog items. It gives the Development Team guidance on why it's building the increment.",
+        memoryTip: "Sprint GOAL = WHY are we running this Sprint? The GOAL gives direction. Without it, team is running in circles!"
+      },
+      {
+        topic: "Agile Project Management",
+        topicId: "agile-tools",
+        question: "What is technical debt?",
+        answer: "B) The implied cost of rework caused by choosing an easy solution now instead of a better approach",
+        explanation: "Technical debt is the implied cost of additional rework caused by choosing an easy, quick solution now instead of using a better approach that would take longer initially.",
+        memoryTip: "Technical DEBT = Like credit card DEBT. Quick fix now = PAY LATER with interest (more work). Take shortcuts = owe the code!"
+      },
+      {
+        topic: "Agile Project Management",
+        topicId: "agile-tools",
+        question: "What does 'potentially shippable' mean for an increment?",
+        answer: "B) It meets the Definition of Done and could be released to production",
+        explanation: "'Potentially shippable' means the increment meets the Definition of Done and is in a usable condition. It could be released to production if the Product Owner decides to do so.",
+        memoryTip: "Potentially SHIPPABLE = Ready to SHIP to customers (even if you don't). Like a wrapped gift - ready to give anytime!"
+      },
+      {
+        topic: "Agile Project Management",
+        topicId: "agile-tools",
+        question: "What is a Product Roadmap?",
+        answer: "B) A high-level visual summary showing the vision and direction of the product over time",
+        explanation: "A Product Roadmap is a high-level visual summary that shows the vision and direction of the product offering over time. It helps communicate strategy and build consensus.",
+        memoryTip: "Product ROADMAP = MAP of the ROAD ahead! Shows where product is going, not every detail. Big picture, not turn-by-turn!"
+      }
+    ];
+
+    // State management
+    let currentIndex = 0;
+    let filteredCards = [...flashcards];
+    let isFlipped = false;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      showCard(0);
+      updateCounter();
+      updateProgress();
+    });
+
+    // Topic filter
+    document.getElementById('topicSelect').addEventListener('change', function() {
+      const selectedTopic = this.value;
+      
+      if (selectedTopic === 'all') {
+        filteredCards = [...flashcards];
+      } else {
+        filteredCards = flashcards.filter(card => card.topicId === selectedTopic);
+      }
+      
+      currentIndex = 0;
+      showCard(0);
+      updateCounter();
+      updateProgress();
+    });
+
+    // Shuffle button
+    document.getElementById('shuffleBtn').addEventListener('click', function() {
+      filteredCards = shuffleArray([...filteredCards]);
+      currentIndex = 0;
+      showCard(0);
+      updateCounter();
+      updateProgress();
+    });
+
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    function flipCard() {
+      const card = document.getElementById('flashcard');
+      card.classList.toggle('flipped');
+      isFlipped = !isFlipped;
+    }
+
+    function showCard(index) {
+      if (index < 0 || index >= filteredCards.length) return;
+      
+      const card = filteredCards[index];
+      const flashcardElement = document.getElementById('flashcard');
+      
+      // Reset flip state
+      if (isFlipped) {
+        flashcardElement.classList.remove('flipped');
+        isFlipped = false;
+      }
+      
+      // Update front
+      document.getElementById('cardTopic').textContent = card.topic;
+      document.getElementById('cardQuestion').textContent = card.question;
+      
+      // Update back
+      document.getElementById('cardTopicBack').textContent = card.topic;
+      document.getElementById('cardAnswer').textContent = card.answer;
+      document.getElementById('cardExplanation').textContent = card.explanation;
+      document.getElementById('memoryTipText').textContent = card.memoryTip;
+      
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = index === 0;
+      document.getElementById('nextBtn').disabled = index === filteredCards.length - 1;
+      
+      updateCounter();
+      updateProgress();
+    }
+
+    function updateCounter() {
+      document.getElementById('cardCounter').textContent = 
+        `Card ${currentIndex + 1} of ${filteredCards.length}`;
+    }
+
+    function updateProgress() {
+      const percent = ((currentIndex + 1) / filteredCards.length) * 100;
+      document.getElementById('progressFill').style.width = percent + '%';
+    }
+
+    function previousCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showCard(currentIndex);
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < filteredCards.length - 1) {
+        currentIndex++;
+        showCard(currentIndex);
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        previousCard();
+      } else if (e.key === 'ArrowRight') {
+        nextCard();
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        flipCard();
+      }
+    });
+  </script>
+</body>
+</html>
