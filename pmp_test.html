@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PMP Practice Exam</title>
+  <title>PMP Practice Exam – 3x Question Sets</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -15,7 +15,7 @@
     }
 
     .app-container {
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       background: #ffffff;
       margin: 24px;
@@ -26,14 +26,78 @@
 
     h1 {
       font-size: 1.6rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.2rem;
       color: #111827;
     }
 
     .subtitle {
       color: #6b7280;
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .controls-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .exam-select-group,
+    .count-select-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    select {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      background: #f9fafb;
+      cursor: pointer;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+      color: #4b5563;
+      gap: 8px;
+    }
+
+    .left-top {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .exam-label {
+      font-size: 0.85rem;
+      color: #374151;
+    }
+
+    .timer {
+      font-size: 0.9rem;
+      color: #111827;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
 
     .progress {
@@ -199,6 +263,18 @@
       font-weight: 600;
     }
 
+    .time-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      background: #fef3c7;
+      color: #92400e;
+      margin-left: 6px;
+      font-weight: 600;
+    }
+
     .result-item {
       border-radius: 10px;
       border: 1px solid #e5e7eb;
@@ -252,10 +328,22 @@
       color: #b91c1c;
     }
 
+    .results-buttons {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.75rem;
+    }
+
     @media (max-width: 600px) {
       .app-container {
         margin: 16px;
         padding: 18px 14px 24px;
+      }
+
+      .controls-row,
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -264,12 +352,43 @@
   <div class="app-container">
     <h1>PMP® Practice Exam</h1>
     <p class="subtitle">
-      Answer one question at a time. You will see the correct answer and explanation after each question and a full review at the end.
+      Three exam sets. Choose your exam and number of questions. Questions are randomized each time. You’ll see feedback after every question and a full review at the end.
     </p>
 
+    <div class="controls-row">
+      <div class="controls-left">
+        <div class="exam-select-group">
+          <label for="exam-select"><strong>Select exam:</strong></label>
+          <select id="exam-select" onchange="changeExam()">
+            <option value="0">Exam 1</option>
+            <option value="1">Exam 2</option>
+            <option value="2">Exam 3</option>
+          </select>
+        </div>
+
+        <div class="count-select-group">
+          <label for="question-count-select"><strong>Questions:</strong></label>
+          <select id="question-count-select" onchange="changeQuestionCount()">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="25" selected>25</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="timer-display" class="timer">Time: 00:00</div>
+    </div>
+
     <div id="quiz-section">
+      <div class="top-row">
+        <div class="left-top">
+          <div id="exam-label" class="exam-label">Exam 1 of 3</div>
+          <div id="question-counter">Question 1 of 25</div>
+        </div>
+      </div>
+
       <div class="progress">
-        <div id="question-counter">Question 1 of 5</div>
+        <span>Progress</span>
         <div class="progress-bar-wrapper">
           <div id="progress-bar" class="progress-bar"></div>
         </div>
@@ -294,103 +413,1167 @@
       <h2>Review your results</h2>
       <p id="results-summary" class="results-summary"></p>
       <div id="results-list"></div>
+      <div class="results-buttons">
+        <button class="btn-secondary" onclick="restartQuiz()">Restart this exam</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // === CONFIG: Add / edit PMP-style questions here ===
-    const questions = [
+    // ================== FULL QUESTION BANKS ==================
+
+    // Exam 1
+    const examSet1 = [
       {
         id: 1,
-        domain: "People",
-        text: "You are leading a cross-functional project team that is struggling with frequent misunderstandings. Tasks are dropped because team members assume others are handling them. What is the most appropriate action?",
+        domain: "People (Agile)",
+        text: "A cross-functional Agile team has started missing sprint goals because team members often wait for the product owner to clarify small details. What should the project manager encourage first?",
         options: [
-          "Send a detailed reminder email after every meeting summarizing who does what.",
-          "Introduce a RACI or responsibility assignment matrix and review it with the team.",
-          "Escalate the issue to the sponsor and request that responsibilities be reassigned.",
-          "Ask team members to track their own tasks independently without a shared tool."
+          "Require the product owner to attend all work sessions.",
+          "Coach the team to make timely decisions using working agreements.",
+          "Extend sprint length to allow more time for clarification.",
+          "Escalate the delays to the sponsor."
         ],
         correctIndex: 1,
         explanation:
-          "A RACI or responsibility assignment matrix clarifies who is Responsible, Accountable, Consulted, and Informed for key activities. This directly addresses confusion about ownership and reduces misunderstandings."
+          "Agile teams should make many decisions locally using team norms and working agreements, reducing dependency on the product owner for minor clarifications."
       },
       {
         id: 2,
-        domain: "Process",
-        text: "Midway through a project, your customer requests a change that will add significant scope but also increase expected business value. What should you do first?",
+        domain: "Process (Predictive)",
+        text: "A key deliverable is behind schedule due to a vendor delay. What should the project manager do first?",
         options: [
-          "Reject the change request because it increases scope.",
-          "Implement the change immediately to keep the customer satisfied.",
-          "Send the change request to the sponsor and ask for written approval.",
-          "Analyze the impact on scope, schedule, cost, and risks before making a recommendation."
+          "Update the risk register and evaluate schedule impact.",
+          "Escalate the vendor issue to the procurement department immediately.",
+          "Approve overtime to recover the schedule.",
+          "Stop work until the vendor resolves the issue."
         ],
-        correctIndex: 3,
+        correctIndex: 0,
         explanation:
-          "The project manager should first perform an impact analysis on scope, schedule, cost, and risks, and then present options through the change control process. Decisions should be made with full understanding of trade-offs."
+          "In predictive projects, delays must be analyzed for schedule impact and captured as risks before selecting or escalating a response."
       },
       {
         id: 3,
-        domain: "Business Environment",
-        text: "Your project has reached its objectives, but the organization has decided to shift strategy and no longer requires the product you are building. What is the best action?",
+        domain: "Business Environment (Hybrid)",
+        text: "A new regulation affects part of the project scope. What should the project manager do?",
         options: [
-          "Continue the project to avoid wasting the work already done.",
-          "Recommend formally terminating the project and documenting lessons learned.",
-          "Ask the team to work at a slower pace until a decision is reversed.",
-          "Try to change the product so it fits the new strategy without informing stakeholders."
+          "Submit a change request after confirming impact.",
+          "Stop all affected work immediately.",
+          "Escalate to the steering committee for direction.",
+          "Tell the team to implement the regulation without delay."
         ],
-        correctIndex: 1,
+        correctIndex: 0,
         explanation:
-          "If the project no longer supports the organization’s strategy or delivers needed value, the appropriate action is to recommend formal termination and capture lessons learned for future initiatives."
+          "Regulatory changes require formal impact analysis and a change request through the integrated change control process."
       },
       {
         id: 4,
-        domain: "Process",
-        text: "A key stakeholder raises a concern that identified project risks are not being actively managed. Which tool or artifact would best demonstrate how risks are being tracked and addressed?",
+        domain: "People (Predictive)",
+        text: "A senior team member refuses to share important knowledge with others. What should you do?",
         options: [
-          "The stakeholder engagement plan",
-          "The work breakdown structure (WBS)",
-          "The risk register and risk response plans",
-          "The project charter"
+          "Reassign their work to someone else.",
+          "Address the behavior privately and reinforce collaborative expectations.",
+          "Add another expert to replace them.",
+          "Inform the sponsor that knowledge hoarding is occurring."
         ],
-        correctIndex: 2,
+        correctIndex: 1,
         explanation:
-          "The risk register and risk response plans show identified risks, their owners, responses, and status. These artifacts are used to demonstrate that risks are being monitored and actively managed."
+          "People issues should be addressed directly and respectfully. The project manager should promote collaboration by setting clear expectations."
       },
       {
         id: 5,
-        domain: "People",
-        text: "A senior engineer on your team is frequently interrupting others in meetings and dismissing their ideas. Morale is starting to drop. What should you do?",
+        domain: "Process (Agile)",
+        text: "Your Agile team is frequently blocked waiting on external testing resources. What should you do first?",
         options: [
-          "Publicly ask the engineer to stop interrupting in the next meeting.",
-          "Ignore the behavior, as it comes from a high performer.",
-          "Discuss the behavior privately, explain the impact on the team, and agree on expectations.",
-          "Remove the engineer from all future meetings."
+          "Escalate the issue to the PMO.",
+          "Move testing capability into the team.",
+          "Increase sprint length.",
+          "Remove lower-priority backlog items."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Agile promotes cross-functional teams with all skills required to deliver value, which includes testing capability where possible."
+      },
+      {
+        id: 6,
+        domain: "Process (Predictive)",
+        text: "A risk has occurred, and the response plan is not effective. What should the project manager do?",
+        options: [
+          "Retire the risk from the register.",
+          "Implement a workaround.",
+          "Update the project charter.",
+          "Re-run the qualitative risk analysis."
+        ],
+        correctIndex: 1,
+        explanation:
+          "When a risk event occurs and the planned response fails or proves insufficient, the immediate action is to implement a workaround and update the risk documentation."
+      },
+      {
+        id: 7,
+        domain: "People (Agile)",
+        text: "A stakeholder frequently disrupts sprint reviews by pushing new ideas. What should the project manager do?",
+        options: [
+          "Ask them not to attend reviews.",
+          "Explain backlog refinement and direct new ideas to the product owner.",
+          "Add new ideas immediately to the sprint.",
+          "Schedule a separate meeting before each review."
+        ],
+        correctIndex: 1,
+        explanation:
+          "New ideas should be added to the product backlog via the product owner. Sprint events should remain focused on their intended purpose."
+      },
+      {
+        id: 8,
+        domain: "Process (Hybrid)",
+        text: "Half the project is Agile, half predictive. The predictive team complains Agile changes impact their schedule. What should you do?",
+        options: [
+          "Create an integrated change control approach covering both teams.",
+          "Force Agile teams to lock down requirements.",
+          "Move the predictive team to Agile.",
+          "Add schedule buffers for all Agile items."
+        ],
+        correctIndex: 0,
+        explanation:
+          "Hybrid projects require a coordinated change control approach so that changes from Agile work are assessed and communicated to predictive teams."
+      },
+      {
+        id: 9,
+        domain: "People (Predictive)",
+        text: "Two team members are in conflict over responsibilities. What should the project manager do first?",
+        options: [
+          "Clarify roles using tools like a RACI matrix.",
+          "Escalate the issue to HR.",
+          "Ask the sponsor to decide.",
+          "Assign the work to someone else."
+        ],
+        correctIndex: 0,
+        explanation:
+          "Role clarity is essential. Tools such as a RACI matrix can help define who is responsible and accountable before considering escalation."
+      },
+      {
+        id: 10,
+        domain: "Process (Agile)",
+        text: "Velocity has dropped for three sprints, and the team feels pressured. What should the project manager do?",
+        options: [
+          "Set a higher velocity goal to motivate the team.",
+          "Facilitate a retrospective to explore root causes.",
+          "Add more team members mid-sprint.",
+          "Extend sprint duration."
+        ],
+        correctIndex: 1,
+        explanation:
+          "A retrospective allows the team to inspect and adapt, identifying underlying causes for reduced velocity and adjusting their process accordingly."
+      },
+      {
+        id: 11,
+        domain: "Business Environment (Predictive)",
+        text: "A project must be stopped immediately because it no longer aligns with strategic goals. What should you do?",
+        options: [
+          "Continue work until leadership confirms in writing.",
+          "Recommend formal termination and document lessons learned.",
+          "Remove lower-priority scope to reduce costs.",
+          "Pause only the affected work packages."
+        ],
+        correctIndex: 1,
+        explanation:
+          "When a project no longer supports strategy, the appropriate response is to recommend formal closure and capture lessons learned."
+      },
+      {
+        id: 12,
+        domain: "Process (Hybrid)",
+        text: "A deliverable is late because Agile changes outpaced waterfall documentation. What should the project manager do next?",
+        options: [
+          "Ignore documentation gaps and focus on delivery.",
+          "Create a mapping between Agile increments and required documentation.",
+          "Force Agile teams to stop changing requirements.",
+          "Convert the entire project to Agile."
+        ],
+        correctIndex: 1,
+        explanation:
+          "In hybrid environments, aligning Agile increments to predictive documentation requirements is essential to keep both sides synchronized."
+      },
+      {
+        id: 13,
+        domain: "People (Agile)",
+        text: "A team wants to skip retrospectives because they feel nothing new comes up. What should the project manager do?",
+        options: [
+          "Cancel retrospectives permanently.",
+          "Facilitate a deeper root-cause session or vary retrospective techniques.",
+          "Force the team to list new issues every time.",
+          "Allow the team to skip every other retrospective."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager should help improve the value of retrospectives by using new techniques or focusing on deeper root causes, not eliminating the practice."
+      },
+      {
+        id: 14,
+        domain: "Process (Predictive)",
+        text: "A vendor submits a change that increases cost by 20%. What is the correct first action?",
+        options: [
+          "Reject the change immediately.",
+          "Conduct an impact analysis.",
+          "Request additional funding.",
+          "Update the project schedule."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Changes that affect cost must first be analyzed for impact on scope, schedule, cost, and risk before a decision is made."
+      },
+      {
+        id: 15,
+        domain: "People (Hybrid)",
+        text: "The predictive team complains that Agile demos waste their time. What should the project manager do?",
+        options: [
+          "Remove the predictive team from demos.",
+          "Explain how demos support transparency and coordination across teams.",
+          "Shorten all demos to five minutes.",
+          "Cancel demos entirely."
+        ],
+        correctIndex: 1,
+        explanation:
+          "In hybrid projects, demos improve transparency and integration. The project manager should clarify their purpose and benefits."
+      },
+      {
+        id: 16,
+        domain: "Process (Agile)",
+        text: "A developer wants to work ahead on future sprint items because current work seems light. What should you do?",
+        options: [
+          "Allow it to increase speed.",
+          "Ask them to help complete ongoing sprint work instead.",
+          "Extend the sprint.",
+          "Add more items to the current sprint backlog."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Agile teams focus on completing current sprint commitments before pulling in work from future sprints."
+      },
+      {
+        id: 17,
+        domain: "Business Environment (Predictive)",
+        text: "Your project depends on a facility that now requires new environmental compliance steps. What should you do?",
+        options: [
+          "Ignore the requirement, as it is external.",
+          "Add the requirement to the risk register and initiate a change request.",
+          "Stop the entire project immediately.",
+          "Ask the sponsor to resolve it informally."
+        ],
+        correctIndex: 1,
+        explanation:
+          "New compliance steps must be handled via risk and change management, ensuring the project plan reflects the updated requirements."
+      },
+      {
+        id: 18,
+        domain: "People (Predictive)",
+        text: "A team is demotivated after several late deliverables. What should you do?",
+        options: [
+          "Assign blame to underperforming members.",
+          "Review workload, team capacity, and provide recognition where earned.",
+          "Replace perceived low performers.",
+          "Increase mandatory overtime until the schedule is met."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Good leadership focuses on understanding workload and capacity, removing impediments, and recognizing effort to rebuild morale."
+      },
+      {
+        id: 19,
+        domain: "Process (Agile)",
+        text: "The product owner often changes priorities during the sprint. What should you do?",
+        options: [
+          "Allow it because Agile welcomes change.",
+          "Remind them that changes should go into the next sprint backlog.",
+          "Cancel the sprint each time priorities change.",
+          "Remove items mid-sprint without discussion."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Once a sprint starts, its scope is fixed. New priorities belong in the product backlog for future sprints."
+      },
+      {
+        id: 20,
+        domain: "Process (Predictive)",
+        text: "A cost overrun is predicted based on current performance. What should the project manager do?",
+        options: [
+          "Implement corrective action after analyzing cost performance.",
+          "Immediately request more budget.",
+          "Reduce quality to save money.",
+          "Cancel remaining scope to avoid overruns."
+        ],
+        correctIndex: 0,
+        explanation:
+          "Corrective action should be based on cost performance analysis to bring the project back in line with the baseline."
+      },
+      {
+        id: 21,
+        domain: "Business Environment (Hybrid)",
+        text: "A partner organization changes a key policy affecting the integration timeline. What should the project manager do?",
+        options: [
+          "Update assumptions and escalate where needed.",
+          "Ignore the policy change unless the sponsor mentions it.",
+          "End the project.",
+          "Ask the team to continue without modification."
+        ],
+        correctIndex: 0,
+        explanation:
+          "Changes in partner policies should be reflected in the assumptions log and escalated if they impact scope, schedule, or benefits."
+      },
+      {
+        id: 22,
+        domain: "People (Agile)",
+        text: "A remote Agile team struggles with communication delays. What should you encourage?",
+        options: [
+          "More email updates.",
+          "Adoption of real-time communication tools and clearer working hours.",
+          "Fewer daily standups.",
+          "Assign work only to team members in the same time zone."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Real-time collaboration tools and clear working agreements help reduce delays in distributed Agile teams."
+      },
+      {
+        id: 23,
+        domain: "Process (Predictive)",
+        text: "A key stakeholder requests a feature that is clearly outside the approved project scope. What should you do first?",
+        options: [
+          "Add it to the scope to maintain stakeholder satisfaction.",
+          "Reject it immediately because it increases scope.",
+          "Log the request and send it through change control for impact analysis.",
+          "Delay responding until the next status meeting."
         ],
         correctIndex: 2,
         explanation:
-          "Addressing the behavior privately and respectfully is the most appropriate response. The project manager should explain the impact on the team and work with the engineer to set clear expectations for future interactions."
+          "All scope changes, even those outside the original scope, must be documented and assessed via the formal change control process before decisions are made."
+      },
+      {
+        id: 24,
+        domain: "People (Hybrid)",
+        text: "A team lacks clarity about how Agile increments map to the traditional WBS. What should the project manager do?",
+        options: [
+          "Remove WBS requirements.",
+          "Work with both teams to create alignment between increments and WBS deliverables.",
+          "Cancel Agile work.",
+          "Ask the Agile team to produce predictive documentation for each user story."
+        ],
+        correctIndex: 1,
+        explanation:
+          "In hybrid projects, the project manager should help connect Agile increments to WBS deliverables so all stakeholders see how work aligns."
+      },
+      {
+        id: 25,
+        domain: "Business Environment (Predictive)",
+        text: "A new company initiative will use the product your project is developing. What should you do?",
+        options: [
+          "Continue without changes unless told otherwise.",
+          "Evaluate alignment and update benefits management documentation.",
+          "Add the initiative's scope immediately.",
+          "Ask the sponsor to redefine the project charter."
+        ],
+        correctIndex: 1,
+        explanation:
+          "When a new initiative depends on the project outcome, the project manager should confirm alignment and update benefits documentation to reflect the broader value."
       }
     ];
 
+    // Exam 2
+    const examSet2 = [
+      {
+        id: 1,
+        domain: "People (Agile)",
+        text: "During daily standups, some team members stay silent and rarely raise issues, but problems appear later in the sprint. What should the project manager do?",
+        options: [
+          "Shorten the standup so people feel less pressure.",
+          "Coach the team on psychological safety and model open, non-blaming conversation.",
+          "Replace silent team members with more vocal ones.",
+          "Ask the product owner to lead the standups instead."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Building psychological safety and modeling open dialogue helps team members feel safe raising issues early, which is critical in Agile."
+      },
+      {
+        id: 2,
+        domain: "Process (Predictive)",
+        text: "Your cost performance index (CPI) is 0.8 and schedule performance index (SPI) is 1.0. What is the best interpretation?",
+        options: [
+          "The project is on budget but behind schedule.",
+          "The project is under budget and on schedule.",
+          "The project is over budget but on schedule.",
+          "The project is under budget but behind schedule."
+        ],
+        correctIndex: 2,
+        explanation:
+          "A CPI of 0.8 means cost efficiency is poor (over budget), while an SPI of 1.0 indicates the schedule is on track."
+      },
+      {
+        id: 3,
+        domain: "Business Environment (Hybrid)",
+        text: "A portfolio review board decides to reduce overall investment in your department. How should you respond as the project manager?",
+        options: [
+          "Immediately reduce your team size.",
+          "Evaluate how funding changes affect project benefits, then present options for scope or timeline adjustments.",
+          "Ignore the decision until you receive a formal memo.",
+          "Stop all work and wait for new instructions."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager should assess the impact on benefits, scope, and schedule and provide informed options to decision-makers."
+      },
+      {
+        id: 4,
+        domain: "People (Predictive)",
+        text: "Midway through the project, you notice stakeholders are not reading your lengthy weekly reports. What should you do?",
+        options: [
+          "Stop sending reports since they are not being read.",
+          "Ask stakeholders about their information needs and adjust format and frequency.",
+          "Force stakeholders to acknowledge receipt of each report.",
+          "Send more detailed reports to ensure clarity."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Communication should be tailored to stakeholder needs. The project manager should adjust content and format based on feedback."
+      },
+      {
+        id: 5,
+        domain: "Process (Agile)",
+        text: "The team’s product backlog has grown large and unfocused. What should the project manager encourage the product owner to do?",
+        options: [
+          "Freeze the backlog and stop adding items.",
+          "Group items by value and risk and re-prioritize through backlog refinement.",
+          "Delete all low-priority items immediately.",
+          "Hand backlog management to the project manager."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Backlog refinement helps the product owner organize and prioritize items based on value and risk, keeping the backlog actionable."
+      },
+      {
+        id: 6,
+        domain: "Process (Predictive)",
+        text: "Stakeholders are questioning the approved baseline schedule. What artifact will best support your explanation?",
+        options: [
+          "Risk register.",
+          "Issue log.",
+          "Schedule network diagram and critical path analysis.",
+          "Change request log."
+        ],
+        correctIndex: 2,
+        explanation:
+          "The schedule network diagram and critical path analysis demonstrate the logic and dependencies used to develop the baseline schedule."
+      },
+      {
+        id: 7,
+        domain: "People (Hybrid)",
+        text: "Agile team members feel disconnected from the predictive workstream and complain they do not understand overall project goals. What should you do?",
+        options: [
+          "Ask them to focus only on their sprint work.",
+          "Hold joint planning or review sessions to connect Agile outcomes with overall project objectives.",
+          "Assign a liaison to keep them informed without changing ceremonies.",
+          "Share the project charter and assume they will read it."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Joint sessions help align all teams around shared goals and show how Agile increments contribute to the broader project."
+      },
+      {
+        id: 8,
+        domain: "Process (Agile)",
+        text: "A stakeholder demands detailed scope and date commitments for the next 12 months on an Agile project. What is the best response?",
+        options: [
+          "Provide a fixed scope and date and lock the backlog.",
+          "Explain how Agile uses a roadmap and release planning to provide forecasts that are refined over time.",
+          "Convert the project to predictive to satisfy the stakeholder.",
+          "Refuse the request because Agile does not plan long term."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Agile projects still plan, but at different levels (roadmap, releases, sprints) and refine commitments as more information emerges."
+      },
+      {
+        id: 9,
+        domain: "Business Environment (Predictive)",
+        text: "A supplier in another country is affected by new trade restrictions that may delay materials. What should you do first?",
+        options: [
+          "Ignore it until delays actually occur.",
+          "Update the risk register and work with procurement to evaluate alternatives.",
+          "Terminate the contract immediately.",
+          "Ask the sponsor to take over supplier management."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager should treat the new restrictions as a risk, analyze impact, and explore alternative options with procurement."
+      },
+      {
+        id: 10,
+        domain: "People (Agile)",
+        text: "A new team member is unfamiliar with Agile practices and keeps asking for detailed instructions. What is the best action?",
+        options: [
+          "Assign them only documentation tasks.",
+          "Pair them with an experienced team member and provide basic Agile training.",
+          "Ask them to learn Agile on their own time.",
+          "Move them to a different, non-Agile project."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Pairing and training help new members adapt while maintaining team cohesion and shared understanding of Agile practices."
+      },
+      {
+        id: 11,
+        domain: "Process (Predictive)",
+        text: "You discover that actual scope differs from what is documented in the requirements. What should you do?",
+        options: [
+          "Update the scope baseline without review.",
+          "Raise a change request and analyze impact before updating scope documents.",
+          "Ignore the issue since the work is already done.",
+          "Reduce upcoming scope to compensate, without informing stakeholders."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Changes to scope require proper change control, including impact analysis and approval before updating baselines."
+      },
+      {
+        id: 12,
+        domain: "Business Environment (Hybrid)",
+        text: "A new corporate initiative requires your product to integrate with an additional system not originally planned. What is the best approach?",
+        options: [
+          "Add the integration as a user story in the current sprint.",
+          "Treat the integration as a change, perform impact analysis, and coordinate with both Agile and predictive teams.",
+          "Ask teams to handle it informally",
+          "Reject the request because it was not in the original charter."
+        ],
+        correctIndex: 1,
+        explanation:
+          "New integration requirements must go through change control with impact analysis, especially in hybrid environments with multiple teams."
+      },
+      {
+        id: 13,
+        domain: "People (Predictive)",
+        text: "Your team is spread across time zones and often misses meetings. What should you do?",
+        options: [
+          "Schedule all meetings during your own working hours.",
+          "Define core overlapping hours and use recordings or asynchronous updates for others.",
+          "Require everyone to work your time zone.",
+          "Reduce the number of meetings to avoid inconvenience."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Defining core hours and supplementing with asynchronous communication balances collaboration needs with time zone constraints."
+      },
+      {
+        id: 14,
+        domain: "Process (Agile)",
+        text: "The team regularly completes all sprint work early and has idle time at the end. What is the best response?",
+        options: [
+          "Increase the sprint length.",
+          "Work with the team and product owner to pull in additional ready backlog items or adjust future sprint commitments.",
+          "Reduce team size.",
+          "Ask the sponsor for more scope."
+        ],
+        correctIndex: 1,
+        explanation:
+          "In Agile, capacity and commitments are adjusted based on actual performance; the team can pull more work when they consistently finish early."
+      },
+      {
+        id: 15,
+        domain: "Business Environment (Predictive)",
+        text: "A regulatory body announces a deadline earlier than your planned go-live. What should you do?",
+        options: [
+          "Ignore the announcement until confirmed in writing.",
+          "Reassess the schedule, evaluate options such as scope reduction or resource changes, and present scenarios to stakeholders.",
+          "Ask the regulator for an exemption and continue as planned.",
+          "Cancel the project."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager must reassess the schedule and present viable options, balancing regulatory requirements and project constraints."
+      },
+      {
+        id: 16,
+        domain: "People (Agile)",
+        text: "During retrospectives, the same few people dominate the conversation. Others rarely speak. What should you do?",
+        options: [
+          "Limit retrospective length to reduce discussion.",
+          "Use facilitation techniques such as silent brainstorming or round-robin to involve everyone.",
+          "Ask quiet members to submit feedback by email only.",
+          "Stop holding retrospectives."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Inclusive facilitation techniques help ensure all voices are heard and improve the quality of retrospective insights."
+      },
+      {
+        id: 17,
+        domain: "Process (Predictive)",
+        text: "Your schedule shows multiple near-critical paths. What does this mean for the project?",
+        options: [
+          "There is only one path that matters.",
+          "Any delay anywhere will delay the project.",
+          "Several paths have little float, so delays on those paths can easily affect the finish date.",
+          "The schedule is too conservative."
+        ],
+        correctIndex: 2,
+        explanation:
+          "Near-critical paths with low float indicate higher schedule risk, as small delays on those paths may affect the completion date."
+      },
+      {
+        id: 18,
+        domain: "Process (Hybrid)",
+        text: "The predictive reporting team complains that Agile increments change too often, making their status reports unstable. What should you do?",
+        options: [
+          "Stop Agile teams from adjusting priorities.",
+          "Create agreed reporting intervals and formats that roll up Agile outcomes into stable summary views.",
+          "Eliminate status reports.",
+          "Force Agile teams to use predictive documentation templates."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Aligning on reporting cadence and format allows Agile variability while giving predictive teams stable summary data."
+      },
+      {
+        id: 19,
+        domain: "Business Environment (Agile)",
+        text: "A competitor releases a new feature that your stakeholders want to respond to quickly. What is an appropriate Agile response?",
+        options: [
+          "Freeze the backlog to avoid disruption.",
+          "Reprioritize the backlog with stakeholders to consider adding competitive features to upcoming sprints.",
+          "Create a separate project and ignore the current one.",
+          "Ignore the competitor and continue as planned."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Agile embraces changing priorities based on market feedback; backlog reprioritization with stakeholders is appropriate."
+      },
+      {
+        id: 20,
+        domain: "People (Predictive)",
+        text: "A subject matter expert is assigned to several projects and often misses your meetings. What should you do?",
+        options: [
+          "Report them to their functional manager without discussion.",
+          "Clarify expectations with the expert and functional manager, and negotiate realistic availability.",
+          "Remove them from the project.",
+          "Schedule meetings only when they are free, regardless of other team members."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Clarifying availability and negotiating realistic commitments with the functional manager addresses resource conflicts in a matrix environment."
+      },
+      {
+        id: 21,
+        domain: "Process (Agile)",
+        text: "The team often underestimates stories and ends up carrying work over to the next sprint. What should you do?",
+        options: [
+          "Punish the team for inaccurate estimates.",
+          "Encourage the team to review past velocity and estimation accuracy and adjust their approach.",
+          "Increase sprint length.",
+          "Ask the product owner to reduce acceptance criteria."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The team should inspect estimation practices, use historical data, and adjust how they size work and plan sprints."
+      },
+      {
+        id: 22,
+        domain: "Business Environment (Predictive)",
+        text: "A key executive sponsor leaves the organization. What is the best immediate step?",
+        options: [
+          "Stop the project until a new sponsor is assigned.",
+          "Identify the new sponsor or decision-maker and review project alignment and expectations.",
+          "Continue as if nothing has changed.",
+          "Reduce scope to lower risk."
+        ],
+        correctIndex: 1,
+        explanation:
+          "A change in sponsorship requires re-confirming alignment, commitments, and expectations with the new decision-maker."
+      },
+      {
+        id: 23,
+        domain: "People (Hybrid)",
+        text: "Some team members are confused about which ceremonies or meetings they must attend, especially between Agile and predictive groups. What should you do?",
+        options: [
+          "Ask everyone to attend all meetings.",
+          "Clarify expectations by documenting roles, required ceremonies, and communication channels for each group.",
+          "Reduce the number of ceremonies.",
+          "Let each person decide which meetings to join."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Clear documentation of roles and participation expectations reduces confusion and improves collaboration in hybrid teams."
+      },
+      {
+        id: 24,
+        domain: "Process (Predictive)",
+        text: "You are asked to compress the schedule without changing scope. What technique is most appropriate?",
+        options: [
+          "Gold plating.",
+          "Crashing or fast-tracking critical path activities after analyzing risk and cost.",
+          "Reducing quality standards.",
+          "Eliminating risk management activities."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Schedule compression techniques like crashing or fast-tracking focus on critical path work and require careful consideration of risk and cost."
+      },
+      {
+        id: 25,
+        domain: "Business Environment (Hybrid)",
+        text: "Your organization wants to reuse the product from your project on multiple future initiatives. What should you do?",
+        options: [
+          "Ignore future uses since they are out of scope.",
+          "Work with sponsors and portfolio managers to confirm benefits, scalability, and potential roadmap implications.",
+          "Add features for future initiatives immediately.",
+          "Close the project early and start a new one."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Aligning with portfolio and benefits management ensures the product is positioned correctly for future initiatives."
+      }
+    ];
+
+    // Exam 3
+    const examSet3 = [
+      {
+        id: 1,
+        domain: "People (Predictive)",
+        text: "Your team recently merged with another project team, and there is tension about different ways of working. What should you do first?",
+        options: [
+          "Assign tasks without discussing the conflict.",
+          "Facilitate a workshop to align on shared norms, roles, and ways of working.",
+          "Ask each group to continue using its own methods.",
+          "Escalate the issue to senior management immediately."
+        ],
+        correctIndex: 1,
+        explanation:
+          "A facilitated session to define shared norms and expectations helps integrate teams and reduce tension."
+      },
+      {
+        id: 2,
+        domain: "Process (Agile)",
+        text: "The team’s definition of done differs across members, leading to inconsistent quality. What should the project manager encourage?",
+        options: [
+          "Allow each developer to define their own done criteria.",
+          "Create and agree on a single, shared definition of done for the team.",
+          "Rely on the product owner to check everything.",
+          "Remove quality checks to speed up delivery."
+        ],
+        correctIndex: 1,
+        explanation:
+          "A shared, explicit definition of done aligns expectations and ensures consistent quality across the team."
+      },
+      {
+        id: 3,
+        domain: "Business Environment (Predictive)",
+        text: "Midway through execution, the organization updates its strategic priorities. Your project still delivers benefits but is no longer a top priority. What should you do?",
+        options: [
+          "Continue at the same pace.",
+          "Discuss with sponsors whether to adjust scope, schedule, or resources to match the new priority.",
+          "Terminate the project immediately.",
+          "Move budget from other projects to protect yours."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Changes in strategic priority require re-evaluating how the project fits and possibly adjusting constraints with sponsor input."
+      },
+      {
+        id: 4,
+        domain: "People (Agile)",
+        text: "A team member frequently interrupts others during standups. Others have started to disengage. What is the best action?",
+        options: [
+          "Publicly call out the behavior during the next standup.",
+          "Speak privately with the person about the impact and agree on ground rules.",
+          "Ignore it because the team member is very productive.",
+          "Ask the product owner to handle it."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Addressing the behavior privately and setting expectations maintains respect and engagement without shaming the individual."
+      },
+      {
+        id: 5,
+        domain: "Process (Predictive)",
+        text: "You are preparing the project management plan. Which of the following is true?",
+        options: [
+          "It should only cover schedule and cost.",
+          "It integrates subsidiary plans and can be progressively elaborated.",
+          "It cannot be changed once approved.",
+          "It replaces the business case."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project management plan integrates subsidiary plans and is updated as more information becomes available."
+      },
+      {
+        id: 6,
+        domain: "Business Environment (Hybrid)",
+        text: "An Agile team wants to adopt a new open-source tool that has unclear licensing implications. What should you do?",
+        options: [
+          "Approve it immediately to increase productivity.",
+          "Ask legal or compliance to review the tool’s licensing before adoption.",
+          "Refuse all open-source tools.",
+          "Let the team decide without involving others."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Licensing implications affect organizational risk and must be reviewed by appropriate experts before adoption."
+      },
+      {
+        id: 7,
+        domain: "People (Predictive)",
+        text: "A key stakeholder strongly disagrees with the selected vendor but the procurement process is complete. What should you do?",
+        options: [
+          "Ignore their concerns.",
+          "Explain the selection criteria and provide an opportunity to discuss risks and mitigation strategies.",
+          "Restart the procurement process.",
+          "Ask the vendor to contact the stakeholder directly."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager should communicate transparently, explain the decision, and work with the stakeholder to address concerns and risks."
+      },
+      {
+        id: 8,
+        domain: "Process (Agile)",
+        text: "The team’s burndown charts show work is completed in large chunks at the end of each sprint. What does this suggest?",
+        options: [
+          "Work is flowing smoothly every day.",
+          "Tasks may be too large or not broken down sufficiently, causing late completion.",
+          "The team has too many meetings.",
+          "The product owner is changing scope too often."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Large chunks of work finishing at the end may indicate oversized tasks or poor breakdown, which reduces transparency and adaptability."
+      },
+      {
+        id: 9,
+        domain: "Process (Predictive)",
+        text: "You are using earned value management. EV = 50, PV = 60, and AC = 40. What is true?",
+        options: [
+          "The project is behind schedule and over budget.",
+          "The project is ahead of schedule and over budget.",
+          "The project is behind schedule but under budget.",
+          "The project is ahead of schedule and under budget."
+        ],
+        correctIndex: 2,
+        explanation:
+          "EV < PV indicates behind schedule; EV > AC indicates under budget."
+      },
+      {
+        id: 10,
+        domain: "Business Environment (Agile)",
+        text: "Stakeholders ask how Agile work ties back to the original business case. What should you do?",
+        options: [
+          "Explain that Agile does not use business cases.",
+          "Show how the product roadmap and backlog items trace back to expected benefits.",
+          "Tell them to read the project charter.",
+          "Delay the conversation until after several releases."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Agile still relies on business justification; mapping backlog items and roadmap to expected benefits builds transparency."
+      },
+      {
+        id: 11,
+        domain: "People (Hybrid)",
+        text: "A predictive team blames the Agile team for late information, and the Agile team blames predictive reports. What is the best response?",
+        options: [
+          "Escalate both teams to the sponsor.",
+          "Facilitate a joint session to clarify handoffs, information needs, and timing.",
+          "Keep communications separate to avoid conflict.",
+          "Replace team leaders."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Joint clarification of handoffs and expectations helps resolve cross-team friction in hybrid environments."
+      },
+      {
+        id: 12,
+        domain: "Process (Agile)",
+        text: "The product owner regularly accepts partially completed work at sprint review. What is the risk?",
+        options: [
+          "Higher transparency.",
+          "Technical debt and unclear quality standards.",
+          "Faster releases.",
+          "Less need for retrospectives."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Accepting incomplete work erodes quality and increases technical debt; items should meet the definition of done."
+      },
+      {
+        id: 13,
+        domain: "Process (Predictive)",
+        text: "You notice that change requests are increasing late in the project. What is a likely cause?",
+        options: [
+          "Too much early stakeholder involvement.",
+          "Inadequate requirements collection or stakeholder engagement earlier.",
+          "Excessive risk management.",
+          "Too many status meetings."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Late changes often indicate insufficient requirements gathering or stakeholder engagement at the start."
+      },
+      {
+        id: 14,
+        domain: "Business Environment (Predictive)",
+        text: "A government policy change introduces a mandatory reporting requirement for your project’s deliverable. What must you do?",
+        options: [
+          "Ignore it if your sponsor is unaware.",
+          "Treat it as a compliance requirement and incorporate it into the scope and schedule through change control.",
+          "Ask the team to absorb the extra work informally.",
+          "Refuse to implement it to avoid delay."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Compliance requirements must be integrated into project scope and schedule with proper change control."
+      },
+      {
+        id: 15,
+        domain: "People (Agile)",
+        text: "Team members say that user stories lack enough detail to begin work. What should the project manager do?",
+        options: [
+          "Tell the team to start anyway and figure it out.",
+          "Support the product owner in improving story refinement and acceptance criteria.",
+          "Increase sprint length to allow more clarification.",
+          "Ask stakeholders to write their own stories."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The product owner is responsible for backlog clarity; the project manager can support better refinement and acceptance criteria."
+      },
+      {
+        id: 16,
+        domain: "Process (Hybrid)",
+        text: "You are asked to provide a single status view for a project with both Agile sprints and predictive phases. What is the best approach?",
+        options: [
+          "Report only predictive progress since it is easier to measure.",
+          "Create an integrated dashboard that summarizes key metrics from both Agile and predictive work.",
+          "Ask leadership to choose one methodology.",
+          "Report only Agile metrics, as they are more current."
+        ],
+        correctIndex: 1,
+        explanation:
+          "An integrated dashboard respects both methodologies while providing leadership a consolidated view."
+      },
+      {
+        id: 17,
+        domain: "People (Predictive)",
+        text: "A team member privately shares that they feel overloaded and are close to burnout. What is the best response?",
+        options: [
+          "Encourage them to work harder until the deadline is met.",
+          "Review their workload, adjust assignments if possible, and explore support options.",
+          "Tell them this is normal in projects.",
+          "Advise them not to mention it to others."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Responsible leadership includes addressing workload and well-being to maintain sustainable performance."
+      },
+      {
+        id: 18,
+        domain: "Process (Agile)",
+        text: "The team’s velocity has been stable, but stakeholders demand more scope in each sprint. What is the best response?",
+        options: [
+          "Increase team size immediately.",
+          "Explain that sustainable pace is important and consider trade-offs such as scope or timeline instead.",
+          "Ask the team to work overtime every sprint.",
+          "Shorten sprint length to add more sprints."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Sustainable pace is a core Agile principle; additional scope must be balanced with trade-offs, not overwork."
+      },
+      {
+        id: 19,
+        domain: "Business Environment (Hybrid)",
+        text: "Your organization is piloting Agile and wants to compare performance with traditional projects. What should you suggest?",
+        options: [
+          "Use identical metrics for both, ignoring methodology differences.",
+          "Select a small set of meaningful metrics (cycle time, throughput, benefits realization) and interpret them in context.",
+          "Measure only cost for both.",
+          "Avoid any comparison."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Comparisons should use carefully chosen metrics and be interpreted in context, not forced into identical measures."
+      },
+      {
+        id: 20,
+        domain: "People (Agile)",
+        text: "A team working in a shared open space is frequently interrupted by non-project staff. What should you do?",
+        options: [
+          "Ask the team to wear headphones.",
+          "Work with facilities and stakeholders to set boundaries or quiet hours for focused work.",
+          "Move the team to fully remote work without discussion.",
+          "Ignore it because it is part of office culture."
+        ],
+        correctIndex: 1,
+        explanation:
+          "The project manager should help protect the team’s ability to focus by working with stakeholders on boundaries and workspace norms."
+      },
+      {
+        id: 21,
+        domain: "Process (Predictive)",
+        text: "You are planning risk responses. Which strategy is appropriate for a positive risk (opportunity)?",
+        options: [
+          "Avoid.",
+          "Exploit.",
+          "Mitigate.",
+          "Transfer."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Exploit is a strategy used to ensure that an opportunity is realized, maximizing its benefits."
+      },
+      {
+        id: 22,
+        domain: "Process (Agile)",
+        text: "A Kanban team’s board shows many items stuck in “In Progress.” What is the most appropriate response?",
+        options: [
+          "Increase work-in-progress limits.",
+          "Reduce work-in-progress limits and encourage the team to finish started work before starting new items.",
+          "Add more people to the team.",
+          "Move items to “Done” even if incomplete."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Limiting WIP and focusing on finishing work improves flow and reduces bottlenecks in Kanban systems."
+      },
+      {
+        id: 23,
+        domain: "Business Environment (Predictive)",
+        text: "The benefits management plan shows that most benefits will be realized after project closure. What does this imply for the project manager?",
+        options: [
+          "Benefits are irrelevant after closure.",
+          "The project manager should ensure that transition and handover plans enable the organization to capture those benefits.",
+          "The project must remain open indefinitely.",
+          "No further action is required once deliverables are accepted."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Even if benefits are realized later, the project manager must support proper transition so the organization can realize them."
+      },
+      {
+        id: 24,
+        domain: "People (Hybrid)",
+        text: "Some stakeholders only trust predictive plans, while others prefer Agile boards and burndown charts. What is the best communication strategy?",
+        options: [
+          "Choose one method and force everyone to use it.",
+          "Tailor communication by providing each group with formats they understand while keeping information consistent.",
+          "Stop providing detailed information.",
+          "Communicate only at the end of the project."
+        ],
+        correctIndex: 1,
+        explanation:
+          "Communication should be tailored to stakeholder preferences while ensuring consistency of underlying data."
+      },
+      {
+        id: 25,
+        domain: "Process (Predictive)",
+        text: "You are closing a project. Which activity is most appropriate?",
+        options: [
+          "Releasing resources, archiving documents, and collecting lessons learned.",
+          "Starting new work without documenting anything.",
+          "Re-baselining the schedule.",
+          "Reopening previously closed change requests."
+        ],
+        correctIndex: 0,
+        explanation:
+          "Project closure includes documenting lessons learned, releasing resources, and archiving project documents."
+      }
+    ];
+
+    const examSets = [examSet1, examSet2, examSet3];
+
+    // ================== STATE ==================
+    let examSetIndex = 0;       // 0,1,2
+    let numQuestions = 25;      // 10, 15, 25
+    let currentQuestions = [];  // randomized + sliced
     let currentQuestionIndex = 0;
-    const userAnswers = new Array(questions.length).fill(null);
+    let userAnswers = [];
 
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    // ================== UTILS ==================
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+      const s = String(seconds % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function startTimer() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+      }
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        document.getElementById("timer-display").textContent =
+          "Time: " + formatTime(timerSeconds);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function updateExamLabel() {
+      const examLabel = document.getElementById("exam-label");
+      examLabel.textContent = `Exam ${examSetIndex + 1} of ${examSets.length}`;
+    }
+
+    function buildQuestionSet() {
+      const base = examSets[examSetIndex];
+      const available = base.length;
+      const count = Math.min(numQuestions, available);
+
+      const pool = [...base];
+      shuffleArray(pool);
+
+      currentQuestions = pool.slice(0, count);
+      currentQuestionIndex = 0;
+      userAnswers = new Array(currentQuestions.length).fill(null);
+    }
+
+    function initExamSession() {
+      buildQuestionSet();
+      timerSeconds = 0;
+      document.getElementById("timer-display").textContent = "Time: 00:00";
+      document.getElementById("progress-bar").style.width = "0%";
+      document.getElementById("results-section").classList.add("hidden");
+      document.getElementById("quiz-section").classList.remove("hidden");
+
+      renderQuestion();
+      startTimer();
+    }
+
+    // ================== RENDERING ==================
     function renderQuestion() {
-      const q = questions[currentQuestionIndex];
+      const q = currentQuestions[currentQuestionIndex];
 
-      // Counter and progress bar
+      updateExamLabel();
+
       const counter = document.getElementById("question-counter");
-      counter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      counter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
 
       const progressBar = document.getElementById("progress-bar");
-      const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+      const progressPercent = (currentQuestionIndex / currentQuestions.length) * 100;
       progressBar.style.width = `${progressPercent}%`;
 
-      // Question text & meta
       document.getElementById("question-text").textContent = q.text;
       document.getElementById("question-meta").textContent = `Domain: ${q.domain}`;
 
-      // Options
       const optionsList = document.getElementById("options-list");
       optionsList.innerHTML = "";
 
@@ -415,7 +1598,6 @@
         optionsList.appendChild(li);
       });
 
-      // Reset feedback & buttons
       const feedback = document.getElementById("feedback");
       feedback.classList.add("hidden");
       feedback.textContent = "";
@@ -426,11 +1608,12 @@
       submitBtn.disabled = false;
       nextBtn.disabled = true;
       nextBtn.textContent =
-        currentQuestionIndex === questions.length - 1
+        currentQuestionIndex === currentQuestions.length - 1
           ? "Finish and view results"
           : "Next question";
     }
 
+    // ================== QUIZ FLOW ==================
     function submitAnswer() {
       const selected = document.querySelector('input[name="option"]:checked');
       const feedback = document.getElementById("feedback");
@@ -446,22 +1629,21 @@
       const answerIndex = parseInt(selected.value, 10);
       userAnswers[currentQuestionIndex] = answerIndex;
 
-      const q = questions[currentQuestionIndex];
+      const q = currentQuestions[currentQuestionIndex];
       const isCorrect = answerIndex === q.correctIndex;
 
       document.getElementById("submit-btn").disabled = true;
       document.getElementById("next-btn").disabled = false;
 
-      // Lock options
       document
-        .querySelectorAll('input[name="option"]')
+        .querySelectorAll('input[name=\"option\"]')
         .forEach((input) => (input.disabled = true));
 
       feedback.classList.remove("hidden");
       if (isCorrect) {
         feedback.className = "feedback correct";
         feedback.innerHTML =
-          "<strong>Correct.</strong>" + " " + q.explanation;
+          "<strong>Correct.</strong> " + q.explanation;
       } else {
         const correctText = q.options[q.correctIndex];
         feedback.className = "feedback incorrect";
@@ -471,7 +1653,7 @@
     }
 
     function nextQuestion() {
-      if (currentQuestionIndex < questions.length - 1) {
+      if (currentQuestionIndex < currentQuestions.length - 1) {
         currentQuestionIndex++;
         renderQuestion();
       } else {
@@ -480,7 +1662,8 @@
     }
 
     function showResults() {
-      // Fill progress bar to 100%
+      stopTimer();
+
       const progressBar = document.getElementById("progress-bar");
       progressBar.style.width = "100%";
 
@@ -493,21 +1676,25 @@
       resultsSection.classList.remove("hidden");
 
       let correctCount = 0;
-      questions.forEach((q, idx) => {
+      currentQuestions.forEach((q, idx) => {
         if (userAnswers[idx] === q.correctIndex) {
           correctCount++;
         }
       });
 
-      const scorePercent = Math.round((correctCount / questions.length) * 100);
+      const scorePercent = Math.round((correctCount / currentQuestions.length) * 100);
+      const totalTime = formatTime(timerSeconds);
+
       resultsSummary.innerHTML = `
-        You answered ${correctCount} out of ${questions.length} questions correctly.
+        You completed Exam ${examSetIndex + 1} of ${examSets.length}.<br>
+        You answered ${correctCount} out of ${currentQuestions.length} questions correctly.
         <span class="score-badge">Score: ${scorePercent}%</span>
+        <span class="time-badge">Total time: ${totalTime}</span>
       `;
 
       resultsList.innerHTML = "";
 
-      questions.forEach((q, idx) => {
+      currentQuestions.forEach((q, idx) => {
         const userAnswerIndex = userAnswers[idx];
         const isCorrect = userAnswerIndex === q.correctIndex;
 
@@ -524,8 +1711,8 @@
 
         const userAns = document.createElement("div");
         userAns.className = "result-answer";
-        let userText = userAnswerIndex !== null ? q.options[userAnswerIndex] : "No answer selected";
-
+        let userText =
+          userAnswerIndex !== null ? q.options[userAnswerIndex] : "No answer selected";
         userAns.innerHTML = `<strong>Your answer:</strong> ${userText}`;
 
         const correctAns = document.createElement("div");
@@ -551,8 +1738,24 @@
       });
     }
 
-    // Initialize first question
-    renderQuestion();
+    function restartQuiz() {
+      initExamSession();
+    }
+
+    function changeExam() {
+      const select = document.getElementById("exam-select");
+      examSetIndex = parseInt(select.value, 10);
+      initExamSession();
+    }
+
+    function changeQuestionCount() {
+      const select = document.getElementById("question-count-select");
+      numQuestions = parseInt(select.value, 10);
+      initExamSession();
+    }
+
+    // ================== INIT ==================
+    initExamSession();
   </script>
 </body>
 </html>
