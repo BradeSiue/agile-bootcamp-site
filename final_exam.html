@@ -729,7 +729,7 @@
           <button class="nav-btn secondary" id="prevBtn">← Previous</button>
           <button class="nav-btn" id="nextBtn">Next →</button>
           <button class="nav-btn" id="submitBtn" style="display:none;">Submit Answer</button>
-          <button class="nav-btn" id="finishBtn" style="display:none;">📊 View Complete Results (New Tab)</button>
+          <button class="nav-btn" id="finishBtn" style="display:none;">📊 View Complete Results</button>
         </div>
       </div>
     </div>
@@ -1297,11 +1297,33 @@
 
     document.getElementById('startExamBtn').addEventListener('click', startExam);
 
-    // Home button event listener
-    document.addEventListener('DOMContentLoaded', function() {
+    // Home button event listener - multiple approaches for compatibility
+    window.addEventListener('load', function() {
+      console.log('Page loaded, setting up home button');
       const homeBtn = document.getElementById('homeBtn');
+      console.log('Home button found:', homeBtn);
+      
       if (homeBtn) {
-        homeBtn.addEventListener('click', confirmExit);
+        homeBtn.addEventListener('click', function(e) {
+          console.log('Home button clicked!');
+          e.preventDefault();
+          const confirmed = confirm('Are you sure you want to exit? Your progress will be lost.');
+          console.log('User confirmed:', confirmed);
+          if (confirmed) {
+            stopTimer();
+            // Simply hide exam screen and show setup screen
+            console.log('Hiding exam, showing setup');
+            document.getElementById('examScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'block';
+            // Reset dropdowns
+            document.getElementById('versionSelect').value = '';
+            document.getElementById('questionsSelect').value = '';
+            document.getElementById('startExamBtn').disabled = true;
+          }
+        });
+        console.log('Home button listener attached');
+      } else {
+        console.error('Home button NOT found!');
       }
     });
 
@@ -1635,18 +1657,13 @@
       }
     });
 
-    document.getElementById('finishBtn').addEventListener('click', showResults);
-
-    function confirmExit() {
-      const confirmed = confirm('Are you sure you want to exit? Your progress will be lost.');
-      if (confirmed) {
-        stopTimer();
-        // Use location.href for maximum compatibility
-        window.location.href = window.location.href.split('?')[0].split('#')[0];
-      }
-    }
+    document.getElementById('finishBtn').addEventListener('click', function() {
+      console.log('Finish button clicked!');
+      showResults();
+    });
 
     function showResults() {
+      console.log('showResults called!');
       // Stop timer
       stopTimer();
 
@@ -1655,6 +1672,8 @@
       const correct = examState.score;
       const incorrect = totalQuestions - correct;
       const percentage = Math.round((correct / totalQuestions) * 100);
+      
+      console.log(`Results: ${correct}/${totalQuestions} = ${percentage}%`);
 
       // Calculate time taken
       const timeTaken = (examState.timeLimit * 60) - examState.timeRemaining;
@@ -1678,69 +1697,110 @@
         message = '💪 Review and Try Again!';
       }
 
-      // Build detailed results text
-      let resultsText = `EXAM COMPLETE!\n\n`;
-      resultsText += `${message}\n\n`;
-      resultsText += `Your Score: ${percentage}% (${correct}/${totalQuestions})\n`;
-      resultsText += `Time Taken: ${timeDisplay}\n`;
-      resultsText += `Correct: ${correct}\n`;
-      resultsText += `Incorrect: ${incorrect}\n\n`;
-      resultsText += `========================\n`;
-      resultsText += `DETAILED RESULTS:\n`;
-      resultsText += `========================\n\n`;
+      // Build complete results HTML in the exam screen area
+      let resultsHTML = `
+        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto;">
+          <!-- Header -->
+          <div style="text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 3px solid #2d87a8;">
+            <div style="font-size: 4rem; color: #2d87a8; font-weight: 700; margin-bottom: 15px;">${percentage}%</div>
+            <div style="font-size: 1.8rem; color: #3d4f5c; font-weight: 700; margin-bottom: 10px;">${message}</div>
+            <div style="font-size: 1.1rem; color: #5a7070;">You answered ${correct} out of ${totalQuestions} questions correctly</div>
+          </div>
 
-      // Add all questions with answers
+          <!-- Stats -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${correct}</div>
+              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Correct</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${incorrect}</div>
+              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Incorrect</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${percentage}%</div>
+              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Score</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${timeDisplay}</div>
+              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Time</div>
+            </div>
+          </div>
+
+          <!-- All Questions Review -->
+          <h2 style="font-size: 1.6rem; color: #3d4f5c; font-weight: 700; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #2d87a8;">
+            📝 Complete Review - All Questions & Explanations
+          </h2>
+      `;
+
+      // Add all questions
       examState.questions.forEach((question, index) => {
         const userAnswer = examState.userAnswers[index];
         const isCorrect = userAnswer !== null && userAnswer === question.correct;
         const wasAnswered = userAnswer !== null;
-
-        resultsText += `QUESTION ${index + 1}:\n`;
-        resultsText += `${question.question}\n\n`;
         
-        if (wasAnswered) {
-          resultsText += `Your Answer: ${question.answers[userAnswer]} ${isCorrect ? '✓' : '✗'}\n`;
-        } else {
-          resultsText += `Your Answer: Not answered ✗\n`;
-        }
+        const borderColor = isCorrect ? '#10b981' : '#ef4444';
+        const bgColor = isCorrect ? '#f0fdf4' : '#fef2f2';
+
+        resultsHTML += `
+          <div style="background: ${bgColor}; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid ${borderColor};">
+            <div style="font-size: 1.05rem; font-weight: 600; margin-bottom: 12px; color: #2d3d3d;">
+              <strong>Question ${index + 1}:</strong> ${question.question}
+            </div>
+            <div style="margin: 10px 0;">
+              <div style="color: #2d3d3d; font-weight: 600; font-size: 0.95rem;">
+                ${isCorrect ? '✓' : '✗'} Your answer: ${wasAnswered ? question.answers[userAnswer] : 'Not answered'}
+              </div>`;
         
         if (!isCorrect) {
-          resultsText += `Correct Answer: ${question.answers[question.correct]} ✓\n`;
+          resultsHTML += `
+              <div style="color: #10b981; font-weight: 600; font-size: 0.95rem; margin-top: 5px;">
+                ✓ Correct answer: ${question.answers[question.correct]}
+              </div>`;
         }
         
-        resultsText += `\nExplanation: ${question.explanation}\n`;
-        resultsText += `\n${'='.repeat(50)}\n\n`;
+        resultsHTML += `
+            </div>
+            <div style="margin-top: 12px; padding: 12px; background: white; border-radius: 8px; font-size: 0.9rem; line-height: 1.6;">
+              <strong>Explanation:</strong> ${question.explanation}
+            </div>
+          </div>
+        `;
       });
 
-      // Create downloadable text file
-      const blob = new Blob([resultsText], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const downloadLink = document.createElement('a');
-      downloadLink.href = url;
-      downloadLink.download = `Agile_Exam_Results_${percentage}percent.txt`;
-      
-      // Show alert with results summary
-      const alertMessage = `EXAM COMPLETE! 🎉\n\n${message}\n\nYour Score: ${percentage}%\nCorrect: ${correct}/${totalQuestions}\nTime: ${timeDisplay}\n\n✅ Your detailed results file will download automatically.\n\n📄 Open the downloaded text file to see:\n• All questions\n• Your answers\n• Correct answers\n• Full explanations\n\nClick OK to return to home and take another exam.`;
-      
-      alert(alertMessage);
-      
-      // Trigger download
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      URL.revokeObjectURL(url);
-      
-      // Return to home
-      restartExam();
-    }
+      // Add home button
+      resultsHTML += `
+          <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 3px solid #2d87a8;">
+            <button onclick="goBackHome()" style="padding: 18px 50px; background: linear-gradient(135deg, #2d87a8 0%, #3d9ec4 100%); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 25px rgba(45,135,168,0.3);">
+              🏠 Return to Home - Take Another Exam
+            </button>
+          </div>
+        </div>
+      `;
 
-    function restartExam() {
-      // Stop any running timer
+      // Replace exam screen content with results
+      console.log('Replacing exam screen with results HTML');
+      document.getElementById('examScreen').innerHTML = resultsHTML;
+      console.log('Results HTML inserted');
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    function goBackHome() {
+      // Reset and go back to setup
       stopTimer();
-
-      // Reload page using location.href for maximum compatibility
-      window.location.href = window.location.href.split('?')[0].split('#')[0];
+      document.getElementById('examScreen').style.display = 'none';
+      document.getElementById('setupScreen').style.display = 'block';
+      document.getElementById('versionSelect').value = '';
+      document.getElementById('questionsSelect').value = '';
+      document.getElementById('startExamBtn').disabled = true;
+      window.scrollTo(0, 0);
     }
+    
+    // Make function available globally for onclick
+    window.goBackHome = goBackHome;
+
   </script>
 </body>
 </html>
