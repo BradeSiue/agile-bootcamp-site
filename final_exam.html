@@ -1419,8 +1419,10 @@
         allQuestions.push(...questionBank[topic]);
       });
 
-      // Shuffle questions differently based on version
-      const seed = parseInt(examState.version);
+      // Use timestamp + version for unique randomization each time
+      // This means same version will give different questions on each attempt
+      const seed = parseInt(examState.version) * 1000 + Date.now();
+      console.log('Generating questions with seed:', seed);
       shuffleArray(allQuestions, seed);
 
       // Select the requested number of questions
@@ -1434,8 +1436,8 @@
           originalIndex: idx
         }));
         
-        // Shuffle answers using question index as additional seed
-        const answerSeed = seed * 1000 + index;
+        // Shuffle answers using question index + timestamp as additional seed
+        const answerSeed = seed + index * 100;
         shuffleArrayWithSeed(answersWithIndex, answerSeed);
         
         // Find new position of correct answer
@@ -1451,6 +1453,8 @@
           explanation: question.explanation
         };
       });
+      
+      console.log(`Generated ${examState.questions.length} questions`);
     }
     
     function shuffleArrayWithSeed(array, seed) {
