@@ -729,7 +729,7 @@
           <button class="nav-btn secondary" id="prevBtn">← Previous</button>
           <button class="nav-btn" id="nextBtn">Next →</button>
           <button class="nav-btn" id="submitBtn" style="display:none;">Submit Answer</button>
-          <button class="nav-btn" id="finishBtn" style="display:none;" onclick="showResults(); return false;">📊 View Complete Results</button>
+          <button class="nav-btn" id="finishBtn" style="display:none;" onclick="console.log('Inline onclick fired!'); showResults(); return false;">📊 View Complete Results</button>
         </div>
       </div>
     </div>
@@ -1801,6 +1801,9 @@
       // Scroll to top
       window.scrollTo(0, 0);
     }
+    
+    // Make showResults available globally for inline onclick
+    window.showResults = showResults;
     
     function goBackHome() {
       // Reset and go back to setup
