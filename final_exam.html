@@ -704,7 +704,7 @@
             <span class="info-value timer-value" id="timerDisplay">00:00</span>
           </div>
         </div>
-        <button class="home-btn" id="homeBtn" title="Return to Home">
+        <button class="home-btn" id="homeBtn" title="Return to Home" onclick="document.getElementById('examScreen').style.display='none'; document.getElementById('setupScreen').style.display='block'; return false;">
           🏠 Home
         </button>
       </div>
@@ -729,7 +729,7 @@
           <button class="nav-btn secondary" id="prevBtn">← Previous</button>
           <button class="nav-btn" id="nextBtn">Next →</button>
           <button class="nav-btn" id="submitBtn" style="display:none;">Submit Answer</button>
-          <button class="nav-btn" id="finishBtn" style="display:none;">📊 View Complete Results</button>
+          <button class="nav-btn" id="finishBtn" style="display:none;" onclick="showResults(); return false;">📊 View Complete Results</button>
         </div>
       </div>
     </div>
@@ -1297,31 +1297,32 @@
 
     document.getElementById('startExamBtn').addEventListener('click', startExam);
 
-    // Home button event listener - multiple approaches for compatibility
+    // Home button event listener - NO CONFIRMATION, INSTANT ACTION
     window.addEventListener('load', function() {
       console.log('Page loaded, setting up home button');
       const homeBtn = document.getElementById('homeBtn');
       console.log('Home button found:', homeBtn);
       
       if (homeBtn) {
-        homeBtn.addEventListener('click', function(e) {
-          console.log('Home button clicked!');
-          e.preventDefault();
-          const confirmed = confirm('Are you sure you want to exit? Your progress will be lost.');
-          console.log('User confirmed:', confirmed);
-          if (confirmed) {
+        homeBtn.onclick = function() {
+          console.log('Home button clicked - going home NOW!');
+          try {
             stopTimer();
-            // Simply hide exam screen and show setup screen
-            console.log('Hiding exam, showing setup');
-            document.getElementById('examScreen').style.display = 'none';
-            document.getElementById('setupScreen').style.display = 'block';
-            // Reset dropdowns
-            document.getElementById('versionSelect').value = '';
-            document.getElementById('questionsSelect').value = '';
-            document.getElementById('startExamBtn').disabled = true;
+          } catch(e) {
+            console.log('Timer stop failed, continuing anyway');
           }
-        });
-        console.log('Home button listener attached');
+          // Simply hide exam screen and show setup screen
+          console.log('Hiding exam, showing setup');
+          document.getElementById('examScreen').style.display = 'none';
+          document.getElementById('setupScreen').style.display = 'block';
+          // Reset dropdowns
+          document.getElementById('versionSelect').value = '';
+          document.getElementById('questionsSelect').value = '';
+          document.getElementById('startExamBtn').disabled = true;
+          console.log('Home action complete!');
+          return false;
+        };
+        console.log('Home button onclick attached');
       } else {
         console.error('Home button NOT found!');
       }
@@ -1657,9 +1658,19 @@
       }
     });
 
-    document.getElementById('finishBtn').addEventListener('click', function() {
-      console.log('Finish button clicked!');
-      showResults();
+    // Finish button setup - use direct onclick for maximum compatibility
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const finishBtn = document.getElementById('finishBtn');
+        if (finishBtn) {
+          console.log('Finish button found, attaching onclick');
+          finishBtn.onclick = function() {
+            console.log('Finish button clicked - showing results NOW!');
+            showResults();
+            return false;
+          };
+        }
+      }, 1000);
     });
 
     function showResults() {
@@ -1672,8 +1683,6 @@
       const correct = examState.score;
       const incorrect = totalQuestions - correct;
       const percentage = Math.round((correct / totalQuestions) * 100);
-      
-      console.log(`Results: ${correct}/${totalQuestions} = ${percentage}%`);
 
       // Calculate time taken
       const timeTaken = (examState.timeLimit * 60) - examState.timeRemaining;
@@ -1696,41 +1705,38 @@
       } else {
         message = '💪 Review and Try Again!';
       }
+      
+      console.log(`Results: ${correct}/${totalQuestions} = ${percentage}%`);
 
-      // Build complete results HTML in the exam screen area
+      // Build results HTML - similar structure to question card
       let resultsHTML = `
-        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto;">
-          <!-- Header -->
-          <div style="text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 3px solid #2d87a8;">
-            <div style="font-size: 4rem; color: #2d87a8; font-weight: 700; margin-bottom: 15px;">${percentage}%</div>
-            <div style="font-size: 1.8rem; color: #3d4f5c; font-weight: 700; margin-bottom: 10px;">${message}</div>
-            <div style="font-size: 1.1rem; color: #5a7070;">You answered ${correct} out of ${totalQuestions} questions correctly</div>
-          </div>
+        <div style="text-align: center; margin-bottom: 30px;">
+          <div style="font-size: 4rem; color: #2d87a8; font-weight: 700; margin-bottom: 15px;">${percentage}%</div>
+          <div style="font-size: 1.8rem; color: #3d4f5c; font-weight: 700; margin-bottom: 10px;">${message}</div>
+          <div style="font-size: 1.1rem; color: #5a7070;">You answered ${correct} out of ${totalQuestions} questions correctly</div>
+          <div style="font-size: 1rem; color: #5a7070; margin-top: 10px;">Time: ${timeDisplay}</div>
+        </div>
 
-          <!-- Stats -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px;">
-            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
-              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${correct}</div>
-              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Correct</div>
-            </div>
-            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
-              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${incorrect}</div>
-              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Incorrect</div>
-            </div>
-            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
-              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${percentage}%</div>
-              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Score</div>
-            </div>
-            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
-              <div style="font-size: 2.2rem; color: #2d87a8; font-weight: 700;">${timeDisplay}</div>
-              <div style="font-size: 0.9rem; color: #5a7070; font-weight: 600; margin-top: 5px;">Time</div>
-            </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
+          <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+            <div style="font-size: 2rem; color: #2d87a8; font-weight: 700;">${correct}</div>
+            <div style="font-size: 0.85rem; color: #5a7070; font-weight: 600;">Correct</div>
           </div>
+          <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+            <div style="font-size: 2rem; color: #2d87a8; font-weight: 700;">${incorrect}</div>
+            <div style="font-size: 0.85rem; color: #5a7070; font-weight: 600;">Incorrect</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #2d87a8;">
+            <div style="font-size: 2rem; color: #2d87a8; font-weight: 700;">${percentage}%</div>
+            <div style="font-size: 0.85rem; color: #5a7070; font-weight: 600;">Score</div>
+          </div>
+        </div>
 
-          <!-- All Questions Review -->
-          <h2 style="font-size: 1.6rem; color: #3d4f5c; font-weight: 700; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #2d87a8;">
-            📝 Complete Review - All Questions & Explanations
-          </h2>
+        <h3 style="font-size: 1.4rem; color: #3d4f5c; font-weight: 700; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #2d87a8;">
+          📝 All Questions & Answers
+        </h3>
+        
+        <div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
       `;
 
       // Add all questions
@@ -1743,45 +1749,50 @@
         const bgColor = isCorrect ? '#f0fdf4' : '#fef2f2';
 
         resultsHTML += `
-          <div style="background: ${bgColor}; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid ${borderColor};">
-            <div style="font-size: 1.05rem; font-weight: 600; margin-bottom: 12px; color: #2d3d3d;">
-              <strong>Question ${index + 1}:</strong> ${question.question}
+          <div style="background: ${bgColor}; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid ${borderColor};">
+            <div style="font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: #2d3d3d;">
+              <strong>Q${index + 1}:</strong> ${question.question}
             </div>
-            <div style="margin: 10px 0;">
-              <div style="color: #2d3d3d; font-weight: 600; font-size: 0.95rem;">
+            <div style="font-size: 0.9rem; margin: 8px 0;">
+              <div style="color: #2d3d3d; font-weight: 600;">
                 ${isCorrect ? '✓' : '✗'} Your answer: ${wasAnswered ? question.answers[userAnswer] : 'Not answered'}
               </div>`;
         
         if (!isCorrect) {
           resultsHTML += `
-              <div style="color: #10b981; font-weight: 600; font-size: 0.95rem; margin-top: 5px;">
-                ✓ Correct answer: ${question.answers[question.correct]}
+              <div style="color: #10b981; font-weight: 600; margin-top: 5px;">
+                ✓ Correct: ${question.answers[question.correct]}
               </div>`;
         }
         
         resultsHTML += `
             </div>
-            <div style="margin-top: 12px; padding: 12px; background: white; border-radius: 8px; font-size: 0.9rem; line-height: 1.6;">
+            <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
               <strong>Explanation:</strong> ${question.explanation}
             </div>
           </div>
         `;
       });
 
-      // Add home button
       resultsHTML += `
-          <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 3px solid #2d87a8;">
-            <button onclick="goBackHome()" style="padding: 18px 50px; background: linear-gradient(135deg, #2d87a8 0%, #3d9ec4 100%); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 25px rgba(45,135,168,0.3);">
-              🏠 Return to Home - Take Another Exam
-            </button>
-          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+          <button onclick="goBackHome(); return false;" style="padding: 15px 40px; background: linear-gradient(135deg, #2d87a8 0%, #3d9ec4 100%); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(45,135,168,0.3);">
+            🏠 Return to Home - Take Another Exam
+          </button>
         </div>
       `;
 
-      // Replace exam screen content with results
-      console.log('Replacing exam screen with results HTML');
-      document.getElementById('examScreen').innerHTML = resultsHTML;
-      console.log('Results HTML inserted');
+      // Replace ONLY the question card content (like showing a new question)
+      console.log('Replacing question card with results');
+      const questionCard = document.querySelector('.question-card');
+      if (questionCard) {
+        questionCard.innerHTML = resultsHTML;
+        console.log('Results displayed in question card!');
+      } else {
+        console.error('Question card not found!');
+      }
       
       // Scroll to top
       window.scrollTo(0, 0);
